@@ -1,0 +1,895 @@
+/* ==========================================================================
+   CAMPUSCOUNT - LIQUID CRYSTAL DESIGN SYSTEM (WHITE & BLACK MONOCHROME + 3D)
+   Ultra-Modern Chromatic Glassmorphism, 3D Depth Physics, and Dual Mode
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* LIQUID OBSIDIAN (BLACK CRYSTAL THEME - DEFAULT) */
+  --theme-mode: 'dark';
+  
+  --bg-deep: #030305;
+  --bg-surface: #08090D;
+  --bg-elevated: #0F1118;
+  --bg-card: rgba(15, 17, 26, 0.68);
+  --bg-card-hover: rgba(22, 26, 38, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --bg-glass-heavy: rgba(10, 12, 18, 0.82);
+  --bg-sidebar: rgba(6, 7, 11, 0.88);
+  --bg-header: rgba(6, 7, 11, 0.78);
+
+  /* PURE CRYSTAL WHITE ACCENTS */
+  --crystal-white: #FFFFFF;
+  --crystal-glow: rgba(255, 255, 255, 0.95);
+  --crystal-subtle: #E2E8F0;
+  --crystal-dim: #94A3B8;
+  --crystal-muted: #64748B;
+  --crystal-dark: #334155;
+
+  /* CHROMATIC REFRACTIVE BORDERS */
+  --border-crystal: rgba(255, 255, 255, 0.14);
+  --border-crystal-hover: rgba(255, 255, 255, 0.32);
+  --border-prism: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.25) 100%);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+
+  /* MONOCHROME LIQUID LIGHT ACCENTS */
+  --primary: #FFFFFF;
+  --primary-invert: #000000;
+  --primary-glow: rgba(255, 255, 255, 0.28);
+  --primary-gradient: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
+  --admin-accent: #E0E7FF;
+  --admin-glow: rgba(99, 102, 241, 0.25);
+  
+  /* FUNCTIONAL CRYSTALLINE STATUS */
+  --status-safe: #34D399;
+  --status-safe-bg: rgba(52, 211, 153, 0.12);
+  --status-safe-border: rgba(52, 211, 153, 0.35);
+
+  --status-alert: #F87171;
+  --status-alert-bg: rgba(248, 113, 113, 0.14);
+  --status-alert-border: rgba(248, 113, 113, 0.4);
+
+  --status-warn: #FBBF24;
+  --status-warn-bg: rgba(251, 191, 36, 0.12);
+  --status-warn-border: rgba(251, 191, 36, 0.35);
+
+  --status-info: #38BDF8;
+  --status-info-bg: rgba(56, 189, 248, 0.12);
+  --status-info-border: rgba(56, 189, 248, 0.35);
+
+  /* TYPOGRAPHY */
+  --text-primary: #FFFFFF;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-dark: #0F172A;
+
+  /* ELEVATION & 3D SHADOWS */
+  --shadow-crystal: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --shadow-crystal-lg: 0 20px 50px 0 rgba(0, 0, 0, 0.65), 0 0 25px rgba(255, 255, 255, 0.06);
+  --shadow-inset-prism: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+
+  /* DIMENSIONS */
+  --sidebar-width: 270px;
+  --header-height: 76px;
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+
+  --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* LIQUID QUARTZ (WHITE CRYSTAL THEME) */
+[data-theme="light"] {
+  --theme-mode: 'light';
+  
+  --bg-deep: #F4F6F9;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F8FAFC;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-heavy: rgba(255, 255, 255, 0.92);
+  --bg-sidebar: rgba(255, 255, 255, 0.94);
+  --bg-header: rgba(255, 255, 255, 0.88);
+
+  --crystal-white: #0A0A0F;
+  --crystal-glow: rgba(0, 0, 0, 0.08);
+  --crystal-subtle: #1E293B;
+  --crystal-dim: #475569;
+  --crystal-muted: #64748B;
+  --crystal-dark: #F1F5F9;
+
+  --border-crystal: rgba(0, 0, 0, 0.09);
+  --border-crystal-hover: rgba(0, 0, 0, 0.22);
+  --border-prism: linear-gradient(135deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.14) 100%);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+
+  --primary: #0A0A0F;
+  --primary-invert: #FFFFFF;
+  --primary-glow: rgba(0, 0, 0, 0.12);
+  --primary-gradient: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+  --admin-accent: #312E81;
+  --admin-glow: rgba(79, 70, 229, 0.15);
+
+  --status-safe: #059669;
+  --status-safe-bg: #ECFDF5;
+  --status-safe-border: #A7F3D0;
+
+  --status-alert: #DC2626;
+  --status-alert-bg: #FEF2F2;
+  --status-alert-border: #FECACA;
+
+  --status-warn: #D97706;
+  --status-warn-bg: #FFFBEB;
+  --status-warn-border: #FDE68A;
+
+  --status-info: #0284C7;
+  --status-info-bg: #F0F9FF;
+  --status-info-border: #BAE6FD;
+
+  --text-primary: #0A0A0F;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-dark: #FFFFFF;
+
+  --shadow-crystal: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-crystal-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.14), 0 0 20px rgba(0, 0, 0, 0.03);
+  --shadow-inset-prism: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* GLOBAL RESET */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-primary);
+  background-color: var(--bg-deep);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* 3D PERSPECTIVE ENVIRONMENT */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+/* ==========================================================================
+   3D LIQUID CRYSTAL AMBIENT BACKGROUND & FLOATING PRISMATIC MESH
+   ========================================================================== */
+.liquid-bg-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Living Liquid Aurora Glow */
+.liquid-bg-canvas::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(120, 130, 160, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 70%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+  filter: blur(60px);
+  animation: liquidMeshDrift 22s infinite alternate var(--transition-smooth);
+}
+
+/* 3D Floating Crystal Polyhedron Prisms */
+.crystal-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 70%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.08), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  animation: floatOrb 18s infinite ease-in-out;
+}
+
+.crystal-orb-1 {
+  width: 320px;
+  height: 320px;
+  top: 10%;
+  right: 5%;
+  animation-duration: 20s;
+}
+
+.crystal-orb-2 {
+  width: 220px;
+  height: 220px;
+  bottom: 15%;
+  left: 20%;
+  animation-duration: 25s;
+  animation-delay: -5s;
+}
+
+.crystal-orb-3 {
+  width: 140px;
+  height: 140px;
+  top: 45%;
+  left: 45%;
+  animation-duration: 16s;
+  animation-delay: -8s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translateY(0px) rotate(0deg) scale(1); }
+  50% { transform: translateY(-40px) rotate(180deg) scale(1.06); }
+  100% { transform: translateY(0px) rotate(360deg) scale(1); }
+}
+
+@keyframes liquidMeshDrift {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(3%, 4%); }
+  100% { transform: scale(0.96) translate(-2%, -3%); }
+}
+
+/* ==========================================================================
+   SIDEBAR (LIQUID CRYSTAL MONOCHROME FROSTED GLASS)
+   ========================================================================== */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-sidebar);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-right: 1px solid var(--border-crystal);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s var(--transition-smooth), width 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: var(--shadow-crystal);
+}
+
+.sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--primary-glow);
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-icon-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 60%);
+}
+
+.brand-logo-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: invert(1);
+}
+
+[data-theme="light"] .brand-logo-img {
+  filter: invert(0);
+}
+
+.brand-info h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.1;
+}
+
+.brand-info span {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crystal-dim);
+}
+
+/* Navigation Items */
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-section-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--crystal-muted);
+  padding: 14px 12px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  transition: all 0.22s var(--transition-smooth);
+  border: 1px solid transparent;
+}
+
+.nav-item:hover {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border-color: var(--border-crystal);
+  transform: translateX(4px);
+}
+
+.nav-item.active {
+  background: var(--primary);
+  color: var(--primary-invert);
+  font-weight: 700;
+  box-shadow: 0 4px 20px var(--primary-glow);
+}
+
+.nav-item.active .nav-icon svg {
+  stroke: var(--primary-invert);
+}
+
+.nav-item.active .nav-badge {
+  background: var(--primary-invert);
+  color: var(--primary);
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  transition: stroke 0.2s ease;
+}
+
+.nav-label {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.nav-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-crystal);
+  letter-spacing: 0.02em;
+}
+
+.nav-badge.alert {
+  background: var(--status-alert-bg);
+  color: var(--status-alert);
+  border-color: var(--status-alert-border);
+  animation: pulseCrystalBadge 2s infinite ease-in-out;
+}
+
+@keyframes pulseCrystalBadge {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 12px 2px rgba(248, 113, 113, 0.4); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+}
+
+/* Sidebar Footer User Card */
+.sidebar-footer {
+  padding: 14px 16px;
+  margin: 12px 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-crystal);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-footer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 80%);
+  pointer-events: none;
+}
+
+.sidebar-user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid var(--border-crystal);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.sidebar-user-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-user-meta h4 {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-meta p {
+  font-size: 0.7rem;
+  color: var(--crystal-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   MAIN CONTENT WRAPPER & TOP HEADER
+   ========================================================================== */
+.main-wrapper {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+  transition: margin-left 0.35s var(--transition-smooth);
+}
+
+.top-header {
+  height: var(--header-height);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: var(--bg-header);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border-crystal);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  box-shadow: var(--shadow-crystal);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.sidebar-toggle-btn {
+  display: none;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-crystal);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.portal-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-crystal);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  backdrop-filter: blur(12px);
+}
+
+.portal-role-pill.admin {
+  background: rgba(99, 102, 241, 0.14);
+  border-color: rgba(165, 180, 252, 0.4);
+  color: #C7D2FE;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--crystal-dim);
+}
+
+.breadcrumbs span:last-child {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Theme Switcher Toggle (Crystal White vs Obsidian Black) */
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-crystal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.25s var(--transition-smooth);
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--crystal-glow);
+}
+
+.header-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-crystal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  position: relative;
+  transition: all 0.25s var(--transition-smooth);
+}
+
+.header-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.header-icon-btn svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.header-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--primary-invert);
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+/* User Profile Header Chip */
+.header-profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px 5px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-crystal);
+  cursor: pointer;
+  transition: all 0.25s var(--transition-smooth);
+}
+
+.header-profile-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-crystal-hover);
+  transform: translateY(-2px);
+}
+
+.chip-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-crystal);
+}
+
+.chip-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.chip-role {
+  font-size: 0.68rem;
+  color: var(--crystal-dim);
+}
+
+/* ==========================================================================
+   CONTENT BODY & VIEW CONTAINERS
+   ========================================================================== */
+.content-body {
+  flex: 1;
+  padding: 32px;
+  position: relative;
+  z-index: 2;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.page-view {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px) scale(0.995);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.page-view.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ==========================================================================
+   LIQUID CRYSTAL 3D CARD COMPONENT
+   ========================================================================== */
+.card-crystal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-crystal);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: var(--shadow-crystal);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--transition-smooth), box-shadow 0.35s var(--transition-smooth), border-color 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.card-crystal:hover {
+  transform: translateY(-4px) rotateX(1deg);
+  border-color: var(--border-crystal-hover);
+  box-shadow: var(--shadow-crystal-lg);
+}
+
+/* Specular Shimmer Edge on Cards */
+.card-crystal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  transition: left 0.8s ease;
+  pointer-events: none;
+}
+
+.card-crystal:hover::before {
+  left: 100%;
+}
+
+.card-header-crystal {
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header-crystal h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-body-crystal {
+  padding: 24px 26px;
+}
+
+.card-footer-crystal {
+  padding: 16px 26px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ==========================================================================
+   BUTTONS (LIQUID CHROME & OBSIDIAN CRYSTAL)
+   ========================================================================== */
+.btn-crystal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.25s var(--transition-smooth);
+  user-select: none;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary Pure White / Deep Invert Button */
+.btn-crystal-primary {
+  background: var(--primary);
+  color: var(--primary-invert);
+  box-shadow: 0 4px 20px var(--primary-glow);
+}
+
+.btn-crystal-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px var(--primary-glow);
+  filter: brightness(1.08);
+}
+
+.btn-crystal-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Glass Button */
+.btn-crystal-glass {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border-color: var(--border-crystal);
+  backdrop-filter: blur(16px);
+}
+
+.btn-crystal-glass:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--border-crystal-hover);
+  transform: translateY(-2px);
+}
+
+/* Danger / Reject Button */
+.btn-crystal-danger {
+  background: var(--status-alert-bg);
+  color: var(--status-alert);
+  border-color: var(--status-alert-border);
+}
+
+.btn-crystal-danger:hover {
+  background: rgba(248, 113, 113, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Success / Approve Button */
+.btn-crystal-success {
+  background: var(--status-safe-bg);
+  color: var(--status-safe);
+  border-color: var(--status-safe-border);
+}
+
+.btn-crystal-success:hover {
+  background: rgba(52, 211, 153, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Form Controls */
+.form-control-crystal {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass-heavy);
+  border: 1px solid var(--border-crystal);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.form-control-crystal:focus {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.form-control-crystal::placeholder {
+  color: var(--crystal-muted);
+}

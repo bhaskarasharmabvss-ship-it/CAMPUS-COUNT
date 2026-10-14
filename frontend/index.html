@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendify 3D — Smart Campus Management</title>
+  <meta name="description" content="Attendify 3D - Premium 3D Student Attendance & Timetable Management System with dedicated Admin, Teacher, and Student Dashboards.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="alternate icon" href="assets/logo.jpg">
+
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Three.js Library for 3D Visual Centerpiece -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- 3D Liquid Crystal Background Canvas -->
+  <canvas id="liquid-bg-canvas"></canvas>
+  <div class="crystal-mesh-bg"></div>
+
+  <div class="app-container">
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- ==========================================================================
+         LEFT FIXED SIDEBAR NAVIGATION (Admin, Teacher, and Student Support)
+         ========================================================================== -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="#landing" class="brand-logo" onclick="App.navigateTo('landing')" title="Attendify 3D Home">
+          <div class="landing-logo-icon" style="flex-shrink: 0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          </div>
+          <div class="brand-info">
+            <h1 id="brand-title" style="letter-spacing: -0.02em;">Attendify 3D</h1>
+            <span id="brand-portal-label">Smart Campus</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Student Navigation (Active when role === 'student') -->
+        <div id="student-nav-group" class="role-nav-group" style="display: none;">
+          <div class="nav-section-title">Academic Hub</div>
+          <div class="nav-item active" data-view="home" id="nav-home">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <span class="nav-label">Home</span>
+          </div>
+          <div class="nav-item" data-view="attendance" id="nav-attendance">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg></div>
+            <span class="nav-label">Attendance</span>
+            <span class="nav-badge alert" id="sidebar-attendance-alert" title="Shortage Warning">Alert</span>
+          </div>
+          <div class="nav-item" data-view="results" id="nav-results">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+            <span class="nav-label">Results</span>
+          </div>
+          <div class="nav-item" data-view="timetable" id="nav-timetable">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <span class="nav-label">Time Table</span>
+          </div>
+          <div class="nav-item" data-view="notifications" id="nav-notifications">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+            <span class="nav-label">Notifications</span>
+            <span class="nav-badge" id="sidebar-notif-count">3</span>
+          </div>
+          <div class="nav-item" data-view="leave" id="nav-leave">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m14 14-4 4"/><path d="m10 14 4 4"/></svg></div>
+            <span class="nav-label">Leave / Permission</span>
+          </div>
+          <div class="nav-item" data-view="holidays" id="nav-holidays">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><circle cx="12" cy="15" r="2"/></svg></div>
+            <span class="nav-label">Holidays</span>
+          </div>
+          <div class="nav-section-title" style="margin-top: 6px;">Curriculum</div>
+          <div class="nav-item" data-view="subjects" id="nav-subjects">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg></div>
+            <span class="nav-label">Subjects</span>
+          </div>
+          <div class="nav-item" data-view="assignments" id="nav-assignments">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14h6"/><path d="M9 18h6"/></svg></div>
+            <span class="nav-label">Assignments</span>
+            <span class="nav-badge" id="sidebar-assignment-count">3</span>
+          </div>
+          <div class="nav-section-title" style="margin-top: 6px;">Account</div>
+          <div class="nav-item" data-view="profile" id="nav-profile">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span class="nav-label">Profile</span>
+          </div>
+          <div class="nav-item" data-view="settings" id="nav-settings">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <span class="nav-label">Settings</span>
+          </div>
+          <div class="nav-item" data-view="logout" id="nav-logout" style="margin-top: 8px; color: #EF4444;">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></div>
+            <span class="nav-label">Sign Out</span>
+          </div>
+        </div>
+
+        <!-- Teacher Navigation (Active when role === 'teacher') -->
+        <div id="teacher-nav-group" class="role-nav-group" style="display: none;">
+          <div class="nav-section-title">Faculty Portal</div>
+          <div class="nav-item active" data-view="teacher-dashboard" id="nav-teacher-dashboard">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></div>
+            <span class="nav-label">Faculty Overview</span>
+          </div>
+          <div class="nav-item" data-view="teacher-mark" id="nav-teacher-mark">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <span class="nav-label">Mark Attendance</span>
+            <span class="nav-badge" style="background: rgba(56, 189, 248, 0.25); color: #38BDF8;">Live</span>
+          </div>
+          <div class="nav-item" data-view="teacher-students" id="nav-teacher-students">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <span class="nav-label">My Students</span>
+          </div>
+          <div class="nav-item" data-view="teacher-history" id="nav-teacher-history">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg></div>
+            <span class="nav-label">Attendance History</span>
+          </div>
+          <div class="nav-item" data-view="timetable" id="nav-teacher-timetable">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <span class="nav-label">My Timetable</span>
+          </div>
+          <div class="nav-item" data-view="notifications" id="nav-teacher-notifications">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+            <span class="nav-label">Notifications</span>
+          </div>
+          <div class="nav-section-title" style="margin-top: 6px;">Account</div>
+          <div class="nav-item" data-view="profile" id="nav-teacher-profile">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span class="nav-label">Faculty Profile</span>
+          </div>
+          <div class="nav-item" data-view="logout" id="nav-teacher-logout" style="margin-top: 8px; color: #EF4444;">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></div>
+            <span class="nav-label">Sign Out</span>
+          </div>
+        </div>
+
+        <!-- Admin Navigation (Active when role === 'admin') -->
+        <div id="admin-nav-group" class="role-nav-group">
+          <div class="nav-section-title">Provost Administration</div>
+          <div class="nav-item active" data-view="admin-dashboard" id="nav-admin-dashboard">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></div>
+            <span class="nav-label">Campus Overview</span>
+          </div>
+          <div class="nav-item" data-view="admin-students" id="nav-admin-students">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <span class="nav-label">Manage Students</span>
+            <span class="nav-badge alert" id="admin-shortage-badge">2 Alert</span>
+          </div>
+          <div class="nav-item" data-view="admin-teachers" id="nav-admin-teachers">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <span class="nav-label">Manage Teachers</span>
+          </div>
+          <div class="nav-item" data-view="admin-timetable" id="nav-admin-timetable">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <span class="nav-label">Timetable Editor</span>
+          </div>
+          <div class="nav-item" data-view="admin-attendance" id="nav-admin-attendance">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></div>
+            <span class="nav-label">Attendance Dispatcher</span>
+            <span class="nav-badge" style="background: rgba(255,255,255,0.18); color: #fff;">Live</span>
+          </div>
+          <div class="nav-item" data-view="admin-leaves" id="nav-admin-leaves">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <span class="nav-label">Leave Adjudication</span>
+            <span class="nav-badge alert" id="admin-pending-leaves-badge">1</span>
+          </div>
+          <div class="nav-item" data-view="admin-broadcast" id="nav-admin-broadcast">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+            <span class="nav-label">Campus Broadcast</span>
+          </div>
+          <div class="nav-section-title" style="margin-top: 6px;">Curriculum & System</div>
+          <div class="nav-item" data-view="subjects" id="nav-admin-subjects">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg></div>
+            <span class="nav-label">Course Catalog</span>
+          </div>
+          <div class="nav-item" data-view="settings" id="nav-admin-settings">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <span class="nav-label">System Audit</span>
+          </div>
+          <div class="nav-item" data-view="logout" id="nav-admin-logout" style="margin-top: 8px; color: #EF4444;">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></div>
+            <span class="nav-label">Sign Out</span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Sidebar User Profile Snippet (Click to Switch Account) -->
+      <div class="sidebar-footer" id="sidebar-footer-profile" onclick="App.openLoginModal()" title="Click to Switch Portal / Sign Out" style="cursor: pointer;">
+        <div class="sidebar-avatar-wrap avatar-badge admin" id="sidebar-avatar-badge">BS</div>
+        <div class="sidebar-student-meta">
+          <h4 id="sidebar-user-name">Bhaskara Sharma</h4>
+          <p id="sidebar-user-role">Administrator</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================================================
+         MAIN CONTENT WRAPPER
+         ========================================================================== -->
+    <div class="main-wrapper">
+
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" title="Toggle Navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="breadcrumbs">
+            <span id="breadcrumb-portal">iCloudEMS v2</span>
+            <span>/</span>
+            <span id="breadcrumb-current" class="active-crumb">Campus Overview</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Theme Toggle (Obsidian Dark / Quartz Light) -->
+          <button id="theme-toggle-btn" class="header-icon-btn" title="Toggle Liquid Crystal Theme" onclick="App.toggleTheme()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+
+          <!-- Switch Role Button -->
+          <button class="role-switch-btn" id="switch-portal-btn" onclick="App.openLoginModal()" title="Switch between Administrator and Student Portal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span id="header-switch-label">Switch Role</span>
+          </button>
+
+          <!-- Global Search trigger -->
+          <button class="global-search-btn" onclick="App.openModal('search-modal')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span>Search anything...</span>
+            <span class="search-kbd">Ctrl K</span>
+          </button>
+
+          <!-- Notifications Bell -->
+          <button class="header-icon-btn" onclick="App.navigateTo('notifications')" title="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span id="header-notif-badge" class="header-badge">3</span>
+          </button>
+
+          <!-- Help Icon -->
+          <button class="header-icon-btn" onclick="App.openModal('help-modal')" title="Help & University Regulations">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </button>
+
+          <!-- User Profile Chip -->
+          <div class="student-profile-chip" id="header-profile-chip" onclick="App.openLoginModal()" title="Click to switch account / sign in">
+            <div class="chip-avatar-wrap avatar-badge admin" id="header-chip-badge">BS</div>
+            <div class="chip-meta">
+              <div class="chip-name" id="header-chip-name">Bhaskara Sharma</div>
+              <div class="chip-roll" id="header-chip-role">Administrator</div>
+            </div>
+            <div class="chip-chevron">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT BODY -->
+      <main class="content-body">
+
+        <!-- ======================================================================
+             VIEW 0: ATTENDIFY 3D MASTER LANDING PAGE
+             ====================================================================== -->
+        <section id="view-landing" class="page-view">
+          <!-- Hero Section with 3D Educational Visuals -->
+          <div class="landing-hero-container">
+            <div class="landing-hero-grid">
+              <div class="landing-hero-content">
+                <div class="landing-pill">
+                  <span class="pulsing-dot"></span>
+                  <span>Attendify 3D • Smart Campus Ecosystem</span>
+                </div>
+                <h1 class="landing-headline">
+                  Smarter Attendance.<br>
+                  <span class="gradient-text-hero">Better Learning.</span>
+                </h1>
+                <p class="landing-subtitle">
+                  High-precision attendance tracking, timetable conflict orchestration, and real-time student analytics. Built with dedicated, isolated consoles for Administrators, Teachers, and Students.
+                </p>
+                <div class="landing-cta-group">
+                  <button type="button" id="hero-btn-get-started" class="btn btn-primary btn-hero-primary" onclick="App.openLoginModal('admin')">
+                    <span>Get Started</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </button>
+                  <button type="button" id="hero-btn-sign-in" class="btn btn-secondary btn-hero-secondary" onclick="App.openLoginModal('admin')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                    <span>Sign In to Portal</span>
+                  </button>
+                </div>
+
+                <!-- Fast Credentials Helper -->
+                <div class="landing-credential-chips">
+                  <span style="font-size: 0.76rem; color: var(--crystal-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Fast Access:</span>
+                  <button type="button" class="cred-chip" onclick="App.switchAuthTab('admin'); App.fillAdminCredentials(); App.openLoginModal();">
+                    👑 Admin Console
+                  </button>
+                  <button type="button" class="cred-chip" onclick="App.switchAuthTab('teacher'); App.fillTeacherCredentials(); App.openLoginModal();">
+                    👨‍🏫 Faculty Console
+                  </button>
+                  <button type="button" class="cred-chip" onclick="App.switchAuthTab('student'); App.fillStudentCredentials(); App.openLoginModal();">
+                    🎓 Student Dossier
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3D Centerpiece Canvas Container -->
+              <div class="landing-hero-visual">
+                <div class="hero-3d-frame lc-tilt-card">
+                  <div class="hero-3d-glow"></div>
+                  <div id="threejs-hero-canvas-wrap" class="hero-canvas-wrap"></div>
+                  <div class="hero-canvas-caption">
+                    <div class="caption-indicator"></div>
+                    <span>Interactive 3D Academic Hologram • Mouse-Reactive Physics</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Animated Statistics Strip -->
+          <div class="landing-stats-strip">
+            <div class="landing-stat-card">
+              <div class="stat-number">99.8%</div>
+              <div class="stat-label">Biometric &amp; Roll Precision</div>
+            </div>
+            <div class="landing-stat-card">
+              <div class="stat-number">12,000+</div>
+              <div class="stat-label">Active Campus Students</div>
+            </div>
+            <div class="landing-stat-card">
+              <div class="stat-number">450+</div>
+              <div class="stat-label">Accredited University Faculty</div>
+            </div>
+            <div class="landing-stat-card">
+              <div class="stat-number">0s</div>
+              <div class="stat-label">Paper Inefficiencies</div>
+            </div>
+          </div>
+
+          <!-- Feature Cards Grid (4 Core Pillars) -->
+          <div class="landing-section-header">
+            <h2>Engineered for Autonomous Academic Operations</h2>
+            <p>From university-wide provost oversight to single-period teacher roll calls and student grade security.</p>
+          </div>
+
+          <div class="landing-features-grid">
+            <div class="feature-card lc-tilt-card">
+              <div class="feature-icon" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <h3>Real-Time Roll Dispatcher</h3>
+              <p>One-touch bulk roll marking with Late, Present, and Absent toggles. Integrated draft saves and tamper-evident audit trails.</p>
+            </div>
+
+            <div class="feature-card lc-tilt-card">
+              <div class="feature-icon" style="background: rgba(129, 140, 248, 0.15); color: #818CF8;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h3>Timetable Conflict Engine</h3>
+              <p>Eliminate overlapping period assignments, double-booked professors, and classroom clashes across 6 weekly working schedules.</p>
+            </div>
+
+            <div class="feature-card lc-tilt-card">
+              <div class="feature-icon" style="background: rgba(239, 68, 68, 0.15); color: #EF4444;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <h3>Automated Shortage Defaulters</h3>
+              <p>Autonomous 75% cutoff warnings, instant examination eligibility blocks, and interactive class recovery simulators for students.</p>
+            </div>
+
+            <div class="feature-card lc-tilt-card">
+              <div class="feature-icon" style="background: rgba(16, 185, 129, 0.15); color: #10B981;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              </div>
+              <h3>Three-Tier Role Isolation</h3>
+              <p>Cryptographically verified separate portals for Provost Administrators, Teaching Faculty, and Enrolled Students with Zero Role Leakage.</p>
+            </div>
+          </div>
+
+          <!-- Role Portals Callout Cards -->
+          <div class="landing-portals-grid" style="margin-top: 40px;">
+            <div class="portal-cta-card lc-tilt-card" onclick="App.switchAuthTab('admin'); App.fillAdminCredentials(); App.openLoginModal();">
+              <div class="portal-badge admin">Administration</div>
+              <h4>Provost Admin Console</h4>
+              <p>Manage student cohorts, faculty credentials, master course timetables, system audits, and CSV records.</p>
+              <div class="portal-link">Enter Admin Console →</div>
+            </div>
+
+            <div class="portal-cta-card lc-tilt-card" onclick="App.switchAuthTab('teacher'); App.fillTeacherCredentials(); App.openLoginModal();">
+              <div class="portal-badge teacher">Teaching Faculty</div>
+              <h4>Teacher Attendance Studio</h4>
+              <p>Conduct period roll calls, take bulk attendance, inspect assigned classes, and track student attendance history.</p>
+              <div class="portal-link">Enter Faculty Portal →</div>
+            </div>
+
+            <div class="portal-cta-card lc-tilt-card" onclick="App.switchAuthTab('student'); App.fillStudentCredentials(); App.openLoginModal();">
+              <div class="portal-badge student">Enrolled Students</div>
+              <h4>Student Academic Dossier</h4>
+              <p>Monitor personal attendance %, view weekly schedules, test attendance recovery, and download official hall tickets.</p>
+              <div class="portal-link">Enter Student Dossier →</div>
+            </div>
+          </div>
+
+          <!-- Landing Page Footer -->
+          <footer class="landing-footer">
+            <div class="footer-inner">
+              <div class="footer-brand">
+                <div class="landing-logo-icon" style="display: inline-flex;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                </div>
+                <span>Attendify 3D</span>
+                <span style="color: var(--crystal-dim); font-size: 0.82rem; margin-left: 8px;">— Smart Campus Management System</span>
+              </div>
+              <div class="footer-copy">
+                &copy; 2026 Attendify 3D Autonomous Campus Suite. All institutional rights reserved.
+              </div>
+            </div>
+          </footer>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 1: HOME / DASHBOARD (Student Default)
+             ====================================================================== -->
+        <section id="view-home" class="page-view">
+          <!-- Welcome Hero Banner -->
+          <div class="welcome-hero">
+            <div class="welcome-text">
+              <h2 id="hero-greeting-bind">Good Morning, Aarav!</h2>
+              <p>Welcome back to your academic portal. Here is your current semester progress and attendance summary.</p>
+              <div class="welcome-badges">
+                <span class="hero-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span id="hero-date-bind">Friday, September 18, 2026</span>
+                </span>
+                <span class="hero-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  <span class="student-sem-bind">3rd Year, Semester VI (Section B)</span>
+                </span>
+                <span class="hero-pill">
+                  Academic Year: <strong class="student-ay-bind" style="margin-left: 4px;">2025 - 2026</strong>
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: #FFFFFF; color: #0284C7; font-weight: 700;">
+                🎫 Examination Hall Ticket
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="background: rgba(255,255,255,0.15); color: #FFFFFF;">
+                📊 Biometric Logs →
+              </button>
+            </div>
+          </div>
+
+          <!-- Low Attendance Alert Callout (if any subject < 75%) -->
+          <div id="home-shortage-alert" class="shortage-alert-box">
+            <div class="shortage-content">
+              <div class="shortage-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div class="shortage-text">
+                <h4>Attendance Shortage Warning: Machine Learning & AI (CS602)</h4>
+                <p>Your current attendance is <strong>71.4%</strong>, which is below the mandatory university cutoff of <strong>75.0%</strong>. You must attend the next <strong>6 consecutive classes</strong> to restore your eligibility for final examinations.</p>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="App.navigateTo('attendance')">Launch Attendance Simulator</button>
+          </div>
+
+          <!-- KPI Summary Cards Grid -->
+          <div class="kpi-grid">
+            <!-- 1. Overall Attendance % -->
+            <div class="kpi-card" onclick="App.navigateTo('attendance')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Overall Attendance</span>
+                <div class="kpi-icon blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+              </div>
+              <div>
+                <div id="kpi-overall-attendance" class="kpi-value">82.8%</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+                  <span style="font-size: 0.75rem; color: #64748B;">Min Req: 75%</span>
+                  <span class="kpi-badge safe">Safe Zone</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Classes Attended -->
+            <div class="kpi-card">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Classes Attended</span>
+                <div class="kpi-icon green">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+                </div>
+              </div>
+              <div>
+                <div id="kpi-classes-attended" class="kpi-value">198</div>
+                <div style="font-size: 0.75rem; color: #10B981; font-weight: 600; margin-top: 6px;">Total Presences Recorded</div>
+              </div>
+            </div>
+
+            <!-- 3. Classes Missed -->
+            <div class="kpi-card">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Classes Missed</span>
+                <div class="kpi-icon red">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                </div>
+              </div>
+              <div>
+                <div id="kpi-classes-missed" class="kpi-value">35</div>
+                <div style="font-size: 0.75rem; color: #EF4444; font-weight: 600; margin-top: 6px;">Absences this semester</div>
+              </div>
+            </div>
+
+            <!-- 4. Total Subjects -->
+            <div class="kpi-card" onclick="App.navigateTo('subjects')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Enrolled Subjects</span>
+                <div class="kpi-icon purple">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                </div>
+              </div>
+              <div>
+                <div id="kpi-total-subjects" class="kpi-value">6</div>
+                <div style="font-size: 0.75rem; color: #7C3AED; font-weight: 600; margin-top: 6px;">20 Semester Credits</div>
+              </div>
+            </div>
+
+            <!-- 5. Current CGPA -->
+            <div class="kpi-card" onclick="App.navigateTo('results')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Cumulative CGPA</span>
+                <div class="kpi-icon cyan">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                </div>
+              </div>
+              <div>
+                <div id="kpi-current-cgpa" class="kpi-value">8.92</div>
+                <div style="font-size: 0.75rem; color: #0284C7; font-weight: 600; margin-top: 6px;">Rank: Top 5% in Dept</div>
+              </div>
+            </div>
+
+            <!-- 6. Pending Assignments -->
+            <div class="kpi-card" onclick="App.navigateTo('assignments')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Pending Tasks</span>
+                <div class="kpi-icon amber">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                </div>
+              </div>
+              <div>
+                <div id="kpi-pending-assignments" class="kpi-value">3</div>
+                <div style="font-size: 0.75rem; color: #D97706; font-weight: 600; margin-top: 6px;">Next due in 4 days</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row: Attendance Overview + Today's Schedule -->
+          <div class="dash-grid-2">
+            <!-- Attendance Overview Card -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Attendance Health & Trends</h3>
+                  <p>Distribution across all 6 enrolled semester subjects</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" onclick="App.navigateTo('attendance')">View Calendar</button>
+              </div>
+              <div class="card-body">
+                <div class="gauge-card-content">
+                  <div id="overall-attendance-gauge" class="gauge-svg-wrap"></div>
+                  <div class="gauge-stats-list">
+                    <div class="gauge-stat-row">
+                      <div class="gauge-stat-label">
+                        <span class="stat-dot green"></span>
+                        <span>Attended Classes</span>
+                      </div>
+                      <span id="home-stat-present" class="gauge-stat-val">198 Classes</span>
+                    </div>
+                    <div class="gauge-stat-row">
+                      <div class="gauge-stat-label">
+                        <span class="stat-dot red"></span>
+                        <span>Missed (Absent)</span>
+                      </div>
+                      <span id="home-stat-absent" class="gauge-stat-val">35 Classes</span>
+                    </div>
+                    <div class="gauge-stat-row">
+                      <div class="gauge-stat-label">
+                        <span class="stat-dot amber"></span>
+                        <span>Approved Leave / Duty</span>
+                      </div>
+                      <span id="home-stat-leave" class="gauge-stat-val">6 Sessions</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Monthly Attendance Trend Chart -->
+                <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #F1F5F9;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #0F172A;">Monthly Attendance Trajectory (%)</span>
+                    <span style="font-size: 0.75rem; color: #64748B;">Jun - Oct 2026</span>
+                  </div>
+                  <div id="monthly-trend-chart"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Today's Class Schedule -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Today's Schedule</h3>
+                  <p>Friday • 4 Scheduled Classes</p>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('timetable')">Full Timetable</button>
+              </div>
+              <div class="card-body">
+                <div id="today-schedule-list" class="schedule-list">
+                  <!-- Injected dynamically by app.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Feeds: Notifications Snippet + Upcoming Exams & Holidays -->
+          <div class="dash-grid-3">
+            <!-- Recent Notifications Preview -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Recent Bulletins</h3>
+                  <p>Campus announcements & notices</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" onclick="App.navigateTo('notifications')">View All</button>
+              </div>
+              <div class="card-body">
+                <div id="home-notifications-preview"></div>
+              </div>
+            </div>
+
+            <!-- Upcoming Examinations -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Upcoming Exams</h3>
+                  <p>Semester VI Mid-Term Schedule</p>
+                </div>
+              </div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="padding: 12px; border-radius: 10px; background: #FEF2F2; border: 1px solid #FECACA; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.88rem; color: #991B1B;">Distributed Systems</div>
+                    <div style="font-size: 0.75rem; color: #B91C1C;">CS601 • Mid-Term 1</div>
+                  </div>
+                  <span class="hero-pill" style="background: #FFFFFF; color: #DC2626; font-size: 0.72rem;">Oct 15</span>
+                </div>
+                <div style="padding: 12px; border-radius: 10px; background: #EEF2FF; border: 1px solid #C7D2FE; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.88rem; color: #3730A3;">Machine Learning & AI</div>
+                    <div style="font-size: 0.75rem; color: #4338CA;">CS602 • Mid-Term 1</div>
+                  </div>
+                  <span class="hero-pill" style="background: #FFFFFF; color: #4F46E5; font-size: 0.72rem;">Oct 18</span>
+                </div>
+                <div style="padding: 12px; border-radius: 10px; background: #F8FAFC; border: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 700; font-size: 0.88rem; color: #0F172A;">Web Technologies & Cloud</div>
+                    <div style="font-size: 0.75rem; color: #64748B;">CS603 • Mid-Term 1</div>
+                  </div>
+                  <span class="hero-pill" style="background: #FFFFFF; color: #475569; font-size: 0.72rem;">Oct 22</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Holidays Widget -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Upcoming Breaks</h3>
+                  <p>Next University Holidays</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" onclick="App.navigateTo('holidays')">All Holidays</button>
+              </div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="padding: 12px; border-radius: 10px; background: #ECFDF5; border: 1px solid #A7F3D0;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="font-size: 0.9rem; color: #065F46;">Gandhi Jayanti</strong>
+                    <span class="hero-pill" style="background: #FFFFFF; color: #059669; font-size: 0.72rem;">In 14 days</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: #047857; margin-top: 4px;">October 02, 2026 • National Holiday</div>
+                </div>
+                <div style="padding: 12px; border-radius: 10px; background: #F8FAFC; border: 1px solid #E2E8F0;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="font-size: 0.9rem; color: #0F172A;">Dussehra Autumn Break</strong>
+                    <span class="hero-pill" style="background: #FFFFFF; color: #475569; font-size: 0.72rem;">In 32 days</span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: #64748B; margin-top: 4px;">Oct 20 - Oct 24, 2026 • 5 Days Vacation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 2: DETAILED ATTENDANCE MANAGEMENT
+             ====================================================================== -->
+        <section id="view-attendance" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Detailed Attendance Management</h2>
+              <p>Subject-wise breakdown, attendance simulator, and monthly attendance calendar</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-primary" onclick="App.openModal('leave-modal')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Apply for Leave
+              </button>
+            </div>
+          </div>
+
+          <!-- Attendance Simulator Card -->
+          <div class="card" style="margin-bottom: 24px; border-left: 5px solid var(--primary);">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3>Attendance Target Simulator</h3>
+                <p>Simulate how attending or missing future classes impacts your final eligibility</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 20px; align-items: center;" class="form-row-2">
+                <div>
+                  <label class="form-label">Select Subject</label>
+                  <select id="sim-subject-select" class="form-control">
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <label class="form-label" style="margin: 0;">Upcoming Classes to Attend</label>
+                    <span id="sim-attend-val" style="font-size: 0.82rem; font-weight: 700; color: #4F46E5;">Attend 6 classes</span>
+                  </div>
+                  <input type="range" id="sim-attend-slider" min="0" max="25" value="6" step="1" style="width: 100%; accent-color: #4F46E5;">
+                </div>
+                <div id="sim-result-box" style="padding: 14px 18px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0;">
+                  <!-- Injected dynamically -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject-wise Attendance Table -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3>Subject-Wise Attendance</h3>
+                <p>Threshold: 75% minimum required by University Academic Regulations</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Subject & Code</th>
+                    <th>Faculty</th>
+                    <th style="text-align: center;">Total Classes</th>
+                    <th style="text-align: center;">Present</th>
+                    <th style="text-align: center;">Absent</th>
+                    <th>Attendance Rate</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="subject-attendance-tbody">
+                  <!-- Injected dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Monthly Attendance Calendar Card -->
+          <div class="calendar-wrapper">
+            <div class="calendar-header">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <h3 id="calendar-month-title">September 2026</h3>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-secondary btn-sm" onclick="AttendanceModule.prevMonth()">‹ Prev</button>
+                  <button class="btn btn-secondary btn-sm" onclick="AttendanceModule.nextMonth()">Next ›</button>
+                </div>
+              </div>
+              <div class="calendar-legend">
+                <div class="legend-item">
+                  <span class="legend-color present"></span> Present
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color absent"></span> Absent
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color leave"></span> Leave / OD
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color no-class"></span> No Class / Weekend
+                </div>
+              </div>
+            </div>
+
+            <!-- Calendar 7-Day Headers -->
+            <div class="calendar-grid-header">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
+            </div>
+
+            <!-- Calendar Days Grid -->
+            <div id="calendar-days-grid" class="calendar-days-grid">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Filters and Attendance Log Table -->
+          <div class="filters-bar">
+            <div class="filter-group">
+              <span class="filter-label">Filter Subject:</span>
+              <select id="filter-subject-select" class="filter-select">
+                <option value="ALL">All Subjects</option>
+                <option value="CS601">CS601 - Distributed Systems</option>
+                <option value="CS602">CS602 - Machine Learning</option>
+                <option value="CS603">CS603 - Web Technologies</option>
+                <option value="CS604">CS604 - Cloud Computing</option>
+                <option value="CS605">CS605 - Networks Lab</option>
+                <option value="CS606">CS606 - Software Eng.</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label">Status:</span>
+              <select id="filter-status-select" class="filter-select">
+                <option value="ALL">All Statuses</option>
+                <option value="Present">Present Only</option>
+                <option value="Absent">Absent Only</option>
+                <option value="Leave">Leave Only</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Attendance Details Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3>Attendance Details Log</h3>
+                <p>Chronological session logs recorded by faculty bio-metric & digital registers</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Time Slot</th>
+                    <th>Faculty</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="attendance-logs-tbody">
+                  <!-- Injected dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 3: RESULTS
+             ====================================================================== -->
+        <section id="view-results" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Academic Results & Marksheet</h2>
+              <p>Semester grade evaluations, SGPA progression, and official transcripts</p>
+            </div>
+            <div class="page-actions" style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary" onclick="App.openModal('hallticket-modal')">
+                🎫 Examination Hall Ticket
+              </button>
+              <button class="btn btn-primary" onclick="App.openModal('marksheet-modal')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                View Official Marksheet
+              </button>
+            </div>
+          </div>
+
+          <!-- Results KPI Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Current SGPA (Sem VI)</span>
+                <div class="kpi-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+              </div>
+              <div id="results-sgpa-val" class="kpi-value">9.25</div>
+              <div style="font-size: 0.75rem; color: #10B981; font-weight: 700; margin-top: 4px;">Outstanding (Grade 'O')</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Cumulative CGPA</span>
+                <div class="kpi-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+              </div>
+              <div id="results-cgpa-val" class="kpi-value">8.92</div>
+              <div style="font-size: 0.75rem; color: #059669; font-weight: 700; margin-top: 4px;">First Class with Distinction</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Credits Earned</span>
+                <div class="kpi-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg></div>
+              </div>
+              <div id="results-credits-val" class="kpi-value">132 / 160</div>
+              <div style="font-size: 0.75rem; color: #64748B; margin-top: 4px;">82.5% Degree Completed</div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Academic Standing</span>
+                <div class="kpi-icon amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              </div>
+              <div class="kpi-value" style="font-size: 1.4rem;">Distinction</div>
+              <div style="font-size: 0.75rem; color: #10B981; font-weight: 700; margin-top: 4px;">Zero Backlogs</div>
+            </div>
+          </div>
+
+          <!-- SGPA & CGPA Progression Chart -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3>SGPA & CGPA Progression Across Semesters</h3>
+                <p>Historical academic trajectory from Semester 1 through Semester 6</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="results-trend-chart"></div>
+            </div>
+          </div>
+
+          <!-- Current Semester Detailed Course Grade Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3>Semester VI - Subject-Wise Grade Card</h3>
+                <p>Academic Year 2025 - 2026 • Odd Semester Regular Examinations</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Subject Name</th>
+                    <th>Code</th>
+                    <th style="text-align: center;">Credits</th>
+                    <th style="text-align: center;">Grade</th>
+                    <th style="text-align: center;">Grade Point</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="results-sem-tbody">
+                  <!-- Injected dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 4: TIME TABLE
+             ====================================================================== -->
+        <section id="view-timetable" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Weekly Class Time Table</h2>
+              <p>Section B • B.Tech Computer Science & Engineering (Semester VI)</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-secondary btn-sm" onclick="App.showToast('Current day schedule highlighted', 'info')">Today</button>
+              <button class="btn btn-secondary btn-sm" onclick="App.showToast('Showing standard weekly rotation', 'info')">This Week</button>
+            </div>
+          </div>
+
+          <!-- 6-Day Columns Timetable Grid -->
+          <div id="timetable-weekly-grid" class="timetable-grid">
+            <!-- Injected dynamically for Monday to Saturday -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 5: NOTIFICATIONS
+             ====================================================================== -->
+        <section id="view-notifications" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Notification Center</h2>
+              <p>Campus announcements, attendance alerts, exam notices, and assignments</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-secondary btn-sm" onclick="App.markAllNotificationsRead()">Mark all as read</button>
+            </div>
+          </div>
+
+          <div id="notifications-full-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 6: LEAVE / PERMISSION
+             ====================================================================== -->
+        <section id="view-leave" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Leave & Permission Management</h2>
+              <p>Apply for medical, casual, or duty leaves and track approval statuses</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-primary" onclick="App.openModal('leave-modal')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Apply for Leave
+              </button>
+            </div>
+          </div>
+
+          <!-- Leave Balances -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-label">Available Leave</span>
+              <div id="leave-avail-val" class="kpi-value" style="color: #4F46E5;">8 Days</div>
+              <div style="font-size: 0.75rem; color: #64748B; margin-top: 4px;">Remaining quota</div>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Leave Used</span>
+              <div id="leave-used-val" class="kpi-value" style="color: #64748B;">4 Days</div>
+              <div style="font-size: 0.75rem; color: #64748B; margin-top: 4px;">This semester</div>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Pending Requests</span>
+              <div id="leave-pending-val" class="kpi-value" style="color: #F59E0B;">1</div>
+              <div style="font-size: 0.75rem; color: #D97706; margin-top: 4px;">Under advisor review</div>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-label">Approved Requests</span>
+              <div id="leave-apprv-val" class="kpi-value" style="color: #10B981;">2</div>
+              <div style="font-size: 0.75rem; color: #059669; margin-top: 4px;">Attendance adjusted</div>
+            </div>
+          </div>
+
+          <!-- Leave Request History Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3>Leave Request History</h3>
+                <p>Past leave applications and administration remarks</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date Applied</th>
+                    <th>Leave Type</th>
+                    <th>Duration</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Reviewed By / Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="leave-history-tbody">
+                  <!-- Injected dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 7: HOLIDAYS
+             ====================================================================== -->
+        <section id="view-holidays" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Academic Calendar & Holidays</h2>
+              <p>Official university schedule of public holidays, festivals, and semester breaks</p>
+            </div>
+          </div>
+
+          <div id="holidays-cards-list" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 8: SUBJECTS
+             ====================================================================== -->
+        <section id="view-subjects" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Enrolled Semester Subjects</h2>
+              <p>Semester VI curriculum, assigned faculty, credits, and syllabus progress</p>
+            </div>
+          </div>
+
+          <div id="subjects-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 9: ASSIGNMENTS
+             ====================================================================== -->
+        <section id="view-assignments" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Assignments & Submissions</h2>
+              <p>Coursework deliverables, problem sets, and grading statuses</p>
+            </div>
+          </div>
+
+          <div id="assignments-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 10: PROFILE
+             ====================================================================== -->
+        <section id="view-profile" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Student Dossier & Profile</h2>
+              <p>Official university registration credentials and contact records</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn btn-primary" onclick="App.openEditProfileModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Edit Profile
+              </button>
+            </div>
+          </div>
+
+          <!-- Profile Details Grid -->
+          <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px;" class="dash-grid-2">
+            <!-- iCloudEMS v2 Digital Campus RFID Smart ID Card -->
+            <div class="ems-smart-card lc-tilt-card">
+              <div class="smart-card-header">
+                <div class="smart-card-brand">
+                  <div class="smart-card-chip-icon" title="RFID / NFC Biometric Encrypted"></div>
+                  <div>
+                    <div style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; color: var(--crystal-dim); text-transform: uppercase;">CampusCount University</div>
+                    <div style="font-size: 0.74rem; font-weight: 700; color: #38BDF8;">iCloudEMS v2 Smart ID</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="badge badge-green" style="font-size: 0.68rem;">✓ Verified</span>
+                </div>
+              </div>
+
+              <div class="smart-card-body">
+                <div class="smart-card-avatar avatar-badge student" id="smart-card-avatar-badge">AS</div>
+                <div class="smart-card-info">
+                  <h3 class="student-name-bind">Aarav Sharma</h3>
+                  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 800; color: #38BDF8;" class="student-roll-bind">22CS1084</div>
+                  <div style="font-size: 0.76rem; color: var(--crystal-subtle); margin-top: 2px;" class="student-course-bind">B.Tech - Computer Science</div>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.76rem; background: rgba(255,255,255,0.04); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 12px;">
+                <div><span style="color: var(--crystal-dim);">Semester:</span> <strong class="student-sem-bind">Semester VI</strong></div>
+                <div><span style="color: var(--crystal-dim);">Section:</span> <strong>Section B</strong></div>
+                <div><span style="color: var(--crystal-dim);">Blood Group:</span> <strong>O+ Positive</strong></div>
+                <div><span style="color: var(--crystal-dim);">Validity:</span> <strong>2023 - 2027</strong></div>
+              </div>
+
+              <!-- Barcode & QR Access -->
+              <div class="smart-card-barcode-strip">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 0.62rem; color: #64748B; font-weight: 700; text-transform: uppercase;">RFID UID • 8842-2026-CS</span>
+                  <svg class="barcode-svg" viewBox="0 0 140 24" fill="#0F172A">
+                    <rect x="0" y="0" width="3" height="24"/><rect x="5" y="0" width="2" height="24"/><rect x="9" y="0" width="4" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="19" y="0" width="3" height="24"/><rect x="24" y="0" width="1" height="24"/><rect x="27" y="0" width="5" height="24"/><rect x="34" y="0" width="2" height="24"/><rect x="38" y="0" width="3" height="24"/><rect x="43" y="0" width="2" height="24"/><rect x="47" y="0" width="4" height="24"/><rect x="53" y="0" width="1" height="24"/><rect x="56" y="0" width="3" height="24"/><rect x="61" y="0" width="4" height="24"/><rect x="67" y="0" width="2" height="24"/><rect x="71" y="0" width="3" height="24"/><rect x="76" y="0" width="1" height="24"/><rect x="79" y="0" width="5" height="24"/><rect x="86" y="0" width="2" height="24"/><rect x="90" y="0" width="3" height="24"/><rect x="95" y="0" width="2" height="24"/><rect x="99" y="0" width="4" height="24"/><rect x="105" y="0" width="2" height="24"/><rect x="109" y="0" width="3" height="24"/><rect x="114" y="0" width="1" height="24"/><rect x="117" y="0" width="5" height="24"/><rect x="124" y="0" width="3" height="24"/><rect x="129" y="0" width="2" height="24"/><rect x="133" y="0" width="4" height="24"/><rect x="139" y="0" width="1" height="24"/>
+                  </svg>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: #0F172A; color: #FFFFFF; font-size: 0.72rem; padding: 5px 10px;">
+                  🎫 Admit Card
+                </button>
+              </div>
+            </div>
+
+            <!-- Complete Contact & Dossier Details -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Personal & Academic Credentials</h3>
+                  <p>Verified information on record with the University Registrar</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" class="form-row-2">
+                  <div>
+                    <label class="form-label" style="color: #64748B;">Official Student Email</label>
+                    <div id="profile-email-bind" style="font-weight: 600; color: #0F172A;">aarav.sharma@campus.edu.in</div>
+                  </div>
+                  <div>
+                    <label class="form-label" style="color: #64748B;">Contact Phone</label>
+                    <div id="profile-phone-bind" style="font-weight: 600; color: #0F172A;">+91 98765 43210</div>
+                  </div>
+                  <div>
+                    <label class="form-label" style="color: #64748B;">Date of Birth</label>
+                    <div id="profile-dob-bind" style="font-weight: 600; color: #0F172A;">August 14, 2004</div>
+                  </div>
+                  <div>
+                    <label class="form-label" style="color: #64748B;">Blood Group</label>
+                    <div id="profile-blood-bind" style="font-weight: 600; color: #0F172A;">O+ Positive</div>
+                  </div>
+                  <div style="grid-column: span 2;">
+                    <label class="form-label" style="color: #64748B;">Parent / Guardian Emergency Contact</label>
+                    <div id="profile-guardian-bind" style="font-weight: 600; color: #0F172A;">Rajendra Sharma (+91 98765 40001)</div>
+                  </div>
+                  <div style="grid-column: span 2;">
+                    <label class="form-label" style="color: #64748B;">Residential Permanent Address</label>
+                    <div id="profile-address-bind" style="font-weight: 600; color: #0F172A;">Flat 402, Royal Palms Enclave, Tech Park Road, Bangalore, Karnataka - 560103</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 11: SETTINGS
+             ====================================================================== -->
+        <section id="view-settings" class="page-view">
+          <div class="page-heading-row">
+            <div class="page-title-wrap">
+              <h2>Settings & Preferences</h2>
+              <p>Configure attendance alerts, notification channels, and account security</p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px; max-width: 720px;">
+            <!-- Attendance Alert Setting -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Attendance Alert Threshold</h3>
+                  <p>Trigger warnings when your attendance in any subject drops below this level</p>
+                </div>
+              </div>
+              <div class="card-body">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                  <span style="font-weight: 600; color: #0F172A;">Warning Threshold Percentage:</span>
+                  <span id="settings-threshold-val" style="font-weight: 800; color: #4F46E5; font-size: 1.1rem;">75% (Mandatory University Standard)</span>
+                </div>
+                <input type="range" min="70" max="85" value="75" step="1" style="width: 100%; accent-color: #4F46E5;" oninput="document.getElementById('settings-threshold-val').textContent = this.value + '%'">
+              </div>
+            </div>
+
+            <!-- Notifications Channels -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h3>Notification Channels</h3>
+                  <p>Manage where critical alerts are delivered</p>
+                </div>
+              </div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: 14px;">
+                <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                  <div>
+                    <div style="font-weight: 600; color: #0F172A;">Low Attendance Instant SMS Alerts</div>
+                    <div style="font-size: 0.78rem; color: #64748B;">Send SMS to registered mobile when attendance drops below 75%</div>
+                  </div>
+                  <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #4F46E5;">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                  <div>
+                    <div style="font-weight: 600; color: #0F172A;">Weekly Attendance Digest Email</div>
+                    <div style="font-size: 0.78rem; color: #64748B;">Receive a weekly report card every Friday evening</div>
+                  </div>
+                  <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #4F46E5;">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                  <div>
+                    <div style="font-weight: 600; color: #0F172A;">Assignment Deadline Reminders</div>
+                    <div style="font-size: 0.78rem; color: #64748B;">Notify 24 hours prior to deadline</div>
+                  </div>
+                  <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #4F46E5;">
+                </label>
+              </div>
+            </div>
+
+            <!-- Save Settings -->
+            <div>
+              <button class="btn btn-primary" onclick="App.showToast('Preferences saved successfully!', 'success')">Save Preferences</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 13: ADMIN DASHBOARD / PROVOST OVERVIEW
+             ====================================================================== -->
+        <section id="view-admin-dashboard" class="page-view">
+          <div class="welcome-hero">
+            <div class="welcome-text">
+              <h2>Provost & Chief Academic Console</h2>
+              <p>Welcome, Provost <strong>Bhaskara Sharma</strong>. Academic Council session is live. Review campus KPIs and dispatch attendance.</p>
+              <div class="welcome-badges">
+                <span class="hero-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span>Term: 2025-2026 (Semester VI)</span>
+                </span>
+                <span class="hero-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Role: Chief Administrator (Bhaskara Sharma)</span>
+                </span>
+                <span class="hero-pill">Status: <strong style="color: #34D399; margin-left: 4px;">System Optimal</strong></span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-primary btn-sm" onclick="App.navigateTo('admin-attendance')">Dispatch Attendance →</button>
+              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('admin-broadcast')">Broadcast Notice</button>
+            </div>
+          </div>
+
+          <!-- Admin KPI Summary Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card lc-tilt-card" onclick="App.navigateTo('admin-students')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Registered Cohort</span>
+                <div class="kpi-icon blue">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+              </div>
+              <div id="admin-kpi-students" class="kpi-value">6</div>
+              <div style="font-size: 0.76rem; color: var(--crystal-dim); margin-top: 6px;">Active B.Tech CSE Cohort Students</div>
+            </div>
+
+            <div class="kpi-card lc-tilt-card" onclick="App.navigateTo('admin-attendance')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Campus Attendance Rate</span>
+                <div class="kpi-icon green">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+              </div>
+              <div id="admin-kpi-rate" class="kpi-value">84.5%</div>
+              <div style="font-size: 0.76rem; color: #10B981; font-weight: 600; margin-top: 6px;">Above 75% University Threshold</div>
+            </div>
+
+            <div class="kpi-card lc-tilt-card" onclick="App.navigateTo('admin-leaves')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Pending Leave Requests</span>
+                <div class="kpi-icon purple">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m14 14-4 4"/><path d="m10 14 4 4"/></svg>
+                </div>
+              </div>
+              <div id="admin-kpi-leaves" class="kpi-value">1</div>
+              <div style="font-size: 0.76rem; color: #F59E0B; font-weight: 600; margin-top: 6px;">Awaiting Provost Review</div>
+            </div>
+
+            <div class="kpi-card lc-tilt-card" onclick="App.navigateTo('admin-students')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-label">Critical Shortage Alert</span>
+                <div class="kpi-icon red">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+              </div>
+              <div id="admin-kpi-shortages" class="kpi-value">2</div>
+              <div style="font-size: 0.76rem; color: #EF4444; font-weight: 600; margin-top: 6px;">Below 75% Attendance (<a href="#admin-students" onclick="App.filterShortageOnly()">View Cohort</a>)</div>
+            </div>
+          </div>
+
+          <!-- Quick Dispatch & Live Notice Board -->
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-top: 24px;">
+            <div class="card lc-tilt-card">
+              <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>Today's Lecture Roster</h3>
+                <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('admin-attendance')">Dispatch Matrix →</button>
+              </div>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Course</th>
+                      <th>Faculty</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>09:00 - 10:00</td>
+                      <td><strong>CS601: Distributed Systems</strong></td>
+                      <td>Dr. Vikram Sen</td>
+                      <td><button class="btn btn-secondary btn-sm" onclick="App.quickMarkSubject('CS601')">Quick Mark</button></td>
+                    </tr>
+                    <tr>
+                      <td>10:15 - 11:15</td>
+                      <td><strong>CS602: Machine Learning & AI</strong></td>
+                      <td>Prof. Ananya Roy</td>
+                      <td><button class="btn btn-secondary btn-sm" onclick="App.quickMarkSubject('CS602')">Quick Mark</button></td>
+                    </tr>
+                    <tr>
+                      <td>11:30 - 12:30</td>
+                      <td><strong>CS603: Web Tech & Cloud</strong></td>
+                      <td>Prof. Rajesh Verma</td>
+                      <td><button class="btn btn-secondary btn-sm" onclick="App.quickMarkSubject('CS603')">Quick Mark</button></td>
+                    </tr>
+                    <tr>
+                      <td>01:30 - 02:30</td>
+                      <td><strong>CS604: Cloud & DevOps</strong></td>
+                      <td>Dr. Sunita Rao</td>
+                      <td><button class="btn btn-secondary btn-sm" onclick="App.quickMarkSubject('CS604')">Quick Mark</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card lc-tilt-card">
+              <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>Administrator Quick Actions</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn btn-secondary" onclick="App.navigateTo('admin-attendance')" style="justify-content: flex-start; padding: 14px;">
+                  <span style="font-size: 1.1rem; margin-right: 10px;">📋</span>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Record Subject Attendance</div>
+                    <div style="font-size: 0.74rem; color: var(--crystal-dim);">Update presence & absence for class cohorts</div>
+                  </div>
+                </button>
+                <button class="btn btn-secondary" onclick="App.navigateTo('admin-leaves')" style="justify-content: flex-start; padding: 14px;">
+                  <span style="font-size: 1.1rem; margin-right: 10px;">⚖️</span>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Adjudicate Pending Leaves</div>
+                    <div style="font-size: 0.74rem; color: var(--crystal-dim);">Approve or reject medical/OD applications</div>
+                  </div>
+                </button>
+                <button class="btn btn-secondary" onclick="App.navigateTo('admin-broadcast')" style="justify-content: flex-start; padding: 14px;">
+                  <span style="font-size: 1.1rem; margin-right: 10px;">📢</span>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Publish Campus Announcement</div>
+                    <div style="font-size: 0.74rem; color: var(--crystal-dim);">Send urgent notice to students & faculty</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 14: ADMIN ATTENDANCE DISPATCHER
+             ====================================================================== -->
+        <section id="view-admin-attendance" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h2>Live Attendance Dispatcher</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Record official class attendance for the CSE Cohort</p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="btn btn-secondary btn-sm" onclick="App.setAllAttendanceStatus('Present')">Mark All Present</button>
+                <button class="btn btn-secondary btn-sm" onclick="App.setAllAttendanceStatus('Absent')">Mark All Absent</button>
+              </div>
+            </div>
+
+            <!-- Subject & Date Picker -->
+            <div style="display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 220px;">
+                <label class="form-label">Target Course / Subject</label>
+                <select id="admin-att-subject-select" class="form-control" onchange="App.handleAdminSubjectChange()">
+                  <option value="CS601">CS601 - Distributed Systems (Dr. Vikram Sen)</option>
+                  <option value="CS602">CS602 - Machine Learning & AI (Prof. Ananya Roy)</option>
+                  <option value="CS603">CS603 - Web Technologies & Cloud (Prof. Rajesh Verma)</option>
+                  <option value="CS604">CS604 - Cloud Computing & DevOps (Dr. Sunita Rao)</option>
+                  <option value="CS605">CS605 - Computer Networks Lab (Prof. Deepak Kulkarni)</option>
+                  <option value="CS606">CS606 - Software Engineering & Agile (Prof. Meenakshi Iyer)</option>
+                </select>
+              </div>
+              <div style="width: 180px;">
+                <label class="form-label">Lecture Date</label>
+                <input type="date" id="admin-att-date" class="form-control" value="2026-10-13">
+              </div>
+              <div style="width: 160px;">
+                <label class="form-label">Class Slot</label>
+                <select class="form-control" id="admin-att-slot">
+                  <option>09:00 - 10:00 AM</option>
+                  <option>10:15 - 11:15 AM</option>
+                  <option>11:30 - 12:30 PM</option>
+                  <option>01:30 - 02:30 PM</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Student Cohort Attendance Matrix Table -->
+            <div class="matrix-container">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Student Details</th>
+                    <th>Roll Number</th>
+                    <th>Current Attendance</th>
+                    <th>Status</th>
+                    <th>Attendance Toggle</th>
+                    <th>Faculty Remarks</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-matrix-tbody">
+                  <!-- Dynamically rendered by App.renderAdminAttendanceMatrix -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+              <div style="font-size: 0.82rem; color: var(--crystal-dim);">
+                Signed officially by: <strong style="color: var(--text-primary);">Bhaskara Sharma (Chief Administrator)</strong>
+              </div>
+              <button class="btn btn-primary" onclick="App.commitAdminAttendance()">
+                Commit & Dispatch Attendance to Campus Database →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 15: ADMIN LEAVE ADJUDICATION STATION
+             ====================================================================== -->
+        <section id="view-admin-leaves" class="page-view">
+          <div class="card lc-tilt-card" style="margin-bottom: 24px;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2>Leave & Exemption Adjudication Station</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Review, approve or decline student absence applications</p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <span class="badge badge-amber" id="admin-leave-pending-count">1 Pending</span>
+                <span class="badge badge-green" id="admin-leave-approved-count">2 Approved</span>
+              </div>
+            </div>
+
+            <!-- Pending Applications Container -->
+            <div id="admin-leaves-list">
+              <!-- Dynamically populated by App.renderAdminLeaves -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 16: ADMIN CAMPUS BROADCAST CONSOLE
+             ====================================================================== -->
+        <section id="view-admin-broadcast" class="page-view">
+          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+            <!-- Broadcast Composer -->
+            <div class="card lc-tilt-card">
+              <div class="card-header">
+                <h2>Broadcast Academic Announcement</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Publish real-time bulletins to the student body & faculty notices</p>
+              </div>
+              <form id="admin-broadcast-form" onsubmit="App.handleAdminBroadcast(event)">
+                <div class="form-group">
+                  <label class="form-label">Notice Headline / Title</label>
+                  <input type="text" id="broadcast-title" class="form-control" placeholder="e.g. Mandatory Attendance Advisory: Semester VI Examinations" required>
+                </div>
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select id="broadcast-category" class="form-control">
+                      <option value="Attendance">Attendance Advisory</option>
+                      <option value="Exams">Examination & Schedule</option>
+                      <option value="Academic">Academic Notice</option>
+                      <option value="Holiday">Campus Holiday</option>
+                      <option value="Emergency">Urgent Notification</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Priority Level</label>
+                    <select id="broadcast-priority" class="form-control">
+                      <option value="High">High (Banner Alert)</option>
+                      <option value="Normal">Normal</option>
+                      <option value="Urgent">Critical Urgency</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Announcement Content</label>
+                  <textarea id="broadcast-content" class="form-control" rows="5" placeholder="Detailed message for students..." required></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                  <button type="submit" class="btn btn-primary">
+                    📢 Broadcast to Student Body Now
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Feed of Published Notices -->
+            <div class="card lc-tilt-card">
+              <div class="card-header">
+                <h3>Live Broadcast Feed</h3>
+                <p style="font-size: 0.8rem; color: var(--crystal-dim);">Announcements currently visible to students</p>
+              </div>
+              <div id="admin-broadcast-feed" style="display: flex; flex-direction: column; gap: 12px; max-height: 480px; overflow-y: auto;">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 17: ADMIN STUDENT COHORT REGISTRY
+             ====================================================================== -->
+        <section id="view-admin-students" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2>Cohort Student Registry</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Manage student enrollments, attendance standing, and compliance</p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="admin-student-search" placeholder="Search by name or roll..." class="form-control" style="width: 200px;" oninput="App.filterAdminStudents()">
+                <button type="button" class="btn btn-secondary btn-sm" id="admin-filter-all-btn" onclick="App.setStudentFilter('all')">All (6)</button>
+                <button type="button" class="btn btn-danger btn-sm" id="admin-filter-shortage-btn" onclick="App.setStudentFilter('shortage')">Shortage &lt;75% (2)</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="App.exportStudentsCSV()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Export CSV
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="App.openModal('add-student-modal')">
+                  + Add Student
+                </button>
+              </div>
+            </div>
+
+            <div class="matrix-container">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Roll Number</th>
+                    <th>Course / Section</th>
+                    <th>Attendance %</th>
+                    <th>Eligibility Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-students-tbody">
+                  <!-- Dynamically rendered -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 18: ADMIN MANAGE TEACHERS & FACULTY
+             ====================================================================== -->
+        <section id="view-admin-teachers" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2>Faculty &amp; Teacher Directory</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Manage teaching staff, departmental assignments, and course allocations</p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="admin-teacher-search" placeholder="Search teacher or ID..." class="form-control" style="width: 200px;" oninput="App.filterAdminTeachers()">
+                <select id="admin-teacher-dept-filter" class="form-control" style="width: 170px;" onchange="App.filterAdminTeachers()">
+                  <option value="all">All Departments</option>
+                  <option value="Computer Science & Engineering">CSE</option>
+                  <option value="Artificial Intelligence & Data Science">AI &amp; DS</option>
+                  <option value="Electronics & Communication">ECE</option>
+                </select>
+                <button type="button" class="btn btn-primary btn-sm" onclick="App.openModal('add-teacher-modal')">
+                  + Add Faculty
+                </button>
+              </div>
+            </div>
+
+            <div class="matrix-container">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Faculty Member</th>
+                    <th>Teacher ID</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Assigned Classes</th>
+                    <th>Subjects</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-teachers-tbody">
+                  <!-- Dynamically rendered by App.renderAdminTeachers() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 19: ADMIN TIMETABLE CONFLICT ORCHESTRATOR
+             ====================================================================== -->
+        <section id="view-admin-timetable" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2>Timetable Conflict Engine &amp; Master Schedule</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Manage university-wide lecture slots with automated teacher and room collision prevention</p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <span class="badge badge-success" style="padding: 6px 12px; font-size: 0.78rem;">
+                  ✓ Zero Slot Collisions Detected
+                </span>
+                <button type="button" class="btn btn-primary btn-sm" onclick="App.showToast('Schedule is fully synchronized with faculty calendar.', 'success')">
+                  Publish Timetable
+                </button>
+              </div>
+            </div>
+
+            <div class="matrix-container" style="margin-top: 14px;">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Time Period</th>
+                    <th>Subject</th>
+                    <th>Assigned Faculty</th>
+                    <th>Room / Lab</th>
+                    <th>Class / Section</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-timetable-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 20: TEACHER DASHBOARD OVERVIEW
+             ====================================================================== -->
+        <section id="view-teacher-dashboard" class="page-view">
+          <!-- Faculty Welcome Banner -->
+          <div class="welcome-hero" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.22) 0%, rgba(99, 102, 241, 0.22) 100%);">
+            <div class="welcome-text">
+              <h2 id="teacher-hero-greeting">Welcome back, Dr. Vikram Sen!</h2>
+              <p>Faculty Portal • Department of Computer Science &amp; Engineering. Conduct class roll calls, track student attendance history, and review teaching periods.</p>
+              <div class="welcome-badges">
+                <span class="hero-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span>Semester VI (Academic Session 2026)</span>
+                </span>
+                <span class="hero-pill">
+                  Faculty ID: <strong>TCH-001</strong>
+                </span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm" onclick="App.navigateTo('teacher-mark')" style="background: #38BDF8; color: #020617; font-weight: 700;">
+                📝 Mark Class Attendance Now
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('teacher-students')" style="background: rgba(255,255,255,0.15); color: #FFFFFF;">
+                👥 View Enrolled Students
+              </button>
+            </div>
+          </div>
+
+          <!-- Teacher KPI Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card" onclick="App.navigateTo('teacher-students')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-title">Assigned Classes</span>
+                <div class="kpi-icon" style="color: #38BDF8;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-big-value" id="teacher-kpi-classes">3</span>
+                <span class="kpi-subtext">Active Cohorts</span>
+              </div>
+              <div class="kpi-footer-note">CSE-VI-B, CSE-IV-A, AIML-VI-A</div>
+            </div>
+
+            <div class="kpi-card" onclick="App.navigateTo('teacher-students')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-title">Total Assigned Students</span>
+                <div class="kpi-icon" style="color: #818CF8;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-big-value" id="teacher-kpi-students">64</span>
+                <span class="kpi-subtext">Enrolled</span>
+              </div>
+              <div class="kpi-footer-note">2 Students under 75% cutoff alert</div>
+            </div>
+
+            <div class="kpi-card" onclick="App.navigateTo('timetable')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-title">Classes Scheduled Today</span>
+                <div class="kpi-icon" style="color: #34D399;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-big-value" id="teacher-kpi-scheduled">2</span>
+                <span class="kpi-subtext">Periods Today</span>
+              </div>
+              <div class="kpi-footer-note">Next: 10:00 AM (CS602 ML Lab)</div>
+            </div>
+
+            <div class="kpi-card" onclick="App.navigateTo('teacher-history')" style="cursor: pointer;">
+              <div class="kpi-card-header">
+                <span class="kpi-title">Sessions Completed</span>
+                <div class="kpi-icon" style="color: #F59E0B;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value-row">
+                <span class="kpi-big-value" id="teacher-kpi-sessions">48</span>
+                <span class="kpi-subtext">Audited Sessions</span>
+              </div>
+              <div class="kpi-footer-note">All biometric records verified</div>
+            </div>
+          </div>
+
+          <!-- Today's Teaching Schedule strip -->
+          <div class="card lc-tilt-card" style="margin-top: 24px;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3>Today's Scheduled Teaching Periods</h3>
+                <p style="font-size: 0.82rem; color: var(--crystal-dim);">Classes slated for today across your enrolled academic cohorts</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="App.navigateTo('teacher-mark')">Mark Immediate Period</button>
+            </div>
+            <div class="matrix-container">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Time Slot</th>
+                    <th>Course Code &amp; Subject</th>
+                    <th>Assigned Class</th>
+                    <th>Venue</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>10:00 - 11:00 AM</strong></td>
+                    <td><span class="badge badge-info">CS602</span> Machine Learning &amp; AI</td>
+                    <td>CSE - 3rd Year (VI-B)</td>
+                    <td>CS Lab 4 / Room 304</td>
+                    <td><span class="badge badge-success">Scheduled Next</span></td>
+                    <td><button class="btn btn-primary btn-sm" onclick="App.navigateTo('teacher-mark')">Mark Attendance →</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>01:15 - 02:15 PM</strong></td>
+                    <td><span class="badge badge-info">CS601</span> Cloud Computing Arch.</td>
+                    <td>CSE - 3rd Year (VI-B)</td>
+                    <td>Lecture Hall 201</td>
+                    <td><span class="badge badge-secondary">Afternoon Slot</span></td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="App.navigateTo('teacher-mark')">Prepare Roster</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 21: TEACHER MARK ATTENDANCE WORKFLOW (INTERACTIVE ROSTER)
+             ====================================================================== -->
+        <section id="view-teacher-mark" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2>Mark Class Period Attendance</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Conduct session roll calls with real-time tally, bulk toggles, and duplicate submission protection</p>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="App.saveTeacherAttendanceDraft()">
+                  💾 Save Draft
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="App.submitTeacherAttendance()">
+                  🚀 Finalize &amp; Submit Attendance
+                </button>
+              </div>
+            </div>
+
+            <!-- Session Configuration Ribbon -->
+            <div class="att-taker-config-ribbon">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Select Class / Section</label>
+                <select id="teacher-att-class" class="form-control" onchange="App.handleTeacherClassChange()">
+                  <option value="CSE-VI-B">CSE - 3rd Year (Section VI-B)</option>
+                  <option value="CSE-IV-A">CSE - 2nd Year (Section IV-A)</option>
+                  <option value="AI-VI-A">AIML - 3rd Year (Section VI-A)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Course Subject</label>
+                <select id="teacher-att-subject" class="form-control">
+                  <option value="CS602">CS602 - Machine Learning &amp; AI</option>
+                  <option value="CS601">CS601 - Cloud Computing</option>
+                  <option value="CS603">CS603 - Compiler Design</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Attendance Date</label>
+                <input type="date" id="teacher-att-date" class="form-control">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Teaching Period</label>
+                <select id="teacher-att-period" class="form-control">
+                  <option value="Period 1 (09:00 - 10:00)">Period 1 (09:00 - 10:00 AM)</option>
+                  <option value="Period 2 (10:00 - 11:00)" selected>Period 2 (10:00 - 11:00 AM)</option>
+                  <option value="Period 3 (11:15 - 12:15)">Period 3 (11:15 - 12:15 PM)</option>
+                  <option value="Period 4 (01:15 - 02:15)">Period 4 (01:15 - 02:15 PM)</option>
+                  <option value="Period 5 (02:15 - 03:15)">Period 5 (02:15 - 03:15 PM)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Attendance Counter & Bulk Toggles Strip -->
+            <div class="att-taker-summary-bar">
+              <div class="att-counter-items">
+                <div class="att-counter-badge">
+                  <span class="label">Total Roster:</span>
+                  <strong id="teacher-summary-total">6</strong>
+                </div>
+                <div class="att-counter-badge present">
+                  <span class="label">Present:</span>
+                  <strong id="teacher-summary-present">5</strong>
+                </div>
+                <div class="att-counter-badge absent">
+                  <span class="label">Absent:</span>
+                  <strong id="teacher-summary-absent">1</strong>
+                </div>
+                <div class="att-counter-badge percent">
+                  <span class="label">Attendance Rate:</span>
+                  <strong id="teacher-summary-percent">83.3%</strong>
+                </div>
+              </div>
+
+              <div class="att-bulk-actions">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="App.markAllTeacherStudents('Present')">
+                  ✓ Mark All Present
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="App.markAllTeacherStudents('Absent')">
+                  ✗ Mark All Absent
+                </button>
+              </div>
+            </div>
+
+            <!-- Interactive Student Roster Table -->
+            <div class="matrix-container" style="margin-top: 18px;">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th style="width: 60px;">#</th>
+                    <th>Student Enrollee</th>
+                    <th>Roll Number</th>
+                    <th>Current Overall %</th>
+                    <th style="text-align: center;">Attendance Status (Present / Absent / Late)</th>
+                    <th>Verification Note</th>
+                  </tr>
+                </thead>
+                <tbody id="teacher-att-roster-tbody">
+                  <!-- Dynamically populated by App.renderTeacherAttendanceTaker() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 22: TEACHER MY STUDENTS ROSTER
+             ====================================================================== -->
+        <section id="view-teacher-students" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2>Assigned Students Cohort Roster</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Students currently enrolled in your assigned sections (CSE-VI-B, CSE-IV-A)</p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="teacher-student-search" placeholder="Search student name or roll..." class="form-control" style="width: 220px;" oninput="App.filterTeacherStudents()">
+                <select id="teacher-student-class-filter" class="form-control" style="width: 170px;" onchange="App.filterTeacherStudents()">
+                  <option value="all">All Assigned Classes</option>
+                  <option value="CSE-VI-B">CSE-VI-B</option>
+                  <option value="CSE-IV-A">CSE-IV-A</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="matrix-container">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Roll Number</th>
+                    <th>Class / Section</th>
+                    <th>Overall Attendance %</th>
+                    <th>Defaulter Standing</th>
+                    <th>Contact Email</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="teacher-students-tbody">
+                  <!-- Dynamically rendered by App.renderTeacherStudents() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================================
+             VIEW 23: TEACHER ATTENDANCE HISTORY & AUDIT LOGS
+             ====================================================================== -->
+        <section id="view-teacher-history" class="page-view">
+          <div class="card lc-tilt-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <h2>Faculty Attendance Submissions &amp; Audit Trail</h2>
+                <p style="font-size: 0.84rem; color: var(--crystal-dim);">Chronological record of submitted and saved attendance sessions</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="App.navigateTo('teacher-mark')">
+                + Mark New Period
+              </button>
+            </div>
+
+            <div class="matrix-container">
+              <table class="matrix-table">
+                <thead>
+                  <tr>
+                    <th>Session ID</th>
+                    <th>Date</th>
+                    <th>Teaching Period</th>
+                    <th>Class &amp; Section</th>
+                    <th>Subject</th>
+                    <th>Present / Total</th>
+                    <th>Attendance %</th>
+                    <th>Audit Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="teacher-history-tbody">
+                  <!-- Dynamically rendered by App.renderTeacherHistory() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODALS
+       ========================================================================== -->
+
+  <!-- 0. Three-Tier Authentication Modal (Attendify 3D) -->
+  <div id="login-modal" class="modal-overlay">
+    <div class="modal-box lc-tilt-card" style="max-width: 500px; padding: 32px 28px;">
+      <div style="text-align: center; margin-bottom: 22px;">
+        <div style="width: 54px; height: 54px; margin: 0 auto 12px; border-radius: 14px; background: var(--bg-surface); border: 1px solid var(--border-crystal); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-crystal);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em;">Attendify 3D Portal Access</h3>
+        <p style="font-size: 0.82rem; color: var(--crystal-dim); margin-top: 4px;">Choose your authorized academic station to proceed</p>
+      </div>
+
+      <!-- 3-Role Tab Switcher -->
+      <div class="auth-tabs" style="margin-bottom: 22px;">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-admin" onclick="App.switchAuthTab('admin')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="m9 16 2 2 4-4"/></svg>
+          Admin
+        </button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-teacher" onclick="App.switchAuthTab('teacher')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          Teacher
+        </button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-student" onclick="App.switchAuthTab('student')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Student
+        </button>
+      </div>
+
+      <!-- Admin Login Form -->
+      <form id="admin-login-form" onsubmit="App.handleAdminLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Administrator Email</label>
+          <input type="email" id="admin-login-email" class="form-control" value="bhaskarasharmabvss@gmail.com" required placeholder="name@campus.edu.in">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Admin Password</label>
+          <div style="position: relative;">
+            <input type="password" id="admin-login-password" class="form-control" value="252629" required placeholder="Enter password" style="padding-right: 40px;">
+            <button type="button" class="password-toggle-eye" onclick="App.togglePasswordVisibility('admin-login-password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--crystal-dim); cursor: pointer;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 18px; font-size: 0.8rem;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--crystal-dim);">
+            <input type="checkbox" id="admin-remember-me" checked> Remember session
+          </label>
+          <button type="button" class="quick-fill-chip" onclick="App.fillAdminCredentials()">
+            ⚡ Autofill Credentials
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 13px;">
+          Enter Provost Console →
+        </button>
+      </form>
+
+      <!-- Teacher Login Form -->
+      <form id="teacher-login-form" style="display: none;" onsubmit="App.handleTeacherLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Teacher Institutional Email</label>
+          <input type="email" id="teacher-login-email" class="form-control" value="teacher@attendify.edu" required placeholder="teacher@attendify.edu">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Faculty Password</label>
+          <div style="position: relative;">
+            <input type="password" id="teacher-login-password" class="form-control" value="teacher123" required placeholder="Enter password" style="padding-right: 40px;">
+            <button type="button" class="password-toggle-eye" onclick="App.togglePasswordVisibility('teacher-login-password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--crystal-dim); cursor: pointer;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 18px; font-size: 0.8rem;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--crystal-dim);">
+            <input type="checkbox" id="teacher-remember-me" checked> Remember session
+          </label>
+          <button type="button" class="quick-fill-chip" onclick="App.fillTeacherCredentials()">
+            ⚡ Autofill: Dr. Vikram Sen
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 13px;">
+          Enter Faculty Portal →
+        </button>
+      </form>
+
+      <!-- Student Login Form -->
+      <form id="student-login-form" style="display: none;" onsubmit="App.handleStudentLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Student Roll Number or ID</label>
+          <input type="text" id="student-login-id" class="form-control" value="22CS1084" required placeholder="e.g. 22CS1084">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Student PIN / Password</label>
+          <div style="position: relative;">
+            <input type="password" id="student-login-password" class="form-control" value="student123" required placeholder="Enter student PIN" style="padding-right: 40px;">
+            <button type="button" class="password-toggle-eye" onclick="App.togglePasswordVisibility('student-login-password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--crystal-dim); cursor: pointer;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 18px; font-size: 0.8rem;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--crystal-dim);">
+            <input type="checkbox" id="student-remember-me" checked> Remember session
+          </label>
+          <button type="button" class="quick-fill-chip" onclick="App.fillStudentCredentials()">
+            ⚡ Autofill: Aarav Sharma
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 13px;">
+          Enter Student Portal →
+        </button>
+      </form>
+
+      <div style="margin-top: 18px; text-align: center;">
+        <button type="button" onclick="App.closeModal('login-modal')" style="background: none; border: none; font-size: 0.78rem; color: var(--crystal-muted); cursor: pointer;">
+          Dismiss &amp; Continue Active Session
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 0.2 Add Student Modal (CRUD) -->
+  <div id="add-student-modal" class="modal-overlay">
+    <div class="modal-box lc-tilt-card" style="max-width: 620px;">
+      <div class="modal-header">
+        <div>
+          <h3>Register New Student</h3>
+          <p style="font-size: 0.82rem; color: var(--crystal-dim);">Enroll a new student into university database and section roster</p>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="App.closeModal('add-student-modal')">✕</button>
+      </div>
+      <form id="add-student-form" onsubmit="App.submitAddStudent(event)">
+        <div class="modal-body" style="max-height: 480px; overflow-y: auto;">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">Student ID *</label>
+              <input type="text" id="new-stu-id" class="form-control" placeholder="e.g. 22CS1090" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Roll Number *</label>
+              <input type="text" id="new-stu-roll" class="form-control" placeholder="e.g. 22CS1090" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Legal Name *</label>
+            <input type="text" id="new-stu-name" class="form-control" placeholder="e.g. Rohan Verma" required>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              <input type="email" id="new-stu-email" class="form-control" placeholder="rohan.verma@campus.edu.in" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" id="new-stu-phone" class="form-control" placeholder="+91 98765 43210">
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">Department *</label>
+              <select id="new-stu-dept" class="form-control" required>
+                <option value="Computer Science & Engineering">Computer Science &amp; Engineering</option>
+                <option value="Artificial Intelligence & Data Science">AI &amp; Data Science</option>
+                <option value="Electronics & Communication">Electronics &amp; Communication</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Degree *</label>
+              <input type="text" id="new-stu-course" class="form-control" value="B.Tech Computer Science" required>
+            </div>
+          </div>
+          <div class="form-row-3">
+            <div class="form-group">
+              <label class="form-label">Year</label>
+              <select id="new-stu-year" class="form-control">
+                <option value="3rd Year">3rd Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="1st Year">1st Year</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Semester</label>
+              <select id="new-stu-sem" class="form-control">
+                <option value="Semester VI">Semester VI</option>
+                <option value="Semester IV">Semester IV</option>
+                <option value="Semester VIII">Semester VIII</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Section</label>
+              <select id="new-stu-section" class="form-control">
+                <option value="Section B">Section B</option>
+                <option value="Section A">Section A</option>
+                <option value="Section C">Section C</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Academic Year</label>
+            <input type="text" id="new-stu-ay" class="form-control" value="2025 - 2026">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('add-student-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">+ Create Student Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 0.3 Add Teacher Modal (CRUD) -->
+  <div id="add-teacher-modal" class="modal-overlay">
+    <div class="modal-box lc-tilt-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <div>
+          <h3>Register Faculty Member</h3>
+          <p style="font-size: 0.82rem; color: var(--crystal-dim);">Add faculty member to institutional teaching register</p>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="App.closeModal('add-teacher-modal')">✕</button>
+      </div>
+      <form id="add-teacher-form" onsubmit="App.submitAddTeacher(event)">
+        <div class="modal-body" style="max-height: 480px; overflow-y: auto;">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">Faculty ID *</label>
+              <input type="text" id="new-tch-id" class="form-control" placeholder="e.g. TCH-005" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="new-tch-name" class="form-control" placeholder="e.g. Dr. Kavita Nair" required>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              <input type="email" id="new-tch-email" class="form-control" placeholder="kavita.nair@campus.edu.in" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" id="new-tch-phone" class="form-control" placeholder="+91 94455 12345">
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">Department *</label>
+              <select id="new-tch-dept" class="form-control" required>
+                <option value="Computer Science & Engineering">Computer Science &amp; Engineering</option>
+                <option value="Artificial Intelligence & Data Science">AI &amp; Data Science</option>
+                <option value="Electronics & Communication">Electronics &amp; Communication</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Designation *</label>
+              <input type="text" id="new-tch-designation" class="form-control" placeholder="e.g. Associate Professor" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assigned Classes (comma separated)</label>
+            <input type="text" id="new-tch-classes" class="form-control" placeholder="e.g. CSE-VI-B, CSE-IV-A">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teaching Subjects (comma separated)</label>
+            <input type="text" id="new-tch-subjects" class="form-control" placeholder="e.g. CS602 - Machine Learning, CS601 - Cloud Computing">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('add-teacher-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">+ Register Faculty Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+
+  <!-- 0.1 iCloudEMS v2 Official Examination Hall Ticket Modal -->
+  <div id="hallticket-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 720px; background: transparent; padding: 0; border: none; box-shadow: none;">
+      <div class="ems-hall-ticket-box">
+        <button class="modal-close-btn" onclick="App.closeModal('hallticket-modal')" style="position: absolute; top: 16px; right: 16px; color: #0F172A; font-size: 1.2rem;">✕</button>
+        
+        <div class="ht-header">
+          <div style="font-size: 0.72rem; letter-spacing: 0.12em; color: #0284C7; font-weight: 800; text-transform: uppercase;">CampusCount Autonomous University • NAAC A++ Accredited</div>
+          <h2>Official Examination Hall Ticket / Admit Card</h2>
+          <p>Autonomous End-Semester Theory & Practical Examinations • Autumn Session 2026</p>
+        </div>
+
+        <div class="ht-details-grid">
+          <div><strong>Candidate Name:</strong> Aarav Sharma</div>
+          <div><strong>University Roll No:</strong> 22CS1084</div>
+          <div><strong>Degree & Program:</strong> B.Tech (Computer Science & Engineering)</div>
+          <div><strong>Current Semester:</strong> Semester VI (Section B)</div>
+          <div><strong>Examination Center:</strong> Main Engineering Complex, Hall B-102</div>
+          <div><strong>Eligibility Clearance:</strong> <span style="color: #059669; font-weight: 800;">✓ CLEARED (84.5% Aggregate)</span></div>
+        </div>
+
+        <h4 style="font-size: 0.88rem; font-weight: 800; color: #0F172A; margin-bottom: 8px;">Approved Course Roster & Timetable</h4>
+        <table class="ht-table">
+          <thead>
+            <tr>
+              <th>Course Code & Title</th>
+              <th>Exam Date & Time</th>
+              <th>Attendance</th>
+              <th>Clearance Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CS601: Distributed Systems</strong></td>
+              <td>15-Oct-2026 (09:30 AM)</td>
+              <td><strong style="color: #059669;">88.9%</strong></td>
+              <td><span class="badge badge-green">✓ Eligible</span></td>
+            </tr>
+            <tr>
+              <td><strong>CS602: Machine Learning & AI</strong></td>
+              <td>18-Oct-2026 (09:30 AM)</td>
+              <td><strong style="color: #D97706;">72.1%</strong></td>
+              <td><span class="badge badge-amber" title="Condonation granted by Provost">✓ Condonation Granted</span></td>
+            </tr>
+            <tr>
+              <td><strong>CS603: Web Technologies & Cloud</strong></td>
+              <td>22-Oct-2026 (09:30 AM)</td>
+              <td><strong style="color: #059669;">91.7%</strong></td>
+              <td><span class="badge badge-green">✓ Eligible</span></td>
+            </tr>
+            <tr>
+              <td><strong>CS604: Cloud Computing & DevOps</strong></td>
+              <td>26-Oct-2026 (09:30 AM)</td>
+              <td><strong style="color: #059669;">85.0%</strong></td>
+              <td><span class="badge badge-green">✓ Eligible</span></td>
+            </tr>
+            <tr>
+              <td><strong>CS605: Computer Networks Lab</strong></td>
+              <td>29-Oct-2026 (09:30 AM)</td>
+              <td><strong style="color: #059669;">92.9%</strong></td>
+              <td><span class="badge badge-green">✓ Eligible</span></td>
+            </tr>
+            <tr>
+              <td><strong>CS606: Software Engineering & Agile</strong></td>
+              <td>02-Nov-2026 (09:30 AM)</td>
+              <td><strong style="color: #059669;">77.8%</strong></td>
+              <td><span class="badge badge-green">✓ Eligible</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="ht-clearance-seal">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: #64748B;">BARCODE IDENTIFIER • 22CS1084-2026-AUTUMN</div>
+            <svg style="height: 28px; width: 170px;" viewBox="0 0 170 28" fill="#0F172A">
+              <rect x="0" y="0" width="3" height="28"/><rect x="5" y="0" width="2" height="28"/><rect x="9" y="0" width="4" height="28"/><rect x="15" y="0" width="2" height="28"/><rect x="19" y="0" width="3" height="28"/><rect x="25" y="0" width="4" height="28"/><rect x="31" y="0" width="2" height="28"/><rect x="36" y="0" width="5" height="28"/><rect x="44" y="0" width="2" height="28"/><rect x="49" y="0" width="3" height="28"/><rect x="55" y="0" width="2" height="28"/><rect x="60" y="0" width="4" height="28"/><rect x="66" y="0" width="2" height="28"/><rect x="71" y="0" width="5" height="28"/><rect x="79" y="0" width="3" height="28"/><rect x="85" y="0" width="2" height="28"/><rect x="90" y="0" width="4" height="28"/><rect x="96" y="0" width="2" height="28"/><rect x="101" y="0" width="3" height="28"/><rect x="107" y="0" width="4" height="28"/><rect x="114" y="0" width="2" height="28"/><rect x="119" y="0" width="5" height="28"/><rect x="127" y="0" width="3" height="28"/><rect x="133" y="0" width="2" height="28"/><rect x="138" y="0" width="4" height="28"/><rect x="145" y="0" width="2" height="28"/><rect x="150" y="0" width="3" height="28"/><rect x="156" y="0" width="4" height="28"/><rect x="163" y="0" width="2" height="28"/><rect x="168" y="0" width="2" height="28"/>
+            </svg>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.76rem; color: #059669; font-weight: 800;">✓ DIGITALLY CERTIFIED & VERIFIED</div>
+            <div style="font-size: 0.84rem; font-weight: 800; color: #0F172A; margin-top: 4px;">Dr. Vikram Sen</div>
+            <div style="font-size: 0.72rem; color: #64748B;">Controller of Examinations</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('hallticket-modal')">Close</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Print / Download PDF Hall Ticket</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. Apply Leave Modal -->
+  <div id="leave-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Apply for Leave / Permission</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('leave-modal')">✕</button>
+      </div>
+      <form id="leave-apply-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Leave Type</label>
+            <select id="leave-type-select" class="form-control" required>
+              <option value="Medical Leave">Medical Leave (Doctor Certificate)</option>
+              <option value="Casual Leave">Casual Leave / Personal Emergency</option>
+              <option value="On-Duty / Academic">On-Duty / Academic (Fest / Hackathon / Sports)</option>
+              <option value="Family Event">Family Event / Function</option>
+            </select>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">From Date</label>
+              <input type="date" id="leave-from-date" class="form-control" value="2026-09-22" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">To Date</label>
+              <input type="date" id="leave-to-date" class="form-control" value="2026-09-23" required>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px; font-size: 0.8rem; color: #4F46E5; font-weight: 600;">
+            Duration: <span id="leave-days-preview">2 day(s) duration</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Reason for Absence</label>
+            <textarea id="leave-reason-text" class="form-control" placeholder="Please provide specific details regarding your reason for leave..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Supporting Document (Medical Slip / Event Invite)</label>
+            <input type="file" class="form-control" style="padding: 6px;">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('leave-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Submit Assignment Modal -->
+  <div id="assignment-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Submit Assignment</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('assignment-modal')">✕</button>
+      </div>
+      <form id="submit-assignment-form">
+        <input type="hidden" id="submit-asn-id">
+        <div class="modal-body">
+          <p style="font-size: 0.88rem; color: #64748B; margin-bottom: 16px;">
+            Submitting for: <strong id="submit-asn-title-bind" style="color: #0F172A;">Assignment Title</strong>
+          </p>
+          <div class="form-group">
+            <label class="form-label">Upload Solution Archive (ZIP, PDF, or Source Code)</label>
+            <input type="file" id="submit-asn-file" class="form-control" required style="padding: 6px;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Submission Remarks / GitHub Link (Optional)</label>
+            <textarea class="form-control" placeholder="e.g. GitHub repo link or execution instructions..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('assignment-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Upload & Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Official Marksheet Report Card Modal -->
+  <div id="marksheet-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3>Official Academic Marksheet</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('marksheet-modal')">✕</button>
+      </div>
+      <div class="modal-body" style="background: #FFFFFF;">
+        <!-- University Official Header -->
+        <div style="text-align: center; border-bottom: 2px solid #0F172A; padding-bottom: 16px; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 8px;">
+            <img src="assets/logo.jpg" alt="University Logo" style="width: 48px; height: 48px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+            <div style="text-align: left;">
+              <h2 style="font-size: 1.25rem; font-weight: 800; color: #0F172A; letter-spacing: 0.03em; text-transform: uppercase; margin: 0; line-height: 1.2;">Apex Institute of Technology & Sciences</h2>
+              <div style="font-size: 0.78rem; color: #64748B;">Affiliated to National Technical University • Autonomous Grade 'A++'</div>
+            </div>
+          </div>
+          <div style="display: inline-block; margin-top: 6px; padding: 4px 14px; border-radius: 4px; background: #EEF2FF; color: #4F46E5; font-size: 0.78rem; font-weight: 700;">
+            OFFICIAL GRADE REPORT CARD - SEMESTER VI
+          </div>
+        </div>
+
+        <!-- Student Meta -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem; margin-bottom: 18px; padding: 12px; background: #F8FAFC; border-radius: 8px; border: 1px solid #E2E8F0;">
+          <div>Student Name: <strong class="student-name-bind">Aarav Sharma</strong></div>
+          <div>Roll Number: <strong class="student-roll-bind">22CS1084</strong></div>
+          <div>Department: <strong class="student-dept-bind">Computer Science & Eng.</strong></div>
+          <div>Academic Year: <strong class="student-ay-bind">2025 - 2026</strong></div>
+        </div>
+
+        <!-- Courses Table -->
+        <table class="data-table" style="font-size: 0.8rem;">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Code</th>
+              <th>Credits</th>
+              <th>Grade</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Distributed Systems</td><td>CS601</td><td>4</td><td><strong style="color: #059669;">O</strong></td><td>10</td></tr>
+            <tr><td>Machine Learning & AI</td><td>CS602</td><td>4</td><td><strong style="color: #4F46E5;">A+</strong></td><td>9</td></tr>
+            <tr><td>Web Technologies & Cloud</td><td>CS603</td><td>3</td><td><strong style="color: #059669;">O</strong></td><td>10</td></tr>
+            <tr><td>Cloud Computing & DevOps</td><td>CS604</td><td>4</td><td><strong style="color: #4F46E5;">A+</strong></td><td>9</td></tr>
+            <tr><td>Computer Networks Lab</td><td>CS605</td><td>2</td><td><strong style="color: #059669;">O</strong></td><td>10</td></tr>
+            <tr><td>Software Engineering & Agile</td><td>CS606</td><td>3</td><td><strong style="color: #D97706;">A</strong></td><td>8</td></tr>
+          </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 12px; background: #ECFDF5; border-radius: 8px; border: 1px solid #A7F3D0;">
+          <div>
+            <span style="font-size: 0.82rem; color: #065F46;">Semester VI SGPA: <strong>9.25</strong></span>
+          </div>
+          <div>
+            <span style="font-size: 0.82rem; color: #065F46;">Cumulative CGPA: <strong>8.92</strong> (Distinction)</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="App.closeModal('marksheet-modal')">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">Print Marksheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Edit Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Edit Student Contact Information</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('profile-modal')">✕</button>
+      </div>
+      <form id="edit-profile-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" id="edit-phone-input" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="edit-email-input" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Permanent Residential Address</label>
+            <textarea id="edit-address-input" class="form-control" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('profile-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Day Attendance Inspector Modal -->
+  <div id="day-inspector-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="day-inspector-title">Day Attendance Log</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('day-inspector-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="day-inspector-content"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="App.closeModal('day-inspector-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Command Palette / Search Modal (Ctrl + K) -->
+  <div id="search-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 520px;">
+      <div style="padding: 16px; border-bottom: 1px solid #E2E8F0;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="global-search-input" placeholder="Search pages, subjects, timetable or assignments..." style="border: none; width: 100%; font-size: 1rem; outline: none; background: transparent;">
+          <span class="search-kbd">ESC</span>
+        </div>
+      </div>
+      <div id="search-results-list" style="max-height: 320px; overflow-y: auto; padding: 8px;">
+        <div style="padding: 16px; color: #94A3B8; text-align: center; font-size: 0.85rem;">
+          Type to search subjects, pages, or assignments...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Help Modal -->
+  <div id="help-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Campus Regulations & Attendance Guidelines</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('help-modal')">✕</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
+        <h4 style="color: #0F172A; margin-bottom: 6px;">1. Minimum Attendance Requirement</h4>
+        <p>Under University Regulation Section 4.2, every student must maintain a minimum of <strong>75.0% attendance</strong> in each registered course to be eligible to appear for the End-Semester Examinations.</p>
+
+        <h4 style="color: #0F172A; margin-top: 14px; margin-bottom: 6px;">2. Condonation of Shortage</h4>
+        <p>Shortage between 65.0% and 74.9% may be condoned by the Academic Council solely on medical grounds with valid hospital admission proofs submitted within 3 working days.</p>
+
+        <h4 style="color: #0F172A; margin-top: 14px; margin-bottom: 6px;">3. On-Duty (OD) Leave</h4>
+        <p>Attendance exemption for inter-collegiate competitions, hackathons, or official conferences requires prior approval from the Head of Department and Dean.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="App.closeModal('help-modal')">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 420px; text-align: center;">
+      <div class="modal-body" style="padding: 32px 24px;">
+        <div style="width: 54px; height: 54px; border-radius: 50%; background: #FEF2F2; color: #EF4444; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        </div>
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: #0F172A;">Sign Out of Student Portal?</h3>
+        <p style="font-size: 0.85rem; color: #64748B; margin-top: 6px;">Are you sure you want to exit your active student session?</p>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button type="button" class="btn btn-secondary" onclick="App.closeModal('logout-modal')">Stay Logged In</button>
+        <button type="button" class="btn btn-danger" onclick="App.logout()">Confirm Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/three-hero.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/attendance.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
