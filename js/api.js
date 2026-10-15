@@ -165,6 +165,41 @@ const MockDB = {
     { id: "NOTIF-1", title: "Attendance Shortage Alert!", description: "Your attendance in Machine Learning & AI (CS602) has dropped to 71.4%. Minimum 75% is mandatory to be eligible for end-term examinations.", category: "Attendance", timestamp: "2026-10-13 09:30 AM", isRead: false, iconType: "alert-circle", actionUrl: "attendance" },
     { id: "NOTIF-2", title: "Mid-Term Exam Schedule Released", description: "The schedule for Semester VI Mid-Term examinations (starting October 15) has been published by the Controller of Examinations.", category: "Exams", timestamp: "2026-10-12 04:15 PM", isRead: false, iconType: "file-text", actionUrl: "results" },
     { id: "NOTIF-3", title: "Assignment Due in 4 Days", description: "Neural Network Architecture assignment for Machine Learning & AI is due on October 18, 2026.", category: "Assignments", timestamp: "2026-10-11 11:00 AM", isRead: false, iconType: "calendar", actionUrl: "assignments" }
+  ],
+  timeTable: [
+    // Monday
+    { id: "TT-1", dayOfWeek: "Monday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#6366F1" },
+    { id: "TT-2", dayOfWeek: "Monday", subjectCode: "CS602", subjectName: "Machine Learning & AI", faculty: "Prof. Ananya Roy", roomNumber: "Room CS-204", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#F43F5E" },
+    { id: "TT-3", dayOfWeek: "Monday", subjectCode: "CS605", subjectName: "Computer Networks Lab", faculty: "Prof. Deepak Kulkarni", roomNumber: "Lab Net-02", startTime: "11:30 AM", endTime: "01:30 PM", type: "Lab", color: "#10B981" },
+    { id: "TT-4", dayOfWeek: "Monday", subjectCode: "CS604", subjectName: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", roomNumber: "Room CS-204", startTime: "02:30 PM", endTime: "03:30 PM", type: "Lecture", color: "#06B6D4" },
+
+    // Tuesday
+    { id: "TT-5", dayOfWeek: "Tuesday", subjectCode: "CS603", subjectName: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", roomNumber: "Room CS-201", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#8B5CF6" },
+    { id: "TT-6", dayOfWeek: "Tuesday", subjectCode: "CS606", subjectName: "Software Engineering & Agile", faculty: "Prof. Meenakshi Iyer", roomNumber: "Room CS-201", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#F59E0B" },
+    { id: "TT-7", dayOfWeek: "Tuesday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "11:30 AM", endTime: "12:30 PM", type: "Lecture", color: "#6366F1" },
+    { id: "TT-8", dayOfWeek: "Tuesday", subjectCode: "CS602", subjectName: "Machine Learning & AI", faculty: "Prof. Ananya Roy", roomNumber: "Lab AI-01", startTime: "01:30 PM", endTime: "03:30 PM", type: "Lab", color: "#F43F5E" },
+
+    // Wednesday
+    { id: "TT-9", dayOfWeek: "Wednesday", subjectCode: "CS604", subjectName: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", roomNumber: "Lab Cloud-03", startTime: "09:00 AM", endTime: "11:00 AM", type: "Lab", color: "#06B6D4" },
+    { id: "TT-10", dayOfWeek: "Wednesday", subjectCode: "CS603", subjectName: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", roomNumber: "Room CS-201", startTime: "11:30 AM", endTime: "12:30 PM", type: "Lecture", color: "#8B5CF6" },
+    { id: "TT-11", dayOfWeek: "Wednesday", subjectCode: "CS602", subjectName: "Machine Learning & AI", faculty: "Prof. Ananya Roy", roomNumber: "Room CS-204", startTime: "01:30 PM", endTime: "02:30 PM", type: "Lecture", color: "#F43F5E" },
+    { id: "TT-12", dayOfWeek: "Wednesday", subjectCode: "CS606", subjectName: "Software Engineering & Agile", faculty: "Prof. Meenakshi Iyer", roomNumber: "Room CS-201", startTime: "02:30 PM", endTime: "03:30 PM", type: "Lecture", color: "#F59E0B" },
+
+    // Thursday
+    { id: "TT-13", dayOfWeek: "Thursday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#6366F1" },
+    { id: "TT-14", dayOfWeek: "Thursday", subjectCode: "CS605", subjectName: "Computer Networks Lab", faculty: "Prof. Deepak Kulkarni", roomNumber: "Room CS-204", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#10B981" },
+    { id: "TT-15", dayOfWeek: "Thursday", subjectCode: "CS603", subjectName: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", roomNumber: "Lab Web-02", startTime: "11:30 AM", endTime: "01:30 PM", type: "Lab", color: "#8B5CF6" },
+    { id: "TT-16", dayOfWeek: "Thursday", subjectCode: "CS604", subjectName: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", roomNumber: "Room CS-204", startTime: "02:30 PM", endTime: "03:30 PM", type: "Lecture", color: "#06B6D4" },
+
+    // Friday
+    { id: "TT-17", dayOfWeek: "Friday", subjectCode: "CS606", subjectName: "Software Engineering & Agile", faculty: "Prof. Meenakshi Iyer", roomNumber: "Room CS-201", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#F59E0B" },
+    { id: "TT-18", dayOfWeek: "Friday", subjectCode: "CS602", subjectName: "Machine Learning & AI", faculty: "Prof. Ananya Roy", roomNumber: "Room CS-204", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#F43F5E" },
+    { id: "TT-19", dayOfWeek: "Friday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "11:30 AM", endTime: "12:30 PM", type: "Lecture", color: "#6366F1" },
+    { id: "TT-20", dayOfWeek: "Friday", subjectCode: "CS604", subjectName: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", roomNumber: "Room CS-204", startTime: "01:30 PM", endTime: "02:30 PM", type: "Lecture", color: "#06B6D4" },
+
+    // Saturday
+    { id: "TT-21", dayOfWeek: "Saturday", subjectCode: "CS603", subjectName: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", roomNumber: "Room CS-201", startTime: "09:30 AM", endTime: "11:00 AM", type: "Tutorial", color: "#8B5CF6" },
+    { id: "TT-22", dayOfWeek: "Saturday", subjectCode: "CS605", subjectName: "Computer Networks Lab", faculty: "Prof. Deepak Kulkarni", roomNumber: "Room CS-204", startTime: "11:15 AM", endTime: "12:45 PM", type: "Tutorial", color: "#10B981" }
   ]
 };
 
@@ -267,18 +302,7 @@ const ApiService = {
         console.warn("Backend unavailable, using mock data", e);
       }
     }
-    return [
-      { id: "TT-1", dayOfWeek: "Monday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#6366F1" },
-      { id: "TT-2", dayOfWeek: "Monday", subjectCode: "CS602", subjectName: "Machine Learning & AI", faculty: "Prof. Ananya Roy", roomNumber: "Room CS-204", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#F43F5E" },
-      { id: "TT-3", dayOfWeek: "Monday", subjectCode: "CS605", subjectName: "Computer Networks Lab", faculty: "Prof. Deepak Kulkarni", roomNumber: "Lab Net-02", startTime: "11:30 AM", endTime: "01:30 PM", type: "Lab", color: "#10B981" },
-      { id: "TT-4", dayOfWeek: "Monday", subjectCode: "CS604", subjectName: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", roomNumber: "Room CS-204", startTime: "02:30 PM", endTime: "03:30 PM", type: "Lecture", color: "#06B6D4" },
-      { id: "TT-5", dayOfWeek: "Tuesday", subjectCode: "CS603", subjectName: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", roomNumber: "Room CS-201", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#8B5CF6" },
-      { id: "TT-6", dayOfWeek: "Tuesday", subjectCode: "CS606", subjectName: "Software Engineering & Agile", faculty: "Prof. Meenakshi Iyer", roomNumber: "Room CS-201", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#F59E0B" },
-      { id: "TT-7", dayOfWeek: "Tuesday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "11:30 AM", endTime: "12:30 PM", type: "Lecture", color: "#6366F1" },
-      { id: "TT-8", dayOfWeek: "Wednesday", subjectCode: "CS604", subjectName: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", roomNumber: "Lab Cloud-03", startTime: "09:00 AM", endTime: "11:00 AM", type: "Lab", color: "#06B6D4" },
-      { id: "TT-9", dayOfWeek: "Thursday", subjectCode: "CS601", subjectName: "Distributed Systems", faculty: "Dr. Vikram Sen", roomNumber: "Room CS-204", startTime: "09:00 AM", endTime: "10:00 AM", type: "Lecture", color: "#6366F1" },
-      { id: "TT-10", dayOfWeek: "Friday", subjectCode: "CS602", subjectName: "Machine Learning & AI", faculty: "Prof. Ananya Roy", roomNumber: "Room CS-204", startTime: "10:15 AM", endTime: "11:15 AM", type: "Lecture", color: "#F43F5E" }
-    ];
+    return MockDB.timeTable || [];
   },
 
   async getResults() {

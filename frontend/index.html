@@ -731,14 +731,27 @@
               </div>
             </div>
 
-            <!-- Today's Class Schedule -->
+            <!-- Today's Class Schedule with Day Switcher -->
             <div class="card">
-              <div class="card-header">
+              <div class="card-header" style="flex-wrap: wrap; gap: 12px;">
                 <div class="card-title-group">
-                  <h3>Today's Schedule</h3>
-                  <p>Friday • 4 Scheduled Classes</p>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--primary);"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Daily Class Schedule
+                  </h3>
+                  <p id="dash-schedule-subtitle">Friday • 4 Scheduled Classes</p>
                 </div>
-                <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('timetable')">Full Timetable</button>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <div class="dash-day-tabs" id="dash-day-tabs-container">
+                    <button type="button" class="dash-day-tab" data-day="Monday" onclick="App.switchDashScheduleDay('Monday')">Mon</button>
+                    <button type="button" class="dash-day-tab" data-day="Tuesday" onclick="App.switchDashScheduleDay('Tuesday')">Tue</button>
+                    <button type="button" class="dash-day-tab" data-day="Wednesday" onclick="App.switchDashScheduleDay('Wednesday')">Wed</button>
+                    <button type="button" class="dash-day-tab" data-day="Thursday" onclick="App.switchDashScheduleDay('Thursday')">Thu</button>
+                    <button type="button" class="dash-day-tab active" data-day="Friday" onclick="App.switchDashScheduleDay('Friday')">Fri</button>
+                    <button type="button" class="dash-day-tab" data-day="Saturday" onclick="App.switchDashScheduleDay('Saturday')">Sat</button>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('timetable')" title="Open Day-Wise Timetable Hub">Full Timetable →</button>
+                </div>
               </div>
               <div class="card-body">
                 <div id="today-schedule-list" class="schedule-list">
@@ -1102,23 +1115,45 @@
         </section>
 
         <!-- ======================================================================
-             VIEW 4: TIME TABLE
+             VIEW 4: TIME TABLE (DAY-WISE SEPARATED ARCHITECTURE)
              ====================================================================== -->
         <section id="view-timetable" class="page-view">
           <div class="page-heading-row">
             <div class="page-title-wrap">
-              <h2>Weekly Class Time Table</h2>
-              <p>Section B • B.Tech Computer Science & Engineering (Semester VI)</p>
+              <h2>Day-Wise Academic Time Table</h2>
+              <p>Section B • B.Tech Computer Science &amp; Engineering (Semester VI) • Separated Daily Timelines</p>
             </div>
-            <div class="page-actions">
-              <button class="btn btn-secondary btn-sm" onclick="App.showToast('Current day schedule highlighted', 'info')">Today</button>
-              <button class="btn btn-secondary btn-sm" onclick="App.showToast('Showing standard weekly rotation', 'info')">This Week</button>
+            <div class="page-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="App.switchTimetableDay('today')" id="tt-btn-today-focus">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Today's Focus
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="App.switchTimetableDay('all')" id="tt-btn-all-days">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                All Days (Separated)
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="window.print()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                Print Schedule
+              </button>
             </div>
           </div>
 
-          <!-- 6-Day Columns Timetable Grid -->
-          <div id="timetable-weekly-grid" class="timetable-grid">
-            <!-- Injected dynamically for Monday to Saturday -->
+          <!-- Day Navigation Segmented Tabs (Today, Monday - Saturday, All Days) -->
+          <div class="timetable-day-nav-wrapper">
+            <div class="timetable-day-tabs" id="timetable-day-tabs-container">
+              <!-- Rendered dynamically by app.js with period count badges -->
+            </div>
+          </div>
+
+          <!-- Active Day Overview Strip -->
+          <div id="timetable-day-summary" class="tt-day-summary-strip">
+            <!-- Injected dynamically by app.js -->
+          </div>
+
+          <!-- Day-Wise Schedule Container (Single Day Timeline or All-Days Separated Sections) -->
+          <div id="timetable-weekly-grid">
+            <!-- Injected dynamically by app.js -->
           </div>
         </section>
 

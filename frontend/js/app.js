@@ -567,6 +567,10 @@ const App = {
       this.renderAdminTeachersTable();
     } else if (viewName === 'admin-timetable') {
       this.renderAdminTimetable();
+    } else if (viewName === 'timetable') {
+      this.renderTimetable(this.cachedTimetableSlots);
+    } else if (viewName === 'home') {
+      this.renderTodaySchedule(this.cachedTimetableSlots, this.currentDashDay);
     }
 
     // Close mobile drawer if open
@@ -773,70 +777,96 @@ const App = {
   },
 
   /**
-   * Render Today's Schedule on Home Dashboard
+   * Render Today's Schedule on Home Dashboard with Day-Wise Switcher
    */
-  renderTodaySchedule(slots) {
+  renderTodaySchedule(slots, targetDay = null) {
     const list = document.getElementById('today-schedule-list');
     if (!list) return;
 
-    // Dynamically match today's day of week
-    const daysArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const currentDayName = daysArr[new Date().getDay()];
-    let todaySlots = slots.filter(s => s.dayOfWeek === currentDayName);
+    this.cachedTimetableSlots = slots || this.cachedTimetableSlots || (typeof MockDB !== 'undefined' ? MockDB.timeTable : []);
+    const allSlots = this.cachedTimetableSlots || [];
 
-    // If Sunday or weekend with no slots, display friendly notice or preview
-    if (todaySlots.length === 0) {
-      if (currentDayName === 'Sunday') {
-        list.innerHTML = `
-          <div style="padding: 24px; text-align: center; color: #64748B; background: #F8FAFC; border-radius: 12px; border: 1px dashed #CBD5E1;">
-            <div style="font-size: 1.5rem; margin-bottom: 6px;">☕</div>
-            <strong style="color: #0F172A; font-size: 0.95rem;">Sunday — Weekend Break</strong>
-            <p style="font-size: 0.8rem; margin-top: 4px;">No academic lectures or laboratory sessions scheduled today.</p>
-          </div>
-        `;
-        return;
-      }
-      todaySlots = slots.filter(s => s.dayOfWeek === 'Monday');
+    const daysArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const actualToday = daysArr[new Date().getDay()];
+    
+    // Determine active day for dashboard
+    if (targetDay) {
+      this.currentDashDay = targetDay;
+    } else if (!this.currentDashDay) {
+      this.currentDashDay = (actualToday === 'Sunday') ? 'Friday' : actualToday;
     }
 
-    list.innerHTML = todaySlots.map((s, idx) => {
+    const activeDay = this.currentDashDay;
+    const isActualToday = (activeDay === actualToday);
+
+    // Sync active state on header day tabs
+    const tabBtns = document.querySelectorAll('#dash-day-tabs-container .dash-day-tab');
+    tabBtns.forEach(btn => {
+      const day = btn.getAttribute('data-day');
+      if (day === activeDay) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update Subtitle
+    const subtitleEl = document.getElementById('dash-schedule-subtitle');
+    let daySlots = allSlots.filter(s => s.dayOfWeek === activeDay);
+
+    if (subtitleEl) {
+      subtitleEl.innerHTML = `${activeDay} • ${daySlots.length} Scheduled Classes ${isActualToday ? '<span style="color: var(--primary); font-weight: 700; margin-left: 4px;">(Today)</span>' : ''}`;
+    }
+
+    if (daySlots.length === 0) {
+      list.innerHTML = `
+        <div style="padding: 28px 20px; text-align: center; color: var(--crystal-dim); background: var(--bg-deep); border-radius: var(--radius-lg); border: 1.5px dashed var(--border-crystal);">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">☕</div>
+          <strong style="color: var(--text-primary); font-size: 0.95rem;">No Classes Scheduled on ${activeDay}</strong>
+          <p style="font-size: 0.8rem; margin-top: 4px;">Enjoy your academic preparation time or switch to another day above.</p>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = daySlots.map((s, idx) => {
       let statusClass = 'completed';
       let statusLabel = '✓ Marked Present';
-      let badgeStyle = 'background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);';
+      let badgeStyle = 'background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);';
 
-      if (idx === 1) { // Current ongoing class simulation
+      if (isActualToday && idx === 1) {
         statusClass = 'ongoing';
         statusLabel = '<span class="pulse-dot"></span> In Session (Active)';
-        badgeStyle = 'background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.4);';
-      } else if (idx > 1) {
+        badgeStyle = 'background: rgba(99, 102, 241, 0.15); color: #6366F1; border: 1px solid var(--primary); box-shadow: 0 0 10px var(--primary-glow);';
+      } else if (!isActualToday || idx > 1) {
         statusClass = 'upcoming';
         statusLabel = '📅 Scheduled';
-        badgeStyle = 'background: rgba(148, 163, 184, 0.15); color: #94A3B8; border: 1px solid rgba(148, 163, 184, 0.3);';
+        badgeStyle = 'background: var(--bg-surface); color: var(--crystal-dim); border: 1px solid var(--border-crystal);';
       }
 
       return `
-        <div class="schedule-card ${statusClass === 'ongoing' ? 'ongoing' : ''}" style="transition: all 0.2s ease;">
+        <div class="schedule-card ${statusClass === 'ongoing' ? 'ongoing' : ''}" style="transition: all 0.25s ease;">
           <div class="schedule-meta-left">
-            <div class="schedule-time-badge" style="min-width: 80px; text-align: center;">
+            <div class="schedule-time-badge" style="min-width: 82px; text-align: center;">
               <div style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 2px;">Period ${idx + 1}</div>
-              <div class="time-start" style="font-size: 0.8rem; font-weight: 700;">${s.startTime}</div>
+              <div class="time-start" style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary);">${s.startTime}</div>
               <div class="time-end" style="font-size: 0.72rem; color: var(--crystal-dim);">${s.endTime}</div>
             </div>
             <div class="schedule-info">
               <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                <span class="badge badge-blue" style="font-size: 0.68rem; font-weight: 800;">${s.subjectCode || 'CS' + (601 + idx)}</span>
-                <span style="font-size: 0.72rem; color: var(--crystal-subtle);">${s.type}</span>
+                <span class="badge" style="background: var(--primary-subtle); color: var(--primary); border: 1px solid var(--border-crystal-hover); font-size: 0.68rem; font-weight: 800; font-family: var(--font-mono);">${s.subjectCode || 'CS' + (601 + idx)}</span>
+                <span style="font-size: 0.72rem; font-weight: 700; color: var(--crystal-dim); text-transform: uppercase;">${s.type}</span>
               </div>
-              <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">${s.subjectName}</h4>
+              <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--text-primary);">${s.subjectName}</h4>
               <p style="margin: 4px 0 0 0; font-size: 0.78rem; color: var(--crystal-dim);">
                 <span>${s.faculty}</span> • 
-                <span style="font-weight: 700; color: #38BDF8;">${s.roomNumber}</span>
+                <span style="font-weight: 700; color: var(--primary);">${s.roomNumber}</span>
               </p>
             </div>
           </div>
           <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
             <span class="status-pill ${statusClass}" style="${badgeStyle}; font-weight: 700; font-size: 0.74rem;">${statusLabel}</span>
-            <span style="font-size: 0.68rem; color: var(--crystal-subtle); font-family: 'JetBrains Mono', monospace;">iCloudEMS v2 Verified</span>
+            <span style="font-size: 0.68rem; color: var(--crystal-muted); font-family: var(--font-mono);">Section B</span>
           </div>
         </div>
       `;
@@ -844,41 +874,300 @@ const App = {
   },
 
   /**
-   * Render Timetable Mon-Sat Grid
+   * Switch Active Day on Home Dashboard Schedule Card
+   */
+  switchDashScheduleDay(day) {
+    this.currentDashDay = day;
+    this.renderTodaySchedule(this.cachedTimetableSlots, day);
+  },
+
+  /**
+   * Render Timetable with Day-Wise Separation Architecture
    */
   renderTimetable(slots) {
-    const grid = document.getElementById('timetable-weekly-grid');
-    if (!grid) return;
+    this.cachedTimetableSlots = slots || this.cachedTimetableSlots || (typeof MockDB !== 'undefined' ? MockDB.timeTable : []);
+    const allSlots = this.cachedTimetableSlots || [];
 
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const daysArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const currentDayName = daysArr[new Date().getDay()];
+    const actualToday = daysArr[new Date().getDay()];
 
-    grid.innerHTML = days.map(day => {
-      const daySlots = slots.filter(s => s.dayOfWeek === day);
-      const isToday = (day === currentDayName);
+    // Determine current timetable selection (defaults to today or Friday if Sunday)
+    if (!this.currentTimetableDay) {
+      this.currentTimetableDay = (actualToday === 'Sunday') ? 'Friday' : actualToday;
+    }
+    const selectedDay = this.currentTimetableDay;
 
-      return `
-        <div class="tt-day-col ${isToday ? 'today-col' : ''}">
-          <div class="tt-col-header">
-            <div class="tt-day-title">${day}</div>
-            ${isToday ? '<span style="font-size: 0.7rem; font-weight: 700; color: #4F46E5;">(Today)</span>' : ''}
+    // 1. Render Day Navigation Segmented Tabs
+    const tabsContainer = document.getElementById('timetable-day-tabs-container');
+    if (tabsContainer) {
+      let tabsHtml = `
+        <button type="button" class="tt-day-tab ${selectedDay === 'today' || (selectedDay === actualToday) ? 'active' : ''} ${actualToday !== 'Sunday' ? 'is-today-tab' : ''}" onclick="App.switchTimetableDay('today')" title="Focus on Today's Schedule">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Today</span>
+          <span class="tab-count-pill">${allSlots.filter(s => s.dayOfWeek === (actualToday === 'Sunday' ? 'Friday' : actualToday)).length}</span>
+        </button>
+      `;
+
+      days.forEach(day => {
+        const count = allSlots.filter(s => s.dayOfWeek === day).length;
+        const isActive = (selectedDay === day);
+        const isToday = (day === actualToday);
+
+        tabsHtml += `
+          <button type="button" class="tt-day-tab ${isActive ? 'active' : ''} ${isToday ? 'is-today-tab' : ''}" onclick="App.switchTimetableDay('${day}')">
+            <span>${day}</span>
+            <span class="tab-count-pill">${count}</span>
+          </button>
+        `;
+      });
+
+      tabsHtml += `
+        <button type="button" class="tt-day-tab ${selectedDay === 'all' ? 'active' : ''}" onclick="App.switchTimetableDay('all')" title="View All Days Separated">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          <span>All Days (Separated)</span>
+          <span class="tab-count-pill">${allSlots.length}</span>
+        </button>
+      `;
+
+      tabsContainer.innerHTML = tabsHtml;
+    }
+
+    // 2. Render Active Day Summary Strip
+    const summaryContainer = document.getElementById('timetable-day-summary');
+    if (summaryContainer) {
+      if (selectedDay === 'all') {
+        const lectureCount = allSlots.filter(s => s.type === 'Lecture').length;
+        const labCount = allSlots.filter(s => s.type === 'Lab').length;
+        const tutorialCount = allSlots.filter(s => s.type === 'Tutorial').length;
+
+        summaryContainer.innerHTML = `
+          <div class="tt-day-heading-wrap">
+            <h3>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--primary);"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              Weekly Academic Schedule (Separated by Day)
+            </h3>
+            <p>Comprehensive weekly overview segregated across 6 working days • Monday to Saturday</p>
           </div>
-          <div class="tt-slots-list">
-            ${daySlots.map(s => `
-              <div class="tt-slot-card" style="border-left-color: ${s.color};">
-                <div class="tt-slot-time">${s.startTime} - ${s.endTime}</div>
-                <div class="tt-slot-sub">${s.subjectName}</div>
-                <div class="tt-slot-meta">
-                  <span>${s.roomNumber}</span>
-                  <span style="font-weight: 600;">${s.type}</span>
+          <div class="tt-stat-chips-row">
+            <div class="tt-stat-chip">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>6 Academic Days</span>
+            </div>
+            <div class="tt-stat-chip">
+              <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+              <span>${allSlots.length} Total Slots</span>
+            </div>
+            <div class="tt-stat-chip" style="color: #6366F1;">
+              <span>${lectureCount} Lectures</span>
+            </div>
+            <div class="tt-stat-chip" style="color: #10B981;">
+              <span>${labCount} Labs</span>
+            </div>
+            <div class="tt-stat-chip" style="color: #F59E0B;">
+              <span>${tutorialCount} Tutorials</span>
+            </div>
+          </div>
+        `;
+      } else {
+        const activeTargetDay = (selectedDay === 'today') ? ((actualToday === 'Sunday') ? 'Friday' : actualToday) : selectedDay;
+        const daySlots = allSlots.filter(s => s.dayOfWeek === activeTargetDay);
+        const lectures = daySlots.filter(s => s.type === 'Lecture').length;
+        const labs = daySlots.filter(s => s.type === 'Lab').length;
+        const tutorials = daySlots.filter(s => s.type === 'Tutorial').length;
+        const isToday = (activeTargetDay === actualToday);
+
+        summaryContainer.innerHTML = `
+          <div class="tt-day-heading-wrap">
+            <h3>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--primary);"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              ${activeTargetDay}'s Academic Schedule
+              ${isToday ? '<span class="kpi-badge safe" style="font-size: 0.74rem; vertical-align: middle;">Today</span>' : ''}
+            </h3>
+            <p>${daySlots.length} sessions planned for Section B • Computer Science & Engineering</p>
+          </div>
+          <div class="tt-stat-chips-row">
+            <div class="tt-stat-chip">
+              <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>${daySlots.length} Periods</span>
+            </div>
+            <div class="tt-stat-chip" style="color: #6366F1;">
+              <span>${lectures} Lectures</span>
+            </div>
+            ${labs > 0 ? `<div class="tt-stat-chip" style="color: #10B981;"><span>${labs} Lab Session</span></div>` : ''}
+            ${tutorials > 0 ? `<div class="tt-stat-chip" style="color: #F59E0B;"><span>${tutorials} Tutorial</span></div>` : ''}
+            <div class="tt-stat-chip">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <span>Sec B (Room CS-201 / CS-204)</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // 3. Render Main Schedule Container
+    const grid = document.getElementById('timetable-weekly-grid');
+    if (!grid) return;
+
+    if (selectedDay === 'all') {
+      // All Days Separated Sections
+      grid.innerHTML = `
+        <div class="tt-all-days-grid">
+          ${days.map(day => {
+            const daySlots = allSlots.filter(s => s.dayOfWeek === day);
+            const isToday = (day === actualToday);
+
+            return `
+              <div class="tt-day-separated-section ${isToday ? 'is-today-section' : ''}">
+                <div class="tt-day-section-header">
+                  <div class="tt-day-section-title">
+                    <span>${day}</span>
+                    ${isToday ? '<span class="kpi-badge safe" style="font-size: 0.68rem;">Today</span>' : ''}
+                  </div>
+                  <span class="tab-count-pill" style="font-size: 0.74rem; font-weight: 800; padding: 3px 10px; border-radius: 9999px; background: var(--bg-surface); border: 1px solid var(--border-crystal); color: var(--text-primary);">${daySlots.length} Classes</span>
+                </div>
+                <div class="tt-day-slots-stack">
+                  ${daySlots.length > 0 ? daySlots.map((s, idx) => `
+                    <div class="tt-mini-slot-card" style="--slot-color: ${s.color || '#6366F1'};">
+                      <div class="tt-mini-slot-top">
+                        <span class="tt-mini-slot-time">Period ${idx + 1} • ${s.startTime} - ${s.endTime}</span>
+                        <span class="tt-type-pill ${(s.type || 'lecture').toLowerCase()}">${s.type}</span>
+                      </div>
+                      <h4 class="tt-mini-slot-title">${s.subjectName}</h4>
+                      <div class="tt-mini-slot-meta">
+                        <span>${s.faculty}</span>
+                        <span style="font-weight: 700; color: var(--primary);">${s.roomNumber}</span>
+                      </div>
+                    </div>
+                  `).join('') : `
+                    <div style="padding: 20px; text-align: center; color: var(--crystal-dim); font-size: 0.82rem;">No classes scheduled</div>
+                  `}
                 </div>
               </div>
-            `).join('')}
-          </div>
+            `;
+          }).join('')}
         </div>
       `;
-    }).join('');
+    } else {
+      // Single Day Focused Timeline
+      const activeTargetDay = (selectedDay === 'today') ? ((actualToday === 'Sunday') ? 'Friday' : actualToday) : selectedDay;
+      const daySlots = allSlots.filter(s => s.dayOfWeek === activeTargetDay);
+      const isToday = (activeTargetDay === actualToday);
+
+      if (daySlots.length === 0) {
+        grid.innerHTML = `
+          <div class="tt-empty-day-box">
+            <div class="tt-empty-day-icon">☕</div>
+            <h4>No Classes Scheduled on ${activeTargetDay}</h4>
+            <p>You have no lectures or practical laboratory sessions scheduled for this day.</p>
+            <button class="btn btn-primary btn-sm" onclick="App.switchTimetableDay('Monday')" style="margin-top: 16px;">
+              View Monday's Timetable →
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = `
+        <div class="tt-day-timeline">
+          ${daySlots.map((s, idx) => {
+            let statusClass = 'completed';
+            let statusLabel = '✓ Marked Present';
+
+            if (isToday && idx === 1) {
+              statusClass = 'ongoing';
+              statusLabel = '• In Session (Active)';
+            } else if (!isToday || idx > 1) {
+              statusClass = 'upcoming';
+              statusLabel = '📅 Scheduled';
+            }
+
+            return `
+              <div class="tt-period-row" style="--slot-color: ${s.color || '#6366F1'};">
+                <!-- Column 1: Time & Period -->
+                <div class="tt-time-col">
+                  <span class="tt-period-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/></svg>
+                    Period ${idx + 1}
+                  </span>
+                  <div class="tt-time-main">${s.startTime}</div>
+                  <span class="tt-duration-pill">${s.startTime} - ${s.endTime}</span>
+                </div>
+
+                <!-- Column 2: Subject Details & Faculty -->
+                <div class="tt-subject-col">
+                  <div class="tt-subject-header-row">
+                    <span class="tt-code-pill">${s.subjectCode || 'CS60' + (idx + 1)}</span>
+                    <span class="tt-type-pill ${(s.type || 'lecture').toLowerCase()}">${s.type}</span>
+                  </div>
+                  <h3 class="tt-subject-name">${s.subjectName}</h3>
+                  <div class="tt-meta-row">
+                    <span class="tt-meta-item">
+                      <svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      ${s.faculty}
+                    </span>
+                    <span class="tt-meta-item" style="color: var(--primary); font-weight: 700;">
+                      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                      ${s.roomNumber}
+                    </span>
+                    <span class="tt-meta-item">
+                      <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                      4 Credits
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Column 3: Status & Action -->
+                <div class="tt-action-col">
+                  <span class="tt-status-pill ${statusClass}">${statusLabel}</span>
+                  <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="font-size: 0.74rem; padding: 6px 12px; border-radius: var(--radius-sm);" title="Check Subject Attendance">
+                    Attendance Logs →
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+  },
+
+  /**
+   * Switch Selected Day in Timetable View
+   */
+  switchTimetableDay(day) {
+    const daysArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const actualToday = daysArr[new Date().getDay()];
+
+    if (day === 'today') {
+      this.currentTimetableDay = (actualToday === 'Sunday') ? 'Friday' : actualToday;
+    } else {
+      this.currentTimetableDay = day;
+    }
+
+    this.renderTimetable(this.cachedTimetableSlots || (typeof MockDB !== 'undefined' ? MockDB.timeTable : []));
+    
+    // Update button active state if it's the quick action
+    const todayFocusBtn = document.getElementById('tt-btn-today-focus');
+    const allDaysBtn = document.getElementById('tt-btn-all-days');
+    if (todayFocusBtn) {
+      if (this.currentTimetableDay === 'today' || this.currentTimetableDay === actualToday) {
+        todayFocusBtn.classList.add('btn-primary');
+        todayFocusBtn.classList.remove('btn-secondary');
+      } else {
+        todayFocusBtn.classList.remove('btn-primary');
+        todayFocusBtn.classList.add('btn-secondary');
+      }
+    }
+    if (allDaysBtn) {
+      if (this.currentTimetableDay === 'all') {
+        allDaysBtn.classList.add('btn-primary');
+        allDaysBtn.classList.remove('btn-secondary');
+      } else {
+        allDaysBtn.classList.remove('btn-primary');
+        allDaysBtn.classList.add('btn-secondary');
+      }
+    }
   },
 
   /**
