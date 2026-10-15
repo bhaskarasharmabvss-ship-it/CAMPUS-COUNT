@@ -45,6 +45,11 @@ const App = {
     document.documentElement.setAttribute('data-theme', this.theme);
     document.documentElement.setAttribute('data-palette', this.palette);
     document.documentElement.setAttribute('data-font', this.font);
+    if (document.body) {
+      document.body.setAttribute('data-theme', this.theme);
+      document.body.setAttribute('data-palette', this.palette);
+      document.body.setAttribute('data-font', this.font);
+    }
     this.updateCustomizerUI();
   },
 
@@ -56,6 +61,7 @@ const App = {
   setThemeMode(mode) {
     this.theme = mode;
     document.documentElement.setAttribute('data-theme', this.theme);
+    if (document.body) document.body.setAttribute('data-theme', this.theme);
     localStorage.setItem('campus_theme', this.theme);
     this.updateCustomizerUI();
     this.showToast(`Switched to ${this.theme === 'light' ? 'Quartz Light' : 'Obsidian Neon Dark'} mode`, 'info');
@@ -67,6 +73,7 @@ const App = {
   setPalette(paletteName) {
     this.palette = paletteName;
     document.documentElement.setAttribute('data-palette', this.palette);
+    if (document.body) document.body.setAttribute('data-palette', this.palette);
     localStorage.setItem('campus_palette', this.palette);
     this.updateCustomizerUI();
     
@@ -85,6 +92,7 @@ const App = {
   setFont(fontName) {
     this.font = fontName;
     document.documentElement.setAttribute('data-font', this.font);
+    if (document.body) document.body.setAttribute('data-font', this.font);
     localStorage.setItem('campus_font', this.font);
     this.updateCustomizerUI();
 
@@ -99,6 +107,15 @@ const App = {
 
   openThemeCustomizer() {
     this.updateCustomizerUI();
+    const modal = document.getElementById('theme-customizer-modal');
+    if (modal) {
+      modal.classList.add('active');
+      modal.style.display = 'flex';
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+      modal.style.pointerEvents = 'auto';
+      modal.style.zIndex = '999999';
+    }
     this.openModal('theme-customizer-modal');
   },
 
@@ -1441,7 +1458,7 @@ const App = {
    */
   setupModals() {
     // Dismiss modal on backdrop click
-    document.querySelectorAll('.modal-overlay').forEach(modal => {
+    document.querySelectorAll('.modal-overlay, .modal-backdrop').forEach(modal => {
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
           this.closeModal(modal.id);
@@ -1452,7 +1469,7 @@ const App = {
     // Dismiss modal on Escape key
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+        document.querySelectorAll('.modal-overlay.active, .modal-backdrop.active').forEach(modal => {
           this.closeModal(modal.id);
         });
       }

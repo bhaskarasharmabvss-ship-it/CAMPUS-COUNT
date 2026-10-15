@@ -103,6 +103,11 @@
             <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
             <span class="nav-label">Settings</span>
           </div>
+          <div class="nav-item" onclick="App.openThemeCustomizer()" title="Open Theme &amp; Typography Studio" style="cursor: pointer;">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg></div>
+            <span class="nav-label">Theme &amp; Fonts</span>
+            <span class="nav-badge" style="background: var(--primary); color: #fff;">Studio</span>
+          </div>
           <div class="nav-item" data-view="logout" id="nav-logout" style="margin-top: 8px; color: #EF4444;">
             <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></div>
             <span class="nav-label">Sign Out</span>
@@ -141,6 +146,11 @@
           <div class="nav-item" data-view="profile" id="nav-teacher-profile">
             <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
             <span class="nav-label">Faculty Profile</span>
+          </div>
+          <div class="nav-item" onclick="App.openThemeCustomizer()" title="Open Theme &amp; Typography Studio" style="cursor: pointer;">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg></div>
+            <span class="nav-label">Theme &amp; Fonts</span>
+            <span class="nav-badge" style="background: var(--primary); color: #fff;">Studio</span>
           </div>
           <div class="nav-item" data-view="logout" id="nav-teacher-logout" style="margin-top: 8px; color: #EF4444;">
             <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></div>
@@ -190,6 +200,11 @@
           <div class="nav-item" data-view="settings" id="nav-admin-settings">
             <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></div>
             <span class="nav-label">System Audit</span>
+          </div>
+          <div class="nav-item" onclick="App.openThemeCustomizer()" title="Open Theme &amp; Typography Studio" style="cursor: pointer;">
+            <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg></div>
+            <span class="nav-label">Theme &amp; Fonts</span>
+            <span class="nav-badge" style="background: var(--primary); color: #fff;">Studio</span>
           </div>
           <div class="nav-item" data-view="logout" id="nav-admin-logout" style="margin-top: 8px; color: #EF4444;">
             <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></div>
@@ -474,8 +489,11 @@
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M10 10h4v4h-4z"/></svg>
                 Scan Attendance QR
               </button>
+              <button class="btn btn-secondary btn-sm" onclick="App.openThemeCustomizer()" style="background: var(--bg-surface); color: var(--text-primary); font-weight: 700; border: 1.5px solid var(--border-crystal-hover); box-shadow: var(--shadow-crystal);">
+                🎨 Theme &amp; Fonts
+              </button>
               <button class="btn btn-primary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: var(--bg-surface); color: var(--primary); font-weight: 700; border: 1.5px solid var(--border-crystal-hover);">
-                🎫 Examination Hall Ticket
+                🎫 Exam Hall Ticket
               </button>
               <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="background: var(--primary-subtle); color: var(--primary); border: 1.5px solid var(--border-crystal-hover);">
                 📊 Biometric Logs →
@@ -3088,7 +3106,7 @@
   <!-- ==========================================================================
        THEME & TYPOGRAPHY CUSTOMIZER MODAL
        ========================================================================== -->
-  <div id="theme-customizer-modal" class="modal-backdrop">
+  <div id="theme-customizer-modal" class="modal-overlay">
     <div class="modal-box customizer-modal-box">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 12px;">
