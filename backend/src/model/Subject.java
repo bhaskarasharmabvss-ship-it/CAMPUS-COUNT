@@ -17,6 +17,11 @@ public class Subject {
     private boolean isShortage;
     private int classesNeededFor75;
 
+    // Semester Target Metrics
+    private int semesterTotalClasses = 60;
+    private int semesterRequiredClasses = 45; // 75% of 60
+    private int remainingClasses = 15;
+
     public Subject() {}
 
     public Subject(String id, String code, String name, String faculty, String facultyEmail,
@@ -34,6 +39,9 @@ public class Subject {
         this.pendingAssignments = pendingAssignments;
         this.examDate = examDate;
         this.syllabusCompletion = syllabusCompletion;
+        this.semesterTotalClasses = Math.max(60, totalClasses + 15);
+        this.semesterRequiredClasses = (int) Math.ceil(this.semesterTotalClasses * 0.75);
+        this.remainingClasses = Math.max(0, this.semesterTotalClasses - totalClasses);
         recalculateAttendance();
     }
 
@@ -46,13 +54,18 @@ public class Subject {
         this.isShortage = this.attendancePercentage < 75.0;
 
         // Calculate classes needed to reach 75%:
-        // (P + X) / (T + X) >= 0.75 => P + X >= 0.75*T + 0.75*X => 0.25*X >= 0.75*T - P => X >= (3*T - 4*P)
         if (this.isShortage) {
             int needed = (3 * totalClasses) - (4 * presentClasses);
             this.classesNeededFor75 = Math.max(0, needed);
         } else {
             this.classesNeededFor75 = 0;
         }
+
+        if (this.semesterTotalClasses < totalClasses) {
+            this.semesterTotalClasses = totalClasses + 12;
+            this.semesterRequiredClasses = (int) Math.ceil(this.semesterTotalClasses * 0.75);
+        }
+        this.remainingClasses = Math.max(0, this.semesterTotalClasses - totalClasses);
     }
 
     // Getters and Setters
@@ -104,5 +117,21 @@ public class Subject {
     public void setSyllabusCompletion(int syllabusCompletion) { this.syllabusCompletion = syllabusCompletion; }
 
     public boolean isShortage() { return isShortage; }
+    public void setShortage(boolean shortage) { isShortage = shortage; }
+
     public int getClassesNeededFor75() { return classesNeededFor75; }
+    public void setClassesNeededFor75(int classesNeededFor75) { this.classesNeededFor75 = classesNeededFor75; }
+
+    public int getSemesterTotalClasses() { return semesterTotalClasses; }
+    public void setSemesterTotalClasses(int semesterTotalClasses) { 
+        this.semesterTotalClasses = semesterTotalClasses; 
+        this.semesterRequiredClasses = (int) Math.ceil(semesterTotalClasses * 0.75);
+        this.remainingClasses = Math.max(0, semesterTotalClasses - totalClasses);
+    }
+
+    public int getSemesterRequiredClasses() { return semesterRequiredClasses; }
+    public void setSemesterRequiredClasses(int semesterRequiredClasses) { this.semesterRequiredClasses = semesterRequiredClasses; }
+
+    public int getRemainingClasses() { return remainingClasses; }
+    public void setRemainingClasses(int remainingClasses) { this.remainingClasses = remainingClasses; }
 }

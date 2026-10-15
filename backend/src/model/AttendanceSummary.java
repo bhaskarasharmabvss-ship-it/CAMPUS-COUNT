@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 public class AttendanceSummary {
     private int totalClasses;
     private int presentClasses;
@@ -13,6 +11,14 @@ public class AttendanceSummary {
     private int lowAttendanceSubjects;
     private double currentCgpa;
     private int pendingAssignments;
+
+    // Semester Target & Requirements ("Total No. of Classes Should Have for a Sem")
+    private int semesterTotalClasses = 360;          // Total classes scheduled in semester
+    private int semesterRequiredClasses = 270;       // Minimum required for 75% exam eligibility
+    private double semesterTargetPercentage = 75.0;  // Standard university minimum threshold (75%)
+    private int classesRemainingInSemester = 121;    // Remaining classes to be conducted
+    private int classesNeededForEligibility = 68;    // Classes needed to secure >= 75%
+    private int safeAbsencesAllowed = 53;            // Classes student can safely miss
 
     public AttendanceSummary() {}
 
@@ -32,6 +38,14 @@ public class AttendanceSummary {
             this.overallPercentage = 0.0;
         }
         this.isShortage = this.overallPercentage < 75.0;
+
+        // Calculate semester metrics (e.g. 60 classes per subject for 6 subjects = 360)
+        this.semesterTotalClasses = Math.max(360, totalSubjects * 60);
+        this.semesterRequiredClasses = (int) Math.ceil(this.semesterTotalClasses * 0.75); // 270
+        this.classesRemainingInSemester = Math.max(0, this.semesterTotalClasses - totalClasses);
+        int needed = this.semesterRequiredClasses - presentClasses;
+        this.classesNeededForEligibility = Math.max(0, needed);
+        this.safeAbsencesAllowed = Math.max(0, this.classesRemainingInSemester - this.classesNeededForEligibility);
     }
 
     public int getTotalClasses() { return totalClasses; }
@@ -63,4 +77,22 @@ public class AttendanceSummary {
 
     public int getPendingAssignments() { return pendingAssignments; }
     public void setPendingAssignments(int pendingAssignments) { this.pendingAssignments = pendingAssignments; }
+
+    public int getSemesterTotalClasses() { return semesterTotalClasses; }
+    public void setSemesterTotalClasses(int semesterTotalClasses) { this.semesterTotalClasses = semesterTotalClasses; }
+
+    public int getSemesterRequiredClasses() { return semesterRequiredClasses; }
+    public void setSemesterRequiredClasses(int semesterRequiredClasses) { this.semesterRequiredClasses = semesterRequiredClasses; }
+
+    public double getSemesterTargetPercentage() { return semesterTargetPercentage; }
+    public void setSemesterTargetPercentage(double semesterTargetPercentage) { this.semesterTargetPercentage = semesterTargetPercentage; }
+
+    public int getClassesRemainingInSemester() { return classesRemainingInSemester; }
+    public void setClassesRemainingInSemester(int classesRemainingInSemester) { this.classesRemainingInSemester = classesRemainingInSemester; }
+
+    public int getClassesNeededForEligibility() { return classesNeededForEligibility; }
+    public void setClassesNeededForEligibility(int classesNeededForEligibility) { this.classesNeededForEligibility = classesNeededForEligibility; }
+
+    public int getSafeAbsencesAllowed() { return safeAbsencesAllowed; }
+    public void setSafeAbsencesAllowed(int safeAbsencesAllowed) { this.safeAbsencesAllowed = safeAbsencesAllowed; }
 }

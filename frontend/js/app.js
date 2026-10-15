@@ -8,13 +8,18 @@ const App = {
   currentView: 'admin-dashboard',
   currentRole: 'admin',
   currentUser: null,
-  theme: 'dark',
+  theme: 'light',
   studentData: null,
   summaryData: null,
   subjectsData: [],
   notificationsData: [],
   adminStudents: [],
   adminAttendanceMap: {},
+  qrMediaStream: null,
+  selectedTargetPct: 75,
+  teacherQrInterval: null,
+  teacherQrSecondsLeft: 600,
+  activeTeacherQrToken: 'ATTEND-CS602-ML',
 
   async init() {
     this.initTheme();
@@ -30,18 +35,18 @@ const App = {
   },
 
   /**
-   * Theme Manager (Liquid Obsidian Dark & Liquid Quartz Light)
+   * Theme Manager (Normal Orange & White Light and Obsidian Dark)
    */
   initTheme() {
-    this.theme = localStorage.getItem('campus_theme') || 'dark';
+    this.theme = localStorage.getItem('campus_theme') || 'light';
     document.documentElement.setAttribute('data-theme', this.theme);
   },
 
   toggleTheme() {
-    this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', this.theme);
     localStorage.setItem('campus_theme', this.theme);
-    this.showToast(`Switched to Liquid ${this.theme === 'dark' ? 'Obsidian (Dark)' : 'Quartz (Light)'} theme`, 'info');
+    this.showToast(`Switched to ${this.theme === 'light' ? 'Normal Orange & White' : 'Obsidian Dark'} theme`, 'info');
   },
 
   /**
@@ -114,6 +119,7 @@ const App = {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
+      const isLight = document.documentElement.getAttribute('data-theme') !== 'dark';
 
       // Connect nodes with crystal refract lines
       for (let i = 0; i < count; i++) {
@@ -123,7 +129,7 @@ const App = {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 130) {
             const alpha = (1 - dist / 130) * 0.14;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+            ctx.strokeStyle = isLight ? `rgba(249, 115, 22, ${alpha * 0.95})` : `rgba(255, 255, 255, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -152,8 +158,8 @@ const App = {
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillStyle = isLight ? 'rgba(249, 115, 22, 0.22)' : 'rgba(255, 255, 255, 0.4)';
+        ctx.strokeStyle = isLight ? 'rgba(234, 88, 12, 0.55)' : 'rgba(255, 255, 255, 0.7)';
         ctx.lineWidth = 0.8;
 
         ctx.beginPath();
@@ -518,7 +524,7 @@ const App = {
   },
 
   /**
-   * Bind Summary KPIs on Home Dashboard
+   * Bind Summary KPIs on Home Dashboard & Semester VI Attendance Target Hub
    */
   bindSummaryKPIs(summary) {
     if (!summary) return;
@@ -544,6 +550,48 @@ const App = {
     if (statP) statP.textContent = `${summary.presentClasses} Classes`;
     if (statA) statA.textContent = `${summary.absentClasses} Classes`;
     if (statL) statL.textContent = `${summary.leaveClasses} Sessions`;
+
+    // Semester VI Target Requirement Metrics (Total no. of should have for a sem)
+    const semTotal = summary.semesterTotalClasses || 360;
+    const semConducted = summary.totalClasses || 239;
+    const semAttended = summary.presentClasses || 202;
+    const semTargetPct = this.selectedTargetPct || 75;
+    const semRequired = Math.ceil(semTotal * (semTargetPct / 100));
+    const semRemaining = Math.max(0, semTotal - semConducted);
+    const semNeeded = Math.max(0, semRequired - semAttended);
+    const semBuffer = Math.max(0, semRemaining - semNeeded);
+
+    const semTotalEl = document.getElementById('sem-total-classes-val');
+    const semReqEl = document.getElementById('sem-required-classes-val');
+    const semAttEl = document.getElementById('sem-attended-classes-val');
+    const semNeedEl = document.getElementById('sem-needed-classes-val');
+    const semBufEl = document.getElementById('sem-buffer-classes-val');
+    const semFillEl = document.getElementById('sem-progress-fill');
+    const semStatusEl = document.getElementById('sem-status-indicator');
+    const semStandingEl = document.getElementById('sem-standing-badge');
+
+    if (semTotalEl) semTotalEl.textContent = semTotal;
+    if (semReqEl) semReqEl.textContent = semRequired;
+    if (semAttEl) semAttEl.textContent = semAttended;
+    if (semNeedEl) semNeedEl.textContent = semNeeded;
+    if (semBufEl) semBufEl.textContent = semBuffer;
+
+    if (semFillEl) {
+      const fillPct = Math.min(100, (semAttended / semTotal) * 100).toFixed(1);
+      semFillEl.style.width = `${fillPct}%`;
+    }
+
+    if (semStatusEl) {
+      semStatusEl.textContent = `Attended: ${semAttended} Classes (${semNeeded === 0 ? 'Target Met' : 'Need ' + semNeeded + ' More for ' + semTargetPct + '%'})`;
+    }
+
+    if (semStandingEl) {
+      const curPct = ((semAttended / semConducted) * 100).toFixed(1);
+      const isEligible = parseFloat(curPct) >= 75.0;
+      semStandingEl.innerHTML = `<span class="pulsing-dot" style="background: ${isEligible ? '#10B981' : '#EF4444'};"></span><span>Standing: ${isEligible ? 'Eligible' : 'Attendance Shortage'} (${curPct}%)</span>`;
+    }
+
+    this.setSemesterTarget(semTargetPct);
 
     // Shortage warning banner on Home
     const shortageBox = document.getElementById('home-shortage-alert');
@@ -571,6 +619,58 @@ const App = {
     if (sideAsnBadge) {
       sideAsnBadge.textContent = summary.pendingAssignments;
       sideAsnBadge.style.display = summary.pendingAssignments > 0 ? 'inline-block' : 'none';
+    }
+  },
+
+  /**
+   * Interactive Semester Goal Calculator (75% Exam Minimum, 80%, 85%, 90%)
+   */
+  setSemesterTarget(targetPct) {
+    targetPct = parseInt(targetPct) || 75;
+    this.selectedTargetPct = targetPct;
+
+    document.querySelectorAll('.sem-goal-chip').forEach(chip => {
+      if (chip.textContent.includes(`${targetPct}%`)) {
+        chip.classList.add('active');
+      } else {
+        chip.classList.remove('active');
+      }
+    });
+
+    const summary = this.summaryData || {
+      semesterTotalClasses: 360,
+      totalClasses: 239,
+      presentClasses: 202
+    };
+
+    const total = summary.semesterTotalClasses || 360;
+    const conducted = summary.totalClasses || 239;
+    const attended = summary.presentClasses || 202;
+    const remainingInSem = Math.max(0, total - conducted);
+    const required = Math.ceil(total * (targetPct / 100));
+    const needed = Math.max(0, required - attended);
+    const buffer = Math.max(0, remainingInSem - needed);
+
+    const reqEl = document.getElementById('sem-required-classes-val');
+    const needEl = document.getElementById('sem-needed-classes-val');
+    const bufEl = document.getElementById('sem-buffer-classes-val');
+    const adviceEl = document.getElementById('sem-goal-advice');
+
+    if (reqEl) reqEl.textContent = required;
+    if (needEl) needEl.textContent = needed;
+    if (bufEl) bufEl.textContent = buffer;
+
+    if (adviceEl) {
+      if (needed === 0) {
+        adviceEl.textContent = `🎉 Target Achieved! You already have ${attended} classes (exceeds ${required} for ${targetPct}%).`;
+        adviceEl.style.color = '#059669';
+      } else if (needed <= remainingInSem) {
+        adviceEl.textContent = `Attend ${needed} more classes out of ${remainingInSem} remaining to secure ${targetPct}%. (Safe buffer: ${buffer} leaves)`;
+        adviceEl.style.color = '#EA580C';
+      } else {
+        adviceEl.textContent = `⚠️ Target ${targetPct}% mathematically out of reach (${needed} needed with ${remainingInSem} left). Aim for next highest threshold.`;
+        adviceEl.style.color = '#EF4444';
+      }
     }
   },
 
@@ -1338,6 +1438,373 @@ const App = {
     localStorage.removeItem('campus_user');
     this.showToast('Signed out of session. Redirecting to Portal Access...', 'info');
     this.openLoginModal();
+  },
+
+  /**
+   * ==========================================================================
+   * STUDENT SELF REGISTRATION CONTROLLER
+   * ==========================================================================
+   */
+  openStudentRegisterModal() {
+    this.closeModal('login-modal');
+    this.openModal('student-register-modal');
+  },
+
+  closeStudentRegisterModal() {
+    this.closeModal('student-register-modal');
+  },
+
+  async handleStudentRegister(event) {
+    if (event) event.preventDefault();
+
+    const name = document.getElementById('reg-student-name').value.trim();
+    const rollNumber = document.getElementById('reg-student-roll').value.trim().toUpperCase();
+    const email = document.getElementById('reg-student-email').value.trim();
+    const phone = document.getElementById('reg-student-phone').value.trim();
+    const department = document.getElementById('reg-student-dept').value;
+    const semester = document.getElementById('reg-student-sem').value;
+    const section = document.getElementById('reg-student-section').value;
+    const password = document.getElementById('reg-student-password').value;
+
+    if (!name || !rollNumber || !email || !password) {
+      this.showToast('Please fill all required registration fields', 'warning');
+      return;
+    }
+
+    try {
+      const payload = {
+        name,
+        rollNumber,
+        email,
+        phone,
+        department,
+        semester,
+        section,
+        password
+      };
+
+      const res = await ApiService.registerStudent(payload);
+      if (res && res.success) {
+        this.showToast(`Registration Successful! Welcome, ${name}.`, 'success');
+        this.closeModal('student-register-modal');
+
+        const studentUser = res.student || {
+          id: rollNumber,
+          rollNumber: rollNumber,
+          name: name,
+          email: email,
+          phone: phone,
+          department: department,
+          semester: semester,
+          section: section,
+          course: `B.Tech ${department}`,
+          academicYear: "2024-2025",
+          year: "3rd Year"
+        };
+
+        this.currentUser = studentUser;
+        this.studentData = studentUser;
+        this.currentRole = 'student';
+        localStorage.setItem('campus_role', 'student');
+        localStorage.setItem('campus_user', JSON.stringify(studentUser));
+
+        this.applyRoleUI();
+        this.bindStudentProfile(studentUser);
+        this.navigateTo('home');
+      } else {
+        this.showToast(res.message || 'Registration failed', 'error');
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      this.showToast('Error registering student. Please try again.', 'error');
+    }
+  },
+
+  /**
+   * ==========================================================================
+   * QR ATTENDANCE SCANNER & VERIFIER CONTROLLER
+   * ==========================================================================
+   */
+  openQrScanner() {
+    this.openModal('qr-scanner-modal');
+    const resultCard = document.getElementById('qr-scan-result-card');
+    if (resultCard) {
+      resultCard.style.display = 'none';
+      resultCard.innerHTML = '';
+    }
+    const input = document.getElementById('manual-qr-code-input');
+    if (input) input.value = '';
+    this.startQrCamera();
+  },
+
+  closeQrScanner() {
+    this.stopQrCamera();
+    this.closeModal('qr-scanner-modal');
+  },
+
+  async startQrCamera() {
+    const video = document.getElementById('qr-camera-video');
+    const fallbackMsg = document.getElementById('qr-camera-fallback-msg');
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' }
+        });
+        this.qrMediaStream = stream;
+        if (video) {
+          video.srcObject = stream;
+          video.play();
+        }
+        if (fallbackMsg) fallbackMsg.style.display = 'none';
+      } else {
+        if (fallbackMsg) fallbackMsg.style.display = 'block';
+      }
+    } catch (err) {
+      console.warn("Camera access not available or permission denied:", err);
+      if (fallbackMsg) fallbackMsg.style.display = 'block';
+    }
+  },
+
+  stopQrCamera() {
+    if (this.qrMediaStream) {
+      this.qrMediaStream.getTracks().forEach(track => track.stop());
+      this.qrMediaStream = null;
+    }
+    const video = document.getElementById('qr-camera-video');
+    if (video) {
+      video.srcObject = null;
+    }
+  },
+
+  async simulateQrScan(code) {
+    this.showToast(`Scanning QR payload: ${code}...`, 'info');
+    await this.processQrScan(code);
+  },
+
+  async submitManualQrCode() {
+    const input = document.getElementById('manual-qr-code-input');
+    const code = input ? input.value.trim() : '';
+    if (!code) {
+      this.showToast('Please enter a session QR code', 'warning');
+      return;
+    }
+    await this.processQrScan(code);
+  },
+
+  async processQrScan(qrPayload) {
+    const studentId = this.currentUser && this.currentUser.id ? this.currentUser.id : (this.studentData ? this.studentData.rollNumber : '22CS1084');
+    const studentName = this.currentUser && this.currentUser.name ? this.currentUser.name : (this.studentData ? this.studentData.name : 'Aarav Sharma');
+
+    try {
+      const res = await ApiService.scanAttendanceQr(qrPayload, studentId, studentName);
+      const resultCard = document.getElementById('qr-scan-result-card');
+
+      if (res && res.success) {
+        if (resultCard) {
+          resultCard.style.display = 'block';
+          resultCard.style.background = '#ECFDF5';
+          resultCard.style.border = '1px solid #10B981';
+          resultCard.style.color = '#065F46';
+          resultCard.innerHTML = `
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <span style="font-size: 1.4rem;">✅</span>
+              <div>
+                <strong style="font-size: 0.95rem; display: block; margin-bottom: 2px;">Attendance Successfully Verified!</strong>
+                <p style="margin: 0; font-size: 0.8rem; color: #047857;">${res.message || 'You have been marked PRESENT for this period.'}</p>
+                <div style="margin-top: 6px; font-size: 0.75rem; color: #065F46; font-family: monospace;">Token: ${qrPayload} • Recorded at: ${new Date().toLocaleTimeString()}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        // Increment present classes in local model & update KPIs
+        if (this.summaryData) {
+          this.summaryData.presentClasses = (this.summaryData.presentClasses || 202) + 1;
+          this.summaryData.totalClasses = (this.summaryData.totalClasses || 239) + 1;
+          this.summaryData.overallPercentage = (this.summaryData.presentClasses / this.summaryData.totalClasses) * 100;
+          this.bindSummaryKPIs(this.summaryData);
+        }
+
+        this.showToast('Attendance recorded! Marked PRESENT.', 'success');
+      } else {
+        if (resultCard) {
+          resultCard.style.display = 'block';
+          resultCard.style.background = '#FEF2F2';
+          resultCard.style.border = '1px solid #EF4444';
+          resultCard.style.color = '#991B1B';
+          resultCard.innerHTML = `
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <span style="font-size: 1.4rem;">⚠️</span>
+              <div>
+                <strong style="font-size: 0.95rem; display: block; margin-bottom: 2px;">Attendance Verification Failed</strong>
+                <p style="margin: 0; font-size: 0.8rem;">${res.message || 'Invalid or expired QR code.'}</p>
+              </div>
+            </div>
+          `;
+        }
+        this.showToast(res.message || 'QR verification failed', 'error');
+      }
+    } catch (err) {
+      console.error("Scan error:", err);
+      this.showToast("Could not process QR scan", "error");
+    }
+  },
+
+  /**
+   * ==========================================================================
+   * FACULTY LIVE PERIOD QR CODE GENERATOR & CHECK-IN TRACKER
+   * ==========================================================================
+   */
+  openTeacherQrModal() {
+    const subjectSelect = document.getElementById('teacher-att-subject');
+    const classSelect = document.getElementById('teacher-att-class');
+    const subjectCode = subjectSelect ? subjectSelect.value : 'CS602';
+    const className = classSelect ? classSelect.value : 'CSE-VI-B';
+
+    const courseLabel = document.getElementById('teacher-qr-course-label');
+    const tokenLabel = document.getElementById('teacher-qr-token-label');
+    const tallyEl = document.getElementById('teacher-qr-scans-tally');
+
+    const token = `ATTEND-${subjectCode}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    if (courseLabel) courseLabel.textContent = `${subjectCode} (${className})`;
+    if (tokenLabel) tokenLabel.textContent = token;
+    if (tallyEl) tallyEl.textContent = '14 / 64';
+
+    this.activeTeacherQrToken = token;
+    this.renderSvgQrCode(token);
+    this.startTeacherQrTimer();
+    this.openModal('teacher-qr-modal');
+  },
+
+  closeTeacherQrModal() {
+    if (this.teacherQrInterval) {
+      clearInterval(this.teacherQrInterval);
+      this.teacherQrInterval = null;
+    }
+    this.closeModal('teacher-qr-modal');
+  },
+
+  refreshTeacherQrCode() {
+    const subjectSelect = document.getElementById('teacher-att-subject');
+    const subjectCode = subjectSelect ? subjectSelect.value : 'CS602';
+    const token = `ATTEND-${subjectCode}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    const tokenLabel = document.getElementById('teacher-qr-token-label');
+    if (tokenLabel) tokenLabel.textContent = token;
+    this.activeTeacherQrToken = token;
+    this.renderSvgQrCode(token);
+    this.teacherQrSecondsLeft = 600;
+    this.showToast('New dynamic session token generated', 'info');
+  },
+
+  startTeacherQrTimer() {
+    if (this.teacherQrInterval) clearInterval(this.teacherQrInterval);
+    this.teacherQrSecondsLeft = 600;
+
+    let checkedIn = 14;
+    this.teacherQrInterval = setInterval(() => {
+      this.teacherQrSecondsLeft--;
+      if (this.teacherQrSecondsLeft <= 0) {
+        clearInterval(this.teacherQrInterval);
+        this.teacherQrInterval = null;
+        const timerLabel = document.getElementById('teacher-qr-timer-label');
+        if (timerLabel) timerLabel.textContent = '00:00 (Expired)';
+        return;
+      }
+
+      const mins = Math.floor(this.teacherQrSecondsLeft / 60).toString().padStart(2, '0');
+      const secs = (this.teacherQrSecondsLeft % 60).toString().padStart(2, '0');
+      const timerLabel = document.getElementById('teacher-qr-timer-label');
+      if (timerLabel) timerLabel.textContent = `${mins}:${secs}`;
+
+      if (this.teacherQrSecondsLeft % 7 === 0 && checkedIn < 58) {
+        checkedIn += Math.floor(Math.random() * 2) + 1;
+        const tallyEl = document.getElementById('teacher-qr-scans-tally');
+        if (tallyEl) tallyEl.textContent = `${checkedIn} / 64`;
+      }
+    }, 1000);
+  },
+
+  renderSvgQrCode(text) {
+    const wrap = document.getElementById('teacher-qr-svg-wrap');
+    if (!wrap) return;
+
+    const size = 21;
+    const matrix = [];
+    for (let r = 0; r < size; r++) {
+      matrix[r] = [];
+      for (let c = 0; c < size; c++) {
+        matrix[r][c] = 0;
+      }
+    }
+
+    const addFinder = (row, col) => {
+      for (let r = -1; r <= 7; r++) {
+        for (let c = -1; c <= 7; c++) {
+          const pr = row + r;
+          const pc = col + c;
+          if (pr >= 0 && pr < size && pc >= 0 && pc < size) {
+            if (r === -1 || r === 7 || c === -1 || c === 7) {
+              matrix[pr][pc] = 0;
+            } else if (r === 0 || r === 6 || c === 0 || c === 6) {
+              matrix[pr][pc] = 1;
+            } else if (r >= 2 && r <= 4 && c >= 2 && c <= 4) {
+              matrix[pr][pc] = 1;
+            } else {
+              matrix[pr][pc] = 0;
+            }
+          }
+        }
+      }
+    };
+
+    addFinder(0, 0);
+    addFinder(0, 14);
+    addFinder(14, 0);
+
+    for (let i = 8; i < 13; i++) {
+      matrix[6][i] = i % 2 === 0 ? 1 : 0;
+      matrix[i][6] = i % 2 === 0 ? 1 : 0;
+    }
+
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+      hash = ((hash << 5) - hash) + text.charCodeAt(i);
+      hash |= 0;
+    }
+
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        if ((r < 8 && c < 8) || (r < 8 && c > 12) || (r > 12 && c < 8)) continue;
+        if (r === 6 || c === 6) continue;
+        const bit = ((hash ^ (r * 31 + c * 17)) & 1);
+        matrix[r][c] = bit;
+      }
+    }
+
+    const cellSize = 10;
+    const svgDim = size * cellSize;
+    let rects = '';
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        if (matrix[r][c] === 1) {
+          rects += `<rect x="${c * cellSize}" y="${r * cellSize}" width="${cellSize}" height="${cellSize}" fill="#0F172A" rx="1.5"/>`;
+        }
+      }
+    }
+
+    const centerSize = 28;
+    const centerPos = (svgDim - centerSize) / 2;
+    const centerBadge = `
+      <rect x="${centerPos}" y="${centerPos}" width="${centerSize}" height="${centerSize}" fill="#FFFFFF" rx="6" stroke="#F97316" stroke-width="2"/>
+      <circle cx="${svgDim / 2}" cy="${svgDim / 2}" r="5" fill="#F97316"/>
+    `;
+
+    wrap.innerHTML = `
+      <svg width="210" height="210" viewBox="0 0 ${svgDim} ${svgDim}" style="background: #FFFFFF; border-radius: 8px;">
+        ${rects}
+        ${centerBadge}
+      </svg>
+    `;
   },
 
   /**

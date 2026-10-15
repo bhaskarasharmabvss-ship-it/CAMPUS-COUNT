@@ -138,14 +138,14 @@ const Charts = {
         <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: auto; display: block;">
           <defs>
             <linearGradient id="trendAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22" />
-              <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0" />
+              <stop offset="0%" stop-color="#F97316" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="#F97316" stop-opacity="0.0" />
             </linearGradient>
           </defs>
 
           <!-- 75% Cutoff threshold line -->
-          <line x1="${padding.left}" y1="${y75}" x2="${width - padding.right}" y2="${y75}" stroke="#F87171" stroke-dasharray="4 4" stroke-width="1.5" />
-          <text x="${width - padding.right}" y="${y75 - 6}" fill="#F87171" font-size="10" font-weight="700" text-anchor="end">75% Mandatory Cutoff</text>
+          <line x1="${padding.left}" y1="${y75}" x2="${width - padding.right}" y2="${y75}" stroke="#EF4444" stroke-dasharray="4 4" stroke-width="1.5" />
+          <text x="${width - padding.right}" y="${y75 - 6}" fill="#EF4444" font-size="10" font-weight="700" text-anchor="end">75% Mandatory Cutoff</text>
 
           <!-- Grid Lines -->
           <line x1="${padding.left}" y1="${height - padding.bottom}" x2="${width - padding.right}" y2="${height - padding.bottom}" stroke="${gridColor}" stroke-width="1" />
@@ -153,14 +153,14 @@ const Charts = {
           <!-- Filled Gradient Area -->
           <path d="${areaD}" fill="url(#trendAreaGrad)" />
 
-          <!-- Curve -->
-          <path d="${pathD}" fill="none" stroke="var(--crystal-white)" stroke-width="3" stroke-linecap="round" />
+          <!-- Curve in Vibrant Orange -->
+          <path d="${pathD}" fill="none" stroke="#EA580C" stroke-width="3.5" stroke-linecap="round" />
 
           <!-- Data Points -->
           ${points.map(p => `
             <g class="chart-point" style="cursor: pointer;">
-              <circle cx="${p.x}" cy="${p.y}" r="5" fill="var(--bg-deep)" stroke="var(--crystal-white)" stroke-width="3" />
-              <text x="${p.x}" y="${p.y - 12}" fill="var(--text-primary)" font-size="11" font-weight="800" text-anchor="middle">${p.value}%</text>
+              <circle cx="${p.x}" cy="${p.y}" r="5.5" fill="#FFFFFF" stroke="#EA580C" stroke-width="3" />
+              <text x="${p.x}" y="${p.y - 12}" fill="#0F172A" font-size="11" font-weight="800" text-anchor="middle">${p.value}%</text>
               <text x="${p.x}" y="${height - 12}" fill="${textColor}" font-size="11" font-weight="600" text-anchor="middle">${p.label}</text>
             </g>
           `).join('')}

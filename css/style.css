@@ -6,68 +6,75 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
-  /* LIQUID OBSIDIAN (BLACK CRYSTAL THEME - DEFAULT) */
-  --theme-mode: 'dark';
+  /* NORMAL ORANGE & WHITE DESIGN SYSTEM (DEFAULT) */
+  --theme-mode: 'light';
   
-  --bg-deep: #030305;
-  --bg-surface: #08090D;
-  --bg-elevated: #0F1118;
-  --bg-card: rgba(15, 17, 26, 0.68);
-  --bg-card-hover: rgba(22, 26, 38, 0.85);
-  --bg-glass: rgba(255, 255, 255, 0.04);
-  --bg-glass-heavy: rgba(10, 12, 18, 0.82);
-  --bg-sidebar: rgba(6, 7, 11, 0.88);
-  --bg-header: rgba(6, 7, 11, 0.78);
+  --bg-deep: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #FFF7ED;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.96);
+  --bg-glass-heavy: rgba(255, 255, 255, 0.98);
+  --bg-sidebar: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.97);
 
-  /* PURE CRYSTAL WHITE ACCENTS */
-  --crystal-white: #FFFFFF;
-  --crystal-glow: rgba(255, 255, 255, 0.95);
-  --crystal-subtle: #E2E8F0;
-  --crystal-dim: #94A3B8;
-  --crystal-muted: #64748B;
-  --crystal-dark: #334155;
+  /* VIBRANT ORANGE & WHITE ACCENTS */
+  --primary: #F97316;              /* Energetic vibrant orange */
+  --primary-hover: #EA580C;        /* Rich burnt orange */
+  --primary-dark: #C2410C;
+  --primary-light: #FFEDD5;        /* Soft orange creamsicle */
+  --primary-subtle: #FFF7ED;       /* Warm light orange wash */
+  --primary-invert: #FFFFFF;       /* Crisp white on orange */
+  --primary-glow: rgba(249, 115, 22, 0.28);
+  --primary-gradient: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
+  --orange-accent: #FF6600;
+  --orange-light: #FFF7ED;
+  --orange-border: #FED7AA;
 
-  /* CHROMATIC REFRACTIVE BORDERS */
-  --border-crystal: rgba(255, 255, 255, 0.14);
-  --border-crystal-hover: rgba(255, 255, 255, 0.32);
-  --border-prism: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.25) 100%);
-  --border-subtle: rgba(255, 255, 255, 0.07);
+  --crystal-white: #EA580C;
+  --crystal-glow: rgba(249, 115, 22, 0.16);
+  --crystal-subtle: #1E293B;
+  --crystal-dim: #64748B;
+  --crystal-muted: #94A3B8;
+  --crystal-dark: #F1F5F9;
 
-  /* MONOCHROME LIQUID LIGHT ACCENTS */
-  --primary: #FFFFFF;
-  --primary-invert: #000000;
-  --primary-glow: rgba(255, 255, 255, 0.28);
-  --primary-gradient: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
-  --admin-accent: #E0E7FF;
-  --admin-glow: rgba(99, 102, 241, 0.25);
+  /* CHROMATIC CLEAN BORDERS */
+  --border-crystal: #E2E8F0;
+  --border-crystal-hover: #FDBA74;
+  --border-prism: linear-gradient(135deg, rgba(249, 115, 22, 0.25) 0%, rgba(226, 232, 240, 0.7) 100%);
+  --border-subtle: #F1F5F9;
+
+  --admin-accent: #EA580C;
+  --admin-glow: rgba(234, 88, 12, 0.22);
   
-  /* FUNCTIONAL CRYSTALLINE STATUS */
-  --status-safe: #34D399;
-  --status-safe-bg: rgba(52, 211, 153, 0.12);
-  --status-safe-border: rgba(52, 211, 153, 0.35);
+  /* FUNCTIONAL STATUS ACCENTS */
+  --status-safe: #10B981;
+  --status-safe-bg: #ECFDF5;
+  --status-safe-border: #A7F3D0;
 
-  --status-alert: #F87171;
-  --status-alert-bg: rgba(248, 113, 113, 0.14);
-  --status-alert-border: rgba(248, 113, 113, 0.4);
+  --status-alert: #EF4444;
+  --status-alert-bg: #FEF2F2;
+  --status-alert-border: #FECACA;
 
-  --status-warn: #FBBF24;
-  --status-warn-bg: rgba(251, 191, 36, 0.12);
-  --status-warn-border: rgba(251, 191, 36, 0.35);
+  --status-warn: #F59E0B;
+  --status-warn-bg: #FFFBEB;
+  --status-warn-border: #FDE68A;
 
-  --status-info: #38BDF8;
-  --status-info-bg: rgba(56, 189, 248, 0.12);
-  --status-info-border: rgba(56, 189, 248, 0.35);
+  --status-info: #F97316;
+  --status-info-bg: #FFF7ED;
+  --status-info-border: #FED7AA;
 
-  /* TYPOGRAPHY */
-  --text-primary: #FFFFFF;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-dark: #0F172A;
+  /* NORMAL CRISP HIGH-CONTRAST TYPOGRAPHY */
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-dark: #FFFFFF;
 
-  /* ELEVATION & 3D SHADOWS */
-  --shadow-crystal: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-  --shadow-crystal-lg: 0 20px 50px 0 rgba(0, 0, 0, 0.65), 0 0 25px rgba(255, 255, 255, 0.06);
-  --shadow-inset-prism: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+  /* ELEVATION & SHADOWS */
+  --shadow-crystal: 0 4px 18px 0 rgba(234, 88, 12, 0.07), 0 2px 6px 0 rgba(0, 0, 0, 0.04);
+  --shadow-crystal-lg: 0 16px 36px 0 rgba(234, 88, 12, 0.12), 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+  --shadow-inset-prism: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.04);
 
   /* DIMENSIONS */
   --sidebar-width: 270px;
@@ -81,63 +88,65 @@
   --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* LIQUID QUARTZ (WHITE CRYSTAL THEME) */
-[data-theme="light"] {
+/* LIGHT & ORANGE-WHITE THEME */
+[data-theme="light"],
+[data-theme="orange-white"] {
   --theme-mode: 'light';
   
-  --bg-deep: #F4F6F9;
+  --bg-deep: #F8FAFC;
   --bg-surface: #FFFFFF;
-  --bg-elevated: #F8FAFC;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(255, 255, 255, 0.98);
-  --bg-glass: rgba(255, 255, 255, 0.7);
-  --bg-glass-heavy: rgba(255, 255, 255, 0.92);
-  --bg-sidebar: rgba(255, 255, 255, 0.94);
-  --bg-header: rgba(255, 255, 255, 0.88);
+  --bg-elevated: #FFF7ED;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.96);
+  --bg-glass-heavy: rgba(255, 255, 255, 0.98);
+  --bg-sidebar: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.97);
 
-  --crystal-white: #0A0A0F;
-  --crystal-glow: rgba(0, 0, 0, 0.08);
+  --primary: #F97316;
+  --primary-hover: #EA580C;
+  --primary-invert: #FFFFFF;
+  --primary-glow: rgba(249, 115, 22, 0.28);
+  --primary-gradient: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
+  --admin-accent: #EA580C;
+  --admin-glow: rgba(234, 88, 12, 0.2);
+
+  --crystal-white: #EA580C;
+  --crystal-glow: rgba(249, 115, 22, 0.12);
   --crystal-subtle: #1E293B;
-  --crystal-dim: #475569;
-  --crystal-muted: #64748B;
+  --crystal-dim: #64748B;
+  --crystal-muted: #94A3B8;
   --crystal-dark: #F1F5F9;
 
-  --border-crystal: rgba(0, 0, 0, 0.09);
-  --border-crystal-hover: rgba(0, 0, 0, 0.22);
-  --border-prism: linear-gradient(135deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 50%, rgba(0,0,0,0.14) 100%);
-  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-crystal: #E2E8F0;
+  --border-crystal-hover: #FED7AA;
+  --border-prism: linear-gradient(135deg, rgba(249, 115, 22, 0.25) 0%, rgba(226, 232, 240, 0.7) 100%);
+  --border-subtle: #F1F5F9;
 
-  --primary: #0A0A0F;
-  --primary-invert: #FFFFFF;
-  --primary-glow: rgba(0, 0, 0, 0.12);
-  --primary-gradient: linear-gradient(135deg, #0F172A 0%, #334155 100%);
-  --admin-accent: #312E81;
-  --admin-glow: rgba(79, 70, 229, 0.15);
-
-  --status-safe: #059669;
+  --status-safe: #10B981;
   --status-safe-bg: #ECFDF5;
   --status-safe-border: #A7F3D0;
 
-  --status-alert: #DC2626;
+  --status-alert: #EF4444;
   --status-alert-bg: #FEF2F2;
   --status-alert-border: #FECACA;
 
-  --status-warn: #D97706;
+  --status-warn: #F59E0B;
   --status-warn-bg: #FFFBEB;
   --status-warn-border: #FDE68A;
 
-  --status-info: #0284C7;
-  --status-info-bg: #F0F9FF;
-  --status-info-border: #BAE6FD;
+  --status-info: #F97316;
+  --status-info-bg: #FFF7ED;
+  --status-info-border: #FED7AA;
 
-  --text-primary: #0A0A0F;
+  --text-primary: #0F172A;
   --text-secondary: #334155;
   --text-muted: #64748B;
   --text-dark: #FFFFFF;
 
-  --shadow-crystal: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
-  --shadow-crystal-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.14), 0 0 20px rgba(0, 0, 0, 0.03);
-  --shadow-inset-prism: inset 0 1px 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.06);
+  --shadow-crystal: 0 4px 18px 0 rgba(234, 88, 12, 0.07), 0 2px 6px 0 rgba(0, 0, 0, 0.04);
+  --shadow-crystal-lg: 0 16px 36px 0 rgba(234, 88, 12, 0.12), 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+  --shadow-inset-prism: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 /* GLOBAL RESET */
@@ -181,16 +190,16 @@ html, body {
   overflow: hidden;
 }
 
-/* Living Liquid Aurora Glow */
+/* Living Radiant Orange & White Aurora Glow */
 .liquid-bg-canvas::before {
   content: '';
   position: absolute;
   inset: -20%;
   background: 
-    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 85% 15%, rgba(120, 130, 160, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 50% 85%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 70%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+    radial-gradient(circle at 15% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(254, 215, 170, 0.22) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgba(255, 237, 213, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 70%, rgba(249, 115, 22, 0.07) 0%, transparent 45%);
   filter: blur(60px);
   animation: liquidMeshDrift 22s infinite alternate var(--transition-smooth);
 }

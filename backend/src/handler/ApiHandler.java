@@ -39,6 +39,53 @@ public class ApiHandler implements HttpHandler {
                 Map<String, Object> authResp = repo.authenticate(email, pass, role);
                 int statusCode = Boolean.TRUE.equals(authResp.get("success")) ? 200 : 401;
                 sendJsonResponse(exchange, statusCode, JsonUtil.toJson(authResp));
+            } else if ((path.equals("/api/auth/register") || path.equals("/api/student/register")) && "POST".equals(method)) {
+                String body = readRequestBody(exchange);
+                Map<String, String> data = JsonUtil.parseSimpleJson(body);
+                Student s = repo.registerStudent(
+                    data.get("name"),
+                    data.get("rollNumber"),
+                    data.get("email"),
+                    data.get("phone"),
+                    data.get("department"),
+                    data.get("course"),
+                    data.get("year"),
+                    data.get("semester"),
+                    data.get("section"),
+                    data.get("password"),
+                    data.get("guardianName"),
+                    data.get("guardianPhone"),
+                    data.get("address")
+                );
+                Map<String, Object> resp = new HashMap<>();
+                resp.put("success", true);
+                resp.put("message", "Student self-registration completed successfully! Welcome, " + s.getName());
+                resp.put("student", s);
+                sendJsonResponse(exchange, 201, JsonUtil.toJson(resp));
+            } else if (path.equals("/api/attendance/qr/generate") && ("POST".equals(method) || "GET".equals(method))) {
+                String subCode = "CS601";
+                String period = "Period 2 (10:00 - 11:00 AM)";
+                String dateStr = "";
+                if ("POST".equals(method)) {
+                    String body = readRequestBody(exchange);
+                    Map<String, String> data = JsonUtil.parseSimpleJson(body);
+                    subCode = data.getOrDefault("subjectCode", "CS601");
+                    period = data.getOrDefault("period", "Period 2 (10:00 - 11:00 AM)");
+                    dateStr = data.getOrDefault("date", "");
+                }
+                Map<String, Object> session = repo.generateAttendanceQr(subCode, period, dateStr);
+                sendJsonResponse(exchange, 200, JsonUtil.toJson(session));
+            } else if (path.equals("/api/attendance/qr/scan") && "POST".equals(method)) {
+                String body = readRequestBody(exchange);
+                Map<String, String> data = JsonUtil.parseSimpleJson(body);
+                String qrData = data.get("qrData");
+                if (qrData == null) qrData = data.get("qrPayload");
+                if (qrData == null) qrData = data.get("qrCode");
+                if (qrData == null) qrData = data.get("token");
+                String roll = data.get("rollNumber");
+                String name = data.get("studentName");
+                Map<String, Object> resp = repo.markAttendanceViaQr(qrData, roll, name);
+                sendJsonResponse(exchange, 200, JsonUtil.toJson(resp));
             } else if (path.equals("/api/auth/me") && "GET".equals(method)) {
                 String query = uri.getQuery();
                 if (query != null && query.contains("role=admin")) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -301,6 +301,10 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                     <span>Sign In to Portal</span>
                   </button>
+                  <button type="button" id="hero-btn-self-register" class="btn btn-secondary btn-hero-secondary" onclick="App.openStudentRegisterModal()" style="border-color: #EA580C; color: #EA580C; background: #FFF7ED;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span>Student Self Registration</span>
+                  </button>
                 </div>
 
                 <!-- Fast Credentials Helper -->
@@ -314,6 +318,9 @@
                   </button>
                   <button type="button" class="cred-chip" onclick="App.switchAuthTab('student'); App.fillStudentCredentials(); App.openLoginModal();">
                     🎓 Student Dossier
+                  </button>
+                  <button type="button" class="cred-chip" onclick="App.openStudentRegisterModal()" style="border-color: #FED7AA; color: #EA580C; background: #FFF7ED;">
+                    ✨ Student Self Registration
                   </button>
                 </div>
               </div>
@@ -457,10 +464,14 @@
               </div>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn btn-primary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: #FFFFFF; color: #0284C7; font-weight: 700;">
+              <button class="btn btn-primary btn-sm" onclick="App.openQrScanner()" style="background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%); color: #FFFFFF; font-weight: 700; border: none; box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M10 10h4v4h-4z"/></svg>
+                Scan Attendance QR
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: #FFFFFF; color: #EA580C; font-weight: 700; border: 1.5px solid #FED7AA;">
                 🎫 Examination Hall Ticket
               </button>
-              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="background: rgba(255,255,255,0.15); color: #FFFFFF;">
+              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="background: #FFF7ED; color: #EA580C; border: 1.5px solid #FDBA74;">
                 📊 Biometric Logs →
               </button>
             </div>
@@ -478,6 +489,100 @@
               </div>
             </div>
             <button class="btn btn-primary btn-sm" onclick="App.navigateTo('attendance')">Launch Attendance Simulator</button>
+          </div>
+
+          <!-- ==================================================================
+               SEMESTER TARGET CLASSES HUB ("Total No. of Should Have for a Sem")
+               ================================================================== -->
+          <div class="sem-target-hero-card">
+            <div class="sem-target-header">
+              <div class="sem-target-title-wrap">
+                <h3>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Semester VI Attendance Target &amp; Mandatory Examination Requirements
+                </h3>
+                <p>Academic Council Threshold: Students <strong>should have at least 75.0% minimum attendance</strong> to qualify for end-semester examinations and hall tickets.</p>
+              </div>
+              <div class="sem-target-badge-pill" id="sem-standing-badge">
+                <span class="pulsing-dot" style="background: #10B981;"></span>
+                <span>Standing: Eligible (84.5%)</span>
+              </div>
+            </div>
+
+            <!-- 5 Essential Semester Target Metrics -->
+            <div class="sem-target-grid">
+              <div class="sem-metric-tile">
+                <div class="tile-label">
+                  <span>Semester Total Classes</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div class="tile-value" id="sem-total-classes-val">360</div>
+                <div class="tile-sub">Full Term Curriculum (6 Subjects × 60)</div>
+              </div>
+
+              <div class="sem-metric-tile highlight">
+                <div class="tile-label">
+                  <span style="color: #EA580C;">Minimum You Should Have</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div class="tile-value" id="sem-required-classes-val">270</div>
+                <div class="tile-sub" style="color: #C2410C;">75% Threshold to sit for Sem Exams</div>
+              </div>
+
+              <div class="sem-metric-tile">
+                <div class="tile-label">
+                  <span>Attended So Far</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="tile-value" id="sem-attended-classes-val">202</div>
+                <div class="tile-sub" style="color: #10B981;">Out of 239 conducted (84.5%)</div>
+              </div>
+
+              <div class="sem-metric-tile">
+                <div class="tile-label">
+                  <span>Classes Needed</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </div>
+                <div class="tile-value" id="sem-needed-classes-val" style="color: #2563EB;">68</div>
+                <div class="tile-sub">Remaining required for 270 target</div>
+              </div>
+
+              <div class="sem-metric-tile">
+                <div class="tile-label">
+                  <span>Safe Buffer (Can Miss)</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div class="tile-value" id="sem-buffer-classes-val" style="color: #059669;">53</div>
+                <div class="tile-sub">Allowed absences without shortage</div>
+              </div>
+            </div>
+
+            <!-- Semester Progress Track with 75% Cutoff Marker -->
+            <div class="sem-progress-wrap">
+              <div class="sem-progress-labels">
+                <span>Semester Progress: 239 / 360 Classes Conducted (66.4%)</span>
+                <span id="sem-status-indicator" style="color: #059669; font-weight: 700;">Attended: 202 Classes (On Track)</span>
+              </div>
+              <div class="sem-progress-track">
+                <div class="sem-progress-bar-fill" id="sem-progress-fill" style="width: 56.1%;"></div>
+                <div class="sem-75-marker"></div>
+                <span class="sem-75-label">75% Exam Cutoff (270 Classes)</span>
+              </div>
+              
+              <!-- Interactive Semester Target Calculator -->
+              <div class="sem-calculator-row">
+                <div style="font-weight: 700; color: #0F172A;">Explore Target Goal:</div>
+                <div class="sem-goal-chips">
+                  <button type="button" class="sem-goal-chip active" onclick="App.setSemesterTarget(75)">75% Minimum (270)</button>
+                  <button type="button" class="sem-goal-chip" onclick="App.setSemesterTarget(80)">80% Standard (288)</button>
+                  <button type="button" class="sem-goal-chip" onclick="App.setSemesterTarget(85)">85% Honors (306)</button>
+                  <button type="button" class="sem-goal-chip" onclick="App.setSemesterTarget(90)">90% Distinction (324)</button>
+                </div>
+                <div id="sem-goal-advice" style="font-weight: 700; color: #EA580C;">
+                  Attend 68 more classes out of 121 remaining to secure 75%.
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- KPI Summary Cards Grid -->
@@ -724,7 +829,11 @@
               <h2>Detailed Attendance Management</h2>
               <p>Subject-wise breakdown, attendance simulator, and monthly attendance calendar</p>
             </div>
-            <div class="page-actions">
+            <div class="page-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-secondary" onclick="App.openQrScanner()" style="border-color: var(--primary); color: var(--primary); background: var(--primary-bg); font-weight: 600;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M7 17h.01"/><path d="M17 17h.01"/><path d="M7 7h.01"/><path d="M17 7h.01"/></svg>
+                Scan Attendance QR
+              </button>
               <button class="btn btn-primary" onclick="App.openModal('leave-modal')">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
                 Apply for Leave
@@ -1899,7 +2008,10 @@
                 <h2>Mark Class Period Attendance</h2>
                 <p style="font-size: 0.84rem; color: var(--crystal-dim);">Conduct session roll calls with real-time tally, bulk toggles, and duplicate submission protection</p>
               </div>
-              <div style="display: flex; gap: 10px;">
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="App.openTeacherQrModal()" style="border-color: var(--primary); color: var(--primary); background: var(--primary-bg); font-weight: 700;">
+                  📱 Generate Live Class QR
+                </button>
                 <button type="button" class="btn btn-secondary btn-sm" onclick="App.saveTeacherAttendanceDraft()">
                   💾 Save Draft
                 </button>
@@ -2200,6 +2312,13 @@
         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 13px;">
           Enter Student Portal →
         </button>
+
+        <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-crystal); text-align: center;">
+          <span style="font-size: 0.82rem; color: var(--crystal-dim);">New student? </span>
+          <button type="button" onclick="App.openStudentRegisterModal()" style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 0.82rem; cursor: pointer; text-decoration: underline;">
+            Self Register Here
+          </button>
+        </div>
       </form>
 
       <div style="margin-top: 18px; text-align: center;">
@@ -2706,6 +2825,221 @@
       <div class="modal-footer" style="justify-content: center;">
         <button type="button" class="btn btn-secondary" onclick="App.closeModal('logout-modal')">Stay Logged In</button>
         <button type="button" class="btn btn-danger" onclick="App.logout()">Confirm Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Student Self Registration Modal -->
+  <div id="student-register-modal" class="modal-overlay">
+    <div class="modal-box lc-tilt-card" style="max-width: 660px; padding: 28px 24px;">
+      <div class="modal-header" style="align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid var(--border-crystal); padding-bottom: 12px;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--primary-bg); color: var(--primary); font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;">
+            <span>🎓</span> New Student Portal Enrollment
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">Student Self Registration</h3>
+          <p style="font-size: 0.8rem; color: var(--crystal-dim); margin-top: 4px;">Enroll your profile into the institutional attendance directory</p>
+        </div>
+        <button class="modal-close-btn" onclick="App.closeModal('student-register-modal')">✕</button>
+      </div>
+
+      <form id="student-self-register-form" onsubmit="App.handleStudentRegister(event)">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;" class="student-reg-grid">
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="reg-student-name" class="form-control" required placeholder="e.g. Ananya Rao">
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Roll Number / Student ID *</label>
+            <input type="text" id="reg-student-roll" class="form-control" required placeholder="e.g. 22CS1092" style="text-transform: uppercase;">
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Institutional Email *</label>
+            <input type="email" id="reg-student-email" class="form-control" required placeholder="ananya.rao@campus.edu.in">
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" id="reg-student-phone" class="form-control" required placeholder="+91 98765 43210">
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Department *</label>
+            <select id="reg-student-dept" class="form-control" required>
+              <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="AI & Data Science">AI & Data Science</option>
+              <option value="Electronics & Communication">Electronics & Communication</option>
+              <option value="Mechanical Engineering">Mechanical Engineering</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Current Semester *</label>
+            <select id="reg-student-sem" class="form-control" required>
+              <option value="Semester 1">Semester 1</option>
+              <option value="Semester 2">Semester 2</option>
+              <option value="Semester 3">Semester 3</option>
+              <option value="Semester 4">Semester 4</option>
+              <option value="Semester 5">Semester 5</option>
+              <option value="Semester 6" selected>Semester 6</option>
+              <option value="Semester 7">Semester 7</option>
+              <option value="Semester 8">Semester 8</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Section *</label>
+            <select id="reg-student-section" class="form-control" required>
+              <option value="Section A">Section A</option>
+              <option value="Section B" selected>Section B</option>
+              <option value="Section C">Section C</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Create PIN / Password *</label>
+            <input type="password" id="reg-student-password" class="form-control" required placeholder="Choose a secure PIN / password">
+          </div>
+        </div>
+
+        <div style="background: var(--primary-bg); border: 1px solid var(--border-crystal); border-radius: 10px; padding: 10px 14px; margin-top: 10px; font-size: 0.78rem; color: var(--primary-hover); display: flex; align-items: center; gap: 8px;">
+          <span>ℹ️</span> Self-registration automatically activates your 6-subject semester curriculum and links you to the live QR attendance system.
+        </div>
+
+        <div class="modal-footer" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-crystal); display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('student-register-modal')">Cancel</button>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span style="font-size: 0.78rem; color: var(--crystal-dim);">Already registered? <a href="javascript:void(0)" onclick="App.closeModal('student-register-modal'); App.openModal('login-modal');" style="color: var(--primary); font-weight: 700;">Login</a></span>
+            <button type="submit" class="btn btn-primary">Complete Registration &amp; Enter</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10. Student QR Scanner Modal -->
+  <div id="qr-scanner-modal" class="modal-overlay">
+    <div class="modal-box lc-tilt-card qr-scanner-modal" style="max-width: 520px; padding: 24px;">
+      <div class="modal-header" style="align-items: flex-start; margin-bottom: 14px; border-bottom: 1px solid var(--border-crystal); padding-bottom: 12px;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--primary-bg); color: var(--primary); font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">
+            <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 6px #22C55E;"></span> Live Attendance Scanner
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">Scan Period Attendance QR</h3>
+          <p style="font-size: 0.8rem; color: var(--crystal-dim); margin-top: 2px;">Align camera with classroom projector / teacher device to mark present</p>
+        </div>
+        <button class="modal-close-btn" onclick="App.closeQrScanner()">✕</button>
+      </div>
+
+      <!-- Viewfinder Viewport -->
+      <div class="qr-scanner-viewport" style="position: relative; width: 100%; height: 260px; background: #0F172A; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);">
+        <video id="qr-camera-video" playsinline muted autoplay style="width: 100%; height: 100%; object-fit: cover;"></video>
+        
+        <!-- Framing Reticle -->
+        <div class="qr-target-frame">
+          <div class="qr-corner top-left"></div>
+          <div class="qr-corner top-right"></div>
+          <div class="qr-corner bottom-left"></div>
+          <div class="qr-corner bottom-right"></div>
+          <div class="qr-laser-line"></div>
+        </div>
+
+        <div id="qr-camera-fallback-msg" style="position: absolute; text-align: center; color: #E2E8F0; padding: 16px; font-size: 0.82rem; background: rgba(15, 23, 42, 0.75); border-radius: 10px; display: none;">
+          <div style="font-size: 1.6rem; margin-bottom: 4px;">📷</div>
+          <p style="margin: 0; font-weight: 600;">Camera active or simulation ready</p>
+          <p style="margin: 4px 0 0; font-size: 0.74rem; color: #94A3B8;">Use fast simulation buttons below or enter session code</p>
+        </div>
+      </div>
+
+      <!-- Quick One-Touch Simulation for Devices Without Webcam -->
+      <div style="margin-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 0.76rem; font-weight: 700; color: var(--crystal-dim); text-transform: uppercase; letter-spacing: 0.04em;">⚡ One-Touch Test Scan:</span>
+          <span style="font-size: 0.74rem; color: var(--primary); font-weight: 600;">Instant Verification</span>
+        </div>
+        <div class="qr-sim-chips-row">
+          <button type="button" class="qr-chip-btn" onclick="App.simulateQrScan('ATTEND-CS601-CLOUD')">
+            <span style="font-size: 1rem;">☁️</span> CS601 Cloud Computing
+          </button>
+          <button type="button" class="qr-chip-btn" onclick="App.simulateQrScan('ATTEND-CS602-ML')">
+            <span style="font-size: 1rem;">🤖</span> CS602 Machine Learning
+          </button>
+          <button type="button" class="qr-chip-btn" onclick="App.simulateQrScan('ATTEND-CS603-COMPILER')">
+            <span style="font-size: 1rem;">⚙️</span> CS603 Compiler Design
+          </button>
+        </div>
+      </div>
+
+      <!-- Manual Code Entry Fallback -->
+      <div style="margin-top: 14px; display: flex; gap: 8px;">
+        <input type="text" id="manual-qr-code-input" class="form-control" placeholder="Or type code (e.g. ATTEND-CS601-CLOUD)" style="font-family: monospace; font-size: 0.82rem;">
+        <button type="button" class="btn btn-primary" onclick="App.submitManualQrCode()" style="white-space: nowrap;">
+          Verify Code
+        </button>
+      </div>
+
+      <!-- Live Scan Result Feedback Container -->
+      <div id="qr-scan-result-card" style="display: none; margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 0.82rem; transition: all 0.3s ease;"></div>
+
+      <div class="modal-footer" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-crystal); display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="App.closeQrScanner()">Close Scanner</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Faculty Live Period QR Code Modal -->
+  <div id="teacher-qr-modal" class="modal-overlay">
+    <div class="modal-box lc-tilt-card" style="max-width: 520px; padding: 26px;">
+      <div class="modal-header" style="align-items: flex-start; margin-bottom: 14px; border-bottom: 1px solid var(--border-crystal); padding-bottom: 12px;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--primary-bg); color: var(--primary); font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">
+            <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--primary); animation: pulse 1.5s infinite;"></span> Dynamic Session Token
+          </div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">Period Attendance QR Code</h3>
+          <p style="font-size: 0.8rem; color: var(--crystal-dim); margin-top: 2px;">Project this code on screen for student self check-in</p>
+        </div>
+        <button class="modal-close-btn" onclick="App.closeTeacherQrModal()">✕</button>
+      </div>
+
+      <!-- Active Session Metadata Badge -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: var(--bg-surface-elevated); border: 1px solid var(--border-crystal); border-radius: 10px; padding: 10px; text-align: center; margin-bottom: 16px;">
+        <div>
+          <span style="font-size: 0.7rem; color: var(--crystal-dim); display: block; text-transform: uppercase;">Course</span>
+          <strong id="teacher-qr-course-label" style="font-size: 0.82rem; color: var(--text-primary);">CS602 ML &amp; AI</strong>
+        </div>
+        <div>
+          <span style="font-size: 0.7rem; color: var(--crystal-dim); display: block; text-transform: uppercase;">Classroom</span>
+          <strong id="teacher-qr-room-label" style="font-size: 0.82rem; color: var(--text-primary);">Lab 304</strong>
+        </div>
+        <div>
+          <span style="font-size: 0.7rem; color: var(--crystal-dim); display: block; text-transform: uppercase;">Valid For</span>
+          <strong id="teacher-qr-timer-label" style="font-size: 0.82rem; color: var(--primary); font-family: monospace;">09:59</strong>
+        </div>
+      </div>
+
+      <!-- High-Contrast SVG QR Display -->
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; background: #FFFFFF; border: 2px solid var(--primary); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15);">
+        <div id="teacher-qr-svg-wrap" style="width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
+          <!-- SVG QR Code generated dynamically -->
+        </div>
+        <div style="margin-top: 12px; font-family: monospace; font-size: 0.8rem; font-weight: 700; color: #0F172A; background: #FFF7ED; padding: 4px 12px; border-radius: 6px; border: 1px dashed #F97316;">
+          Token: <span id="teacher-qr-token-label">ATTEND-CS602-ML</span>
+        </div>
+      </div>
+
+      <!-- Live Attendance Counter -->
+      <div style="margin-top: 14px; padding: 10px 14px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.1rem;">⚡</span>
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: #065F46;">Real-time Scans Registered</div>
+            <div style="font-size: 0.72rem; color: #047857;">Students verified in this live period</div>
+          </div>
+        </div>
+        <div style="font-size: 1.25rem; font-weight: 800; color: #059669; font-family: Outfit, sans-serif;" id="teacher-qr-scans-tally">
+          14 / 64
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-crystal); display: flex; justify-content: space-between;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="App.refreshTeacherQrCode()">🔄 Refresh Token</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="App.closeTeacherQrModal()">Done &amp; Dismiss</button>
       </div>
     </div>
   </div>

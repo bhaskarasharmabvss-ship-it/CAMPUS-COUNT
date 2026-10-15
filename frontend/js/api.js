@@ -67,15 +67,24 @@ const MockDB = {
     totalSubjects: 6,
     lowAttendanceSubjects: 1,
     currentCgpa: 8.92,
-    pendingAssignments: 2
+    pendingAssignments: 2,
+    // Semester Target Metrics ("Total No. of Should Have for a Sem")
+    semesterTotalClasses: 360,
+    semesterRequiredClasses: 270,       // 75% cutoff threshold (360 * 0.75)
+    semesterTargetPercentage: 75.0,
+    classesHeldSoFar: 239,
+    classesAttendedSoFar: 202,
+    classesRemaining: 121,              // 360 - 239
+    classesNeededForEligibility: 68,     // 270 - 202 = 68 more classes needed out of 121
+    safeAbsencesAllowed: 53             // 121 - 68 = 53 safe skips
   },
   subjects: [
-    { id: "SUB-1", code: "CS601", name: "Distributed Systems", faculty: "Dr. Vikram Sen", facultyEmail: "vikram.sen@campus.edu.in", credits: 4, totalClasses: 45, presentClasses: 40, absentClasses: 5, attendancePercentage: 88.9, pendingAssignments: 1, examDate: "2026-10-15", syllabusCompletion: 85, isShortage: false, classesNeededFor75: 0 },
-    { id: "SUB-2", code: "CS602", name: "Machine Learning & AI", faculty: "Prof. Ananya Roy", facultyEmail: "ananya.roy@campus.edu.in", credits: 4, totalClasses: 42, presentClasses: 30, absentClasses: 12, attendancePercentage: 71.4, pendingAssignments: 1, examDate: "2026-10-18", syllabusCompletion: 78, isShortage: true, classesNeededFor75: 6 },
-    { id: "SUB-3", code: "CS603", name: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", facultyEmail: "rajesh.verma@campus.edu.in", credits: 3, totalClasses: 48, presentClasses: 44, absentClasses: 4, attendancePercentage: 91.7, pendingAssignments: 0, examDate: "2026-10-22", syllabusCompletion: 92, isShortage: false, classesNeededFor75: 0 },
-    { id: "SUB-4", code: "CS604", name: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", facultyEmail: "sunita.rao@campus.edu.in", credits: 4, totalClasses: 40, presentClasses: 34, absentClasses: 6, attendancePercentage: 85.0, pendingAssignments: 1, examDate: "2026-10-26", syllabusCompletion: 80, isShortage: false, classesNeededFor75: 0 },
-    { id: "SUB-5", code: "CS605", name: "Computer Networks Lab", faculty: "Prof. Deepak Kulkarni", facultyEmail: "deepak.k@campus.edu.in", credits: 2, totalClasses: 28, presentClasses: 26, absentClasses: 2, attendancePercentage: 92.9, pendingAssignments: 0, examDate: "2026-10-29", syllabusCompletion: 90, isShortage: false, classesNeededFor75: 0 },
-    { id: "SUB-6", code: "CS606", name: "Software Engineering & Agile", faculty: "Prof. Meenakshi Iyer", facultyEmail: "meenakshi.i@campus.edu.in", credits: 3, totalClasses: 36, presentClasses: 28, absentClasses: 8, attendancePercentage: 77.8, pendingAssignments: 0, examDate: "2026-11-02", syllabusCompletion: 75, isShortage: false, classesNeededFor75: 0 }
+    { id: "SUB-1", code: "CS601", name: "Distributed Systems", faculty: "Dr. Vikram Sen", facultyEmail: "vikram.sen@campus.edu.in", credits: 4, totalClasses: 45, presentClasses: 40, absentClasses: 5, attendancePercentage: 88.9, pendingAssignments: 1, examDate: "2026-10-15", syllabusCompletion: 85, isShortage: false, classesNeededFor75: 0, semesterTotalClasses: 60, semesterRequiredClasses: 45, remainingClasses: 15 },
+    { id: "SUB-2", code: "CS602", name: "Machine Learning & AI", faculty: "Prof. Ananya Roy", facultyEmail: "ananya.roy@campus.edu.in", credits: 4, totalClasses: 42, presentClasses: 30, absentClasses: 12, attendancePercentage: 71.4, pendingAssignments: 1, examDate: "2026-10-18", syllabusCompletion: 78, isShortage: true, classesNeededFor75: 6, semesterTotalClasses: 60, semesterRequiredClasses: 45, remainingClasses: 18 },
+    { id: "SUB-3", code: "CS603", name: "Web Technologies & Cloud", faculty: "Prof. Rajesh Verma", facultyEmail: "rajesh.verma@campus.edu.in", credits: 3, totalClasses: 48, presentClasses: 44, absentClasses: 4, attendancePercentage: 91.7, pendingAssignments: 0, examDate: "2026-10-22", syllabusCompletion: 92, isShortage: false, classesNeededFor75: 0, semesterTotalClasses: 60, semesterRequiredClasses: 45, remainingClasses: 12 },
+    { id: "SUB-4", code: "CS604", name: "Cloud Computing & DevOps", faculty: "Dr. Sunita Rao", facultyEmail: "sunita.rao@campus.edu.in", credits: 4, totalClasses: 40, presentClasses: 34, absentClasses: 6, attendancePercentage: 85.0, pendingAssignments: 1, examDate: "2026-10-26", syllabusCompletion: 80, isShortage: false, classesNeededFor75: 0, semesterTotalClasses: 60, semesterRequiredClasses: 45, remainingClasses: 20 },
+    { id: "SUB-5", code: "CS605", name: "Computer Networks Lab", faculty: "Prof. Deepak Kulkarni", facultyEmail: "deepak.k@campus.edu.in", credits: 2, totalClasses: 28, presentClasses: 26, absentClasses: 2, attendancePercentage: 92.9, pendingAssignments: 0, examDate: "2026-10-29", syllabusCompletion: 90, isShortage: false, classesNeededFor75: 0, semesterTotalClasses: 60, semesterRequiredClasses: 45, remainingClasses: 32 },
+    { id: "SUB-6", code: "CS606", name: "Software Engineering & Agile", faculty: "Prof. Meenakshi Iyer", facultyEmail: "meenakshi.i@campus.edu.in", credits: 3, totalClasses: 36, presentClasses: 28, absentClasses: 8, attendancePercentage: 77.8, pendingAssignments: 0, examDate: "2026-11-02", syllabusCompletion: 75, isShortage: false, classesNeededFor75: 0, semesterTotalClasses: 60, semesterRequiredClasses: 45, remainingClasses: 24 }
   ],
   attendanceLogs: [
     { id: "ATT-101", date: "2026-10-13", subjectId: "SUB-1", subjectName: "Distributed Systems", subjectCode: "CS601", classTime: "09:00 AM - 10:00 AM", faculty: "Dr. Vikram Sen", status: "Present", remarks: "Regular Lecture" },
@@ -644,5 +653,152 @@ const ApiService = {
     }
     MockDB.timeTable = MockDB.timeTable.filter(s => s.id !== id);
     return { success: true, message: "Timetable slot removed", slots: MockDB.timeTable };
+  },
+
+  // ==========================================
+  // STUDENT SELF REGISTRATION & QR ATTENDANCE
+  // ==========================================
+  async registerStudent(studentData) {
+    if (API_BASE) {
+      try {
+        const res = await fetch(`${API_BASE}/student/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentData)
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {
+        console.warn("Backend unavailable, using mock registration", e);
+      }
+    }
+    const cleanRoll = (studentData.rollNumber || `24CS${1090 + MockDB.allStudents.length}`).trim().toUpperCase();
+    const newStudent = {
+      id: `STU-2024-${8842 + MockDB.allStudents.length}`,
+      name: studentData.name || "Newly Enrolled Student",
+      rollNumber: cleanRoll,
+      email: studentData.email || `${cleanRoll.toLowerCase()}@campus.edu.in`,
+      phone: studentData.phone || "+91 98765 43210",
+      department: studentData.department || "Computer Science & Engineering",
+      course: studentData.course || "B.Tech - Computer Science",
+      year: studentData.year || "3rd Year",
+      semester: studentData.semester || "Semester VI",
+      section: studentData.section || "Section B",
+      academicYear: "2025 - 2026",
+      avatarUrl: "",
+      dob: "2004-09-15",
+      bloodGroup: "O+ Positive",
+      guardianName: studentData.guardianName || "Parent / Guardian",
+      guardianPhone: studentData.guardianPhone || studentData.phone,
+      address: studentData.address || "Bangalore, Karnataka",
+      attendanceRate: 85.0,
+      shortage: false
+    };
+
+    MockDB.allStudents.push(newStudent);
+    MockDB.student = newStudent;
+    localStorage.setItem('campus_user', JSON.stringify(newStudent));
+    localStorage.setItem('campus_role', 'student');
+
+    return {
+      success: true,
+      message: `Student account created successfully! Welcome, ${newStudent.name}.`,
+      student: newStudent
+    };
+  },
+
+  async generateAttendanceQr(sessionData) {
+    if (API_BASE) {
+      try {
+        const res = await fetch(`${API_BASE}/attendance/qr/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sessionData || {})
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {}
+    }
+    const token = `ATT-QR-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+    const subCode = (sessionData && sessionData.subjectCode) || "CS601";
+    const subName = (sessionData && sessionData.subjectName) || "Distributed Systems";
+    const period = (sessionData && sessionData.period) || "Period 2 (10:00 - 11:00 AM)";
+    const date = (sessionData && sessionData.date) || new Date().toISOString().split('T')[0];
+
+    return {
+      qrToken: token,
+      subjectCode: subCode,
+      subjectName: subName,
+      period: period,
+      date: date,
+      expiresInSeconds: 600,
+      qrPayload: `CAMPUSCOUNT-ATT|${token}|${subCode}|${date}|${period}`
+    };
+  },
+
+  async scanAttendanceQr(qrData, rollNumber, studentName) {
+    if (API_BASE) {
+      try {
+        const res = await fetch(`${API_BASE}/attendance/qr/scan`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ qrData, rollNumber, studentName })
+        });
+        if (res.ok) return await res.json();
+      } catch (e) {}
+    }
+
+    // Local fallback update
+    let subCode = "CS601";
+    let period = "Period 2 (10:00 - 11:00 AM)";
+    let date = new Date().toISOString().split('T')[0];
+
+    if (qrData && qrData.includes('|')) {
+      const parts = qrData.split('|');
+      if (parts[2]) subCode = parts[2];
+      if (parts[3]) date = parts[3];
+      if (parts[4]) period = parts[4];
+    }
+
+    const sub = MockDB.subjects.find(s => s.code === subCode) || MockDB.subjects[0];
+    if (sub) {
+      sub.totalClasses++;
+      sub.presentClasses++;
+      sub.attendancePercentage = Math.round((sub.presentClasses / sub.totalClasses) * 1000) / 10;
+      sub.isShortage = sub.attendancePercentage < 75.0;
+      if (sub.isShortage) {
+        sub.classesNeededFor75 = Math.max(0, (3 * sub.totalClasses) - (4 * sub.presentClasses));
+      } else {
+        sub.classesNeededFor75 = 0;
+      }
+    }
+
+    MockDB.summary.totalClasses++;
+    MockDB.summary.presentClasses++;
+    MockDB.summary.overallPercentage = Math.round((MockDB.summary.presentClasses / MockDB.summary.totalClasses) * 1000) / 10;
+    MockDB.summary.classesAttendedSoFar = MockDB.summary.presentClasses;
+    MockDB.summary.classesHeldSoFar = MockDB.summary.totalClasses;
+    MockDB.summary.classesNeededForEligibility = Math.max(0, MockDB.summary.semesterRequiredClasses - MockDB.summary.presentClasses);
+    MockDB.summary.classesRemaining = Math.max(0, MockDB.summary.semesterTotalClasses - MockDB.summary.totalClasses);
+    MockDB.summary.safeAbsencesAllowed = Math.max(0, MockDB.summary.classesRemaining - MockDB.summary.classesNeededForEligibility);
+
+    const log = {
+      id: `ATT-QR-${MockDB.attendanceLogs.length + 101}`,
+      date: date,
+      subjectId: sub ? sub.id : "SUB-1",
+      subjectName: sub ? sub.name : "Distributed Systems",
+      subjectCode: sub ? sub.code : subCode,
+      classTime: period,
+      faculty: sub ? sub.faculty : "Dr. Vikram Sen",
+      status: "Present",
+      remarks: `Verified & Recorded via Attendance QR Scanner (${rollNumber || '22CS1084'})`
+    };
+    MockDB.attendanceLogs.unshift(log);
+
+    return {
+      success: true,
+      message: `Attendance marked Present via QR Scanner for ${sub ? sub.name : subCode}!`,
+      subject: sub,
+      record: log,
+      summary: MockDB.summary
+    };
   }
 };

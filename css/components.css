@@ -639,14 +639,11 @@
 
 .crystal-mesh-bg {
   position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+  inset: 0;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFF7ED 50%, #F8FAFC 100%);
   pointer-events: none;
   z-index: 0;
-  animation: crystalRotate 60s linear infinite;
+  opacity: 0.85;
 }
 
 @keyframes crystalRotate {
@@ -1958,4 +1955,545 @@
   .landing-headline { font-size: 2rem; }
   .hero-3d-frame { height: 320px; }
   .hero-canvas-wrap { height: 280px; }
+}
+
+/* ==========================================================================
+   10. NORMAL ORANGE & WHITE DASHBOARD SYSTEM ENHANCEMENTS
+   ========================================================================== */
+
+/* Orange Button Overrides & Additions */
+.btn-orange,
+.btn-primary {
+  background: var(--primary) !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--primary-dark, #C2410C) !important;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.28) !important;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover, #EA580C) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.35) !important;
+}
+
+.btn-secondary {
+  background: #FFFFFF !important;
+  color: var(--primary, #F97316) !important;
+  border: 1.5px solid var(--primary, #F97316) !important;
+}
+
+.btn-secondary:hover {
+  background: #FFF7ED !important;
+  color: #EA580C !important;
+  border-color: #EA580C !important;
+  transform: translateY(-2px);
+}
+
+/* Nav Item Active in Orange */
+.nav-item.active {
+  background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.32) !important;
+}
+
+.nav-item.active .nav-icon svg {
+  stroke: #FFFFFF !important;
+}
+
+.nav-item:hover:not(.active) {
+  background: #FFF7ED !important;
+  color: #EA580C !important;
+  border-color: #FED7AA !important;
+}
+
+.nav-item:hover:not(.active) .nav-icon svg {
+  stroke: #EA580C !important;
+}
+
+/* Header Avatar Badge */
+.avatar-badge.admin,
+.avatar-badge.teacher,
+.avatar-badge.student {
+  background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 10px rgba(234, 88, 12, 0.3) !important;
+}
+
+/* Brand Logo Icon in Orange */
+.landing-logo-icon,
+.brand-icon-wrap {
+  background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%) !important;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35) !important;
+}
+
+/* Form Controls with Orange Focus */
+.form-control:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #F97316 !important;
+  box-shadow: 0 0 0 3.5px rgba(249, 115, 22, 0.18) !important;
+  outline: none;
+}
+
+/* Table header in crisp orange wash */
+.data-table thead th {
+  background: #FFF7ED !important;
+  color: #9A3412 !important;
+  border-bottom: 2px solid #FED7AA !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.data-table tbody tr:hover {
+  background: #FFFBF7 !important;
+}
+
+/* ==========================================================================
+   11. SEMESTER TARGET CLASSES ("TOTAL NO. OF SHOULD HAVE FOR A SEM")
+   ========================================================================== */
+.sem-target-hero-card {
+  background: #FFFFFF;
+  border: 1px solid #FED7AA;
+  border-top: 4px solid #EA580C;
+  border-radius: var(--radius-xl);
+  padding: 26px 30px;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.09), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.sem-target-hero-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.07) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.sem-target-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.sem-target-title-wrap h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sem-target-title-wrap p {
+  font-size: 0.84rem;
+  color: #64748B;
+  margin-top: 4px;
+}
+
+.sem-target-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  color: #C2410C;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sem-target-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.sem-metric-tile {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  transition: all 0.22s ease;
+  position: relative;
+}
+
+.sem-metric-tile:hover {
+  border-color: #FDBA74;
+  background: #FFF7ED;
+  transform: translateY(-2px);
+}
+
+.sem-metric-tile.highlight {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+  border-color: #FDBA74;
+}
+
+.sem-metric-tile .tile-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748B;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sem-metric-tile .tile-value {
+  font-size: 1.85rem;
+  font-weight: 900;
+  font-family: 'Outfit', sans-serif;
+  color: #0F172A;
+  line-height: 1;
+}
+
+.sem-metric-tile.highlight .tile-value {
+  color: #EA580C;
+}
+
+.sem-metric-tile .tile-sub {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748B;
+  margin-top: 6px;
+}
+
+/* Dual Progress Track for Semester Classes */
+.sem-progress-wrap {
+  margin-top: 18px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+}
+
+.sem-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.sem-progress-track {
+  height: 14px;
+  background: #E2E8F0;
+  border-radius: 9999px;
+  position: relative;
+  overflow: visible;
+}
+
+.sem-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #F97316 0%, #EA580C 100%);
+  border-radius: 9999px;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.sem-75-marker {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  background: #EF4444;
+  left: 75%;
+  z-index: 5;
+  border-radius: 2px;
+}
+
+.sem-75-label {
+  position: absolute;
+  top: -22px;
+  left: 75%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #EF4444;
+  white-space: nowrap;
+  background: #FEF2F2;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #FECACA;
+}
+
+.sem-calculator-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed #E2E8F0;
+  font-size: 0.82rem;
+  color: #334155;
+}
+
+.sem-goal-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sem-goal-chip {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sem-goal-chip:hover,
+.sem-goal-chip.active {
+  background: #FFF7ED;
+  border-color: #F97316;
+  color: #EA580C;
+}
+
+/* ==========================================================================
+   12. QR SCANNER MODAL & LIVE VIEWFINDER
+   ========================================================================== */
+.qr-scanner-box {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-crystal-lg);
+  border: 1px solid #FED7AA;
+  max-width: 560px;
+  width: 100%;
+}
+
+.qr-viewfinder-frame {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: #0F172A;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#qr-camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.qr-target-overlay {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+/* Neon Orange Viewfinder Corners */
+.qr-target-overlay::before,
+.qr-target-overlay::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #F97316;
+  border-style: solid;
+  border-width: 0;
+}
+
+.qr-target-overlay::before {
+  top: -2px;
+  left: -2px;
+  border-top-width: 4px;
+  border-left-width: 4px;
+  border-top-left-radius: 12px;
+}
+
+.qr-target-overlay::after {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 4px;
+  border-right-width: 4px;
+  border-bottom-right-radius: 12px;
+}
+
+.qr-laser-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FF7A00, #F97316, transparent);
+  box-shadow: 0 0 14px 2px #F97316;
+  animation: qrLaserScan 2.2s infinite ease-in-out;
+}
+
+@keyframes qrLaserScan {
+  0% { top: 15%; opacity: 0.3; }
+  50% { top: 85%; opacity: 1; }
+  100% { top: 15%; opacity: 0.3; }
+}
+
+.qr-scan-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 16px 20px;
+  background: #FFF7ED;
+  border-top: 1px solid #FED7AA;
+  border-bottom: 1px solid #FED7AA;
+  flex-wrap: wrap;
+}
+
+.qr-quick-chip {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  border: 1px solid #FDBA74;
+  color: #C2410C;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qr-quick-chip:hover {
+  background: #EA580C;
+  color: #FFFFFF;
+  border-color: #EA580C;
+  transform: translateY(-1px);
+}
+
+.qr-success-card {
+  padding: 20px;
+  background: #ECFDF5;
+  border: 1.5px solid #A7F3D0;
+  border-radius: var(--radius-lg);
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: popInSuccess 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popInSuccess {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   13. TEACHER LIVE QR ATTENDANCE GENERATOR
+   ========================================================================== */
+.teacher-qr-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  border: 1px solid #FED7AA;
+  padding: 28px;
+  text-align: center;
+  box-shadow: var(--shadow-crystal-lg);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.teacher-qr-wrap {
+  width: 240px;
+  height: 240px;
+  margin: 20px auto;
+  padding: 16px;
+  background: #FFFFFF;
+  border: 3px solid #F97316;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.qr-timer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  color: #C2410C;
+  font-weight: 700;
+  font-size: 0.84rem;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   14. STUDENT SELF REGISTRATION MODAL
+   ========================================================================== */
+.register-modal-box {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  border: 1px solid #FED7AA;
+  box-shadow: var(--shadow-crystal-lg);
+  max-width: 680px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.register-header-banner {
+  background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
+  color: #FFFFFF;
+  padding: 24px 28px;
+  position: relative;
+}
+
+.register-header-banner h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.register-header-banner p {
+  font-size: 0.85rem;
+  opacity: 0.92;
+  margin-top: 4px;
+}
+
+.register-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 24px 28px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+@media (max-width: 640px) {
+  .register-form-grid {
+    grid-template-columns: 1fr;
+  }
 }
