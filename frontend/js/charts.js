@@ -77,7 +77,7 @@ const Charts = {
         </svg>
 
         <div style="position: absolute; text-align: center; pointer-events: none;">
-          <div style="font-size: 2.1rem; font-weight: 900; letter-spacing: -0.03em; color: ${valColor}; font-family: 'Outfit', sans-serif; line-height: 1;">
+          <div style="font-size: 2.1rem; font-weight: 900; letter-spacing: -0.03em; color: ${valColor}; font-family: var(--font-display, 'Urbanist', sans-serif); line-height: 1;">
             ${clampedPct.toFixed(1)}%
           </div>
           <div style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--crystal-muted); margin-top: 4px;">
@@ -132,14 +132,19 @@ const Charts = {
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
     const textColor = isLight ? '#64748B' : '#94A3B8';
+    const pointTextColor = isLight ? '#0F172A' : '#F8FAFC';
+
+    const computedStyle = getComputedStyle(document.documentElement);
+    const primaryColor = computedStyle.getPropertyValue('--primary').trim() || '#6366F1';
+    const primaryHover = computedStyle.getPropertyValue('--primary-hover').trim() || '#4F46E5';
 
     container.innerHTML = `
       <div style="position: relative; width: 100%;">
         <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: auto; display: block;">
           <defs>
             <linearGradient id="trendAreaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#F97316" stop-opacity="0.28" />
-              <stop offset="100%" stop-color="#F97316" stop-opacity="0.0" />
+              <stop offset="0%" stop-color="${primaryColor}" stop-opacity="0.32" />
+              <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -153,14 +158,14 @@ const Charts = {
           <!-- Filled Gradient Area -->
           <path d="${areaD}" fill="url(#trendAreaGrad)" />
 
-          <!-- Curve in Vibrant Orange -->
-          <path d="${pathD}" fill="none" stroke="#EA580C" stroke-width="3.5" stroke-linecap="round" />
+          <!-- Curve in Vibrant Dynamic Theme Primary -->
+          <path d="${pathD}" fill="none" stroke="${primaryHover}" stroke-width="3.5" stroke-linecap="round" />
 
           <!-- Data Points -->
           ${points.map(p => `
             <g class="chart-point" style="cursor: pointer;">
-              <circle cx="${p.x}" cy="${p.y}" r="5.5" fill="#FFFFFF" stroke="#EA580C" stroke-width="3" />
-              <text x="${p.x}" y="${p.y - 12}" fill="#0F172A" font-size="11" font-weight="800" text-anchor="middle">${p.value}%</text>
+              <circle cx="${p.x}" cy="${p.y}" r="5.5" fill="#FFFFFF" stroke="${primaryHover}" stroke-width="3" />
+              <text x="${p.x}" y="${p.y - 12}" fill="${pointTextColor}" font-size="11" font-weight="800" font-family="var(--font-display, 'Urbanist', sans-serif)" text-anchor="middle">${p.value}%</text>
               <text x="${p.x}" y="${height - 12}" fill="${textColor}" font-size="11" font-weight="600" text-anchor="middle">${p.label}</text>
             </g>
           `).join('')}

@@ -10,10 +10,10 @@
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="alternate icon" href="assets/logo.jpg">
 
-  <!-- Modern Typography -->
+  <!-- Modern Typography (Urbanist, Plus Jakarta Sans, Space Grotesk, Outfit, Poppins, JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Three.js Library for 3D Visual Centerpiece -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -228,8 +228,14 @@
 
         <div class="header-right">
           <!-- Theme Toggle (Obsidian Dark / Quartz Light) -->
-          <button id="theme-toggle-btn" class="header-icon-btn" title="Toggle Liquid Crystal Theme" onclick="App.toggleTheme()">
+          <button id="theme-toggle-btn" class="header-icon-btn" title="Toggle Obsidian Dark / Quartz Light" onclick="App.toggleTheme()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </button>
+
+          <!-- Theme & Font Customizer Trigger Button -->
+          <button id="theme-customizer-btn" class="header-icon-btn customizer-btn" title="Customize Themes & Fonts" onclick="App.openThemeCustomizer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg>
+            <span class="customizer-glow-pip"></span>
           </button>
 
           <!-- Switch Role Button -->
@@ -301,7 +307,7 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                     <span>Sign In to Portal</span>
                   </button>
-                  <button type="button" id="hero-btn-self-register" class="btn btn-secondary btn-hero-secondary" onclick="App.openStudentRegisterModal()" style="border-color: #EA580C; color: #EA580C; background: #FFF7ED;">
+                  <button type="button" id="hero-btn-self-register" class="btn btn-secondary btn-hero-secondary" onclick="App.openStudentRegisterModal()" style="border-color: var(--primary); color: var(--primary); background: var(--primary-subtle);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>Student Self Registration</span>
                   </button>
@@ -319,7 +325,7 @@
                   <button type="button" class="cred-chip" onclick="App.switchAuthTab('student'); App.fillStudentCredentials(); App.openLoginModal();">
                     🎓 Student Dossier
                   </button>
-                  <button type="button" class="cred-chip" onclick="App.openStudentRegisterModal()" style="border-color: #FED7AA; color: #EA580C; background: #FFF7ED;">
+                  <button type="button" class="cred-chip" onclick="App.openStudentRegisterModal()" style="border-color: var(--border-crystal-hover); color: var(--primary); background: var(--primary-subtle);">
                     ✨ Student Self Registration
                   </button>
                 </div>
@@ -464,14 +470,14 @@
               </div>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <button class="btn btn-primary btn-sm" onclick="App.openQrScanner()" style="background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%); color: #FFFFFF; font-weight: 700; border: none; box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);">
+              <button class="btn btn-primary btn-sm" onclick="App.openQrScanner()" style="background: var(--primary-gradient); color: #FFFFFF; font-weight: 700; border: none; box-shadow: 0 4px 16px var(--primary-glow);">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01M10 10h4v4h-4z"/></svg>
                 Scan Attendance QR
               </button>
-              <button class="btn btn-primary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: #FFFFFF; color: #EA580C; font-weight: 700; border: 1.5px solid #FED7AA;">
+              <button class="btn btn-primary btn-sm" onclick="App.openModal('hallticket-modal')" style="background: var(--bg-surface); color: var(--primary); font-weight: 700; border: 1.5px solid var(--border-crystal-hover);">
                 🎫 Examination Hall Ticket
               </button>
-              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="background: #FFF7ED; color: #EA580C; border: 1.5px solid #FDBA74;">
+              <button class="btn btn-secondary btn-sm" onclick="App.navigateTo('attendance')" style="background: var(--primary-subtle); color: var(--primary); border: 1.5px solid var(--border-crystal-hover);">
                 📊 Biometric Logs →
               </button>
             </div>
@@ -498,7 +504,7 @@
             <div class="sem-target-header">
               <div class="sem-target-title-wrap">
                 <h3>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--primary);"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   Semester VI Attendance Target &amp; Mandatory Examination Requirements
                 </h3>
                 <p>Academic Council Threshold: Students <strong>should have at least 75.0% minimum attendance</strong> to qualify for end-semester examinations and hall tickets.</p>
@@ -522,11 +528,11 @@
 
               <div class="sem-metric-tile highlight">
                 <div class="tile-label">
-                  <span style="color: #EA580C;">Minimum You Should Have</span>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span style="color: var(--primary);">Minimum You Should Have</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
                 <div class="tile-value" id="sem-required-classes-val">270</div>
-                <div class="tile-sub" style="color: #C2410C;">75% Threshold to sit for Sem Exams</div>
+                <div class="tile-sub" style="color: var(--primary);">75% Threshold to sit for Sem Exams</div>
               </div>
 
               <div class="sem-metric-tile">
@@ -578,7 +584,7 @@
                   <button type="button" class="sem-goal-chip" onclick="App.setSemesterTarget(85)">85% Honors (306)</button>
                   <button type="button" class="sem-goal-chip" onclick="App.setSemesterTarget(90)">90% Distinction (324)</button>
                 </div>
-                <div id="sem-goal-advice" style="font-weight: 700; color: #EA580C;">
+                <div id="sem-goal-advice" style="font-weight: 700; color: var(--primary);">
                   Attend 68 more classes out of 121 remaining to secure 75%.
                 </div>
               </div>
@@ -3014,25 +3020,25 @@
       </div>
 
       <!-- High-Contrast SVG QR Display -->
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; background: #FFFFFF; border: 2px solid var(--primary); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15);">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; background: var(--bg-surface); border: 2px solid var(--primary); border-radius: 16px; box-shadow: 0 10px 25px -5px var(--primary-glow);">
         <div id="teacher-qr-svg-wrap" style="width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
           <!-- SVG QR Code generated dynamically -->
         </div>
-        <div style="margin-top: 12px; font-family: monospace; font-size: 0.8rem; font-weight: 700; color: #0F172A; background: #FFF7ED; padding: 4px 12px; border-radius: 6px; border: 1px dashed #F97316;">
+        <div style="margin-top: 12px; font-family: var(--font-mono, monospace); font-size: 0.8rem; font-weight: 700; color: var(--text-primary); background: var(--primary-subtle); padding: 4px 12px; border-radius: 6px; border: 1px dashed var(--primary);">
           Token: <span id="teacher-qr-token-label">ATTEND-CS602-ML</span>
         </div>
       </div>
 
       <!-- Live Attendance Counter -->
-      <div style="margin-top: 14px; padding: 10px 14px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
+      <div style="margin-top: 14px; padding: 10px 14px; background: var(--status-safe-bg); border: 1px solid var(--status-safe-border); border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 1.1rem;">⚡</span>
           <div>
-            <div style="font-size: 0.8rem; font-weight: 700; color: #065F46;">Real-time Scans Registered</div>
-            <div style="font-size: 0.72rem; color: #047857;">Students verified in this live period</div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--status-safe);">Real-time Scans Registered</div>
+            <div style="font-size: 0.72rem; color: var(--crystal-dim);">Students verified in this live period</div>
           </div>
         </div>
-        <div style="font-size: 1.25rem; font-weight: 800; color: #059669; font-family: Outfit, sans-serif;" id="teacher-qr-scans-tally">
+        <div style="font-size: 1.25rem; font-weight: 800; color: var(--status-safe); font-family: var(--font-display, sans-serif);" id="teacher-qr-scans-tally">
           14 / 64
         </div>
       </div>
@@ -3040,6 +3046,156 @@
       <div class="modal-footer" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-crystal); display: flex; justify-content: space-between;">
         <button type="button" class="btn btn-secondary btn-sm" onclick="App.refreshTeacherQrCode()">🔄 Refresh Token</button>
         <button type="button" class="btn btn-primary btn-sm" onclick="App.closeTeacherQrModal()">Done &amp; Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       THEME & TYPOGRAPHY CUSTOMIZER MODAL
+       ========================================================================== -->
+  <div id="theme-customizer-modal" class="modal-backdrop">
+    <div class="modal-box customizer-modal-box">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="customizer-icon-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2Z"/></svg>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-display); font-size: 1.22rem; font-weight: 800; margin: 0;">Theme &amp; Typography Studio</h3>
+            <p style="font-size: 0.78rem; color: var(--crystal-dim); margin-top: 2px;">Customize attractive color palettes, font pairings, and display modes</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="App.closeModal('theme-customizer-modal')">&times;</button>
+      </div>
+
+      <div class="modal-body customizer-modal-body">
+        <!-- 1. Color Palettes -->
+        <div class="customizer-section">
+          <div class="customizer-section-title">
+            <span>Curated High-Appeal Palettes</span>
+            <span class="customizer-tag">Instant Live Preview</span>
+          </div>
+          <div class="palette-grid">
+            <!-- Palette 1: Electric Royal Indigo & Radiant Violet -->
+            <div class="palette-card active" data-palette="indigo" onclick="App.setPalette('indigo')">
+              <div class="palette-swatches">
+                <span style="background: #4F46E5;"></span>
+                <span style="background: #7C3AED;"></span>
+                <span style="background: #A855F7;"></span>
+                <span style="background: #EC4899;"></span>
+              </div>
+              <div class="palette-info">
+                <div class="palette-name">Royal Indigo &amp; Violet</div>
+                <div class="palette-desc">Electric luminescence &amp; luxury violet glow (Recommended)</div>
+              </div>
+              <div class="palette-badge">Active</div>
+            </div>
+
+            <!-- Palette 2: Emerald Cyber Mint -->
+            <div class="palette-card" data-palette="emerald" onclick="App.setPalette('emerald')">
+              <div class="palette-swatches">
+                <span style="background: #059669;"></span>
+                <span style="background: #0D9488;"></span>
+                <span style="background: #10B981;"></span>
+                <span style="background: #06B6D4;"></span>
+              </div>
+              <div class="palette-info">
+                <div class="palette-name">Emerald Cyber Mint</div>
+                <div class="palette-desc">Prestigious university tech &amp; mint clarity</div>
+              </div>
+              <div class="palette-badge">Select</div>
+            </div>
+
+            <!-- Palette 3: Sunset Aurora -->
+            <div class="palette-card" data-palette="sunset" onclick="App.setPalette('sunset')">
+              <div class="palette-swatches">
+                <span style="background: #E11D48;"></span>
+                <span style="background: #F43F5E;"></span>
+                <span style="background: #FB7185;"></span>
+                <span style="background: #F59E0B;"></span>
+              </div>
+              <div class="palette-info">
+                <div class="palette-name">Sunset Aurora</div>
+                <div class="palette-desc">Vibrant coral, rose gold &amp; warm amber</div>
+              </div>
+              <div class="palette-badge">Select</div>
+            </div>
+
+            <!-- Palette 4: Cyberpunk Neon -->
+            <div class="palette-card" data-palette="cyberpunk" onclick="App.setPalette('cyberpunk')">
+              <div class="palette-swatches">
+                <span style="background: #06B6D4;"></span>
+                <span style="background: #3B82F6;"></span>
+                <span style="background: #8B5CF6;"></span>
+                <span style="background: #EC4899;"></span>
+              </div>
+              <div class="palette-info">
+                <div class="palette-name">Cyberpunk Neon</div>
+                <div class="palette-desc">Electric cyan, deep sapphire &amp; hot pink</div>
+              </div>
+              <div class="palette-badge">Select</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Typography Styles -->
+        <div class="customizer-section" style="margin-top: 22px;">
+          <div class="customizer-section-title">
+            <span>Font Pairings &amp; Styling</span>
+            <span class="customizer-tag">Google Fonts</span>
+          </div>
+          <div class="font-grid">
+            <!-- Font 1: Urbanist + Plus Jakarta Sans -->
+            <div class="font-card active" data-font="urbanist" onclick="App.setFont('urbanist')">
+              <div class="font-preview-title" style="font-family: 'Urbanist', sans-serif;">Urbanist + Jakarta</div>
+              <div class="font-preview-sample" style="font-family: 'Plus Jakarta Sans', sans-serif;">Smarter Attendance • Modern Luxury Tech • 2026</div>
+              <div class="font-meta">Geometric Display &amp; World-class Body Readability</div>
+            </div>
+
+            <!-- Font 2: Space Grotesk + Outfit -->
+            <div class="font-card" data-font="space" onclick="App.setFont('space')">
+              <div class="font-preview-title" style="font-family: 'Space Grotesk', sans-serif;">Space Grotesk + Outfit</div>
+              <div class="font-preview-sample" style="font-family: 'Outfit', sans-serif;">Smarter Attendance • Futuristic Campus Tech • 2026</div>
+              <div class="font-meta">High-tech Bold Headers &amp; Clean Body</div>
+            </div>
+
+            <!-- Font 3: Poppins + Inter -->
+            <div class="font-card" data-font="poppins" onclick="App.setFont('poppins')">
+              <div class="font-preview-title" style="font-family: 'Poppins', sans-serif;">Poppins + Inter</div>
+              <div class="font-preview-sample" style="font-family: 'Inter', sans-serif;">Smarter Attendance • Vibrant &amp; High Energy • 2026</div>
+              <div class="font-meta">Universally Loved Curves &amp; Clean Typography</div>
+            </div>
+
+            <!-- Font 4: Outfit + Plus Jakarta Sans -->
+            <div class="font-card" data-font="outfit" onclick="App.setFont('outfit')">
+              <div class="font-preview-title" style="font-family: 'Outfit', sans-serif;">Outfit + Plus Jakarta</div>
+              <div class="font-preview-sample" style="font-family: 'Plus Jakarta Sans', sans-serif;">Smarter Attendance • Swiss Balance • 2026</div>
+              <div class="font-meta">Contemporary Geometric Elegance</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Ambient Theme Mode -->
+        <div class="customizer-section" style="margin-top: 22px;">
+          <div class="customizer-section-title">
+            <span>Theme Mode</span>
+          </div>
+          <div class="mode-toggle-grid">
+            <button type="button" class="mode-select-btn active" id="customizer-mode-light" onclick="App.setThemeMode('light')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <span>Quartz Light Mode</span>
+            </button>
+            <button type="button" class="mode-select-btn" id="customizer-mode-dark" onclick="App.setThemeMode('dark')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <span>Obsidian Dark Mode</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="App.resetThemeToDefault()">↺ Reset to Recommended</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="App.closeModal('theme-customizer-modal')">Apply &amp; Done</button>
       </div>
     </div>
   </div>

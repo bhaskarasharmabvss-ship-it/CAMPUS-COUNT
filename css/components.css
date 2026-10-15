@@ -84,7 +84,7 @@
   font-size: 2.2rem;
   font-weight: 900;
   letter-spacing: -0.03em;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
   color: var(--text-primary);
   line-height: 1;
   margin-bottom: 8px;
@@ -157,7 +157,7 @@
   font-size: 1.85rem;
   font-weight: 900;
   letter-spacing: -0.03em;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
   color: var(--text-primary);
   line-height: 1.2;
 }
@@ -466,7 +466,7 @@
   font-size: 1.25rem;
   font-weight: 800;
   color: var(--text-primary, #FFFFFF);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
 }
 
 .modal-close-btn,
@@ -844,7 +844,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
   font-weight: 800;
   text-transform: uppercase;
   user-select: none;
@@ -1157,7 +1157,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
   font-weight: 800;
   font-size: 1.35rem;
   color: var(--text-primary);
@@ -1257,7 +1257,7 @@
   font-size: 2rem;
   font-weight: 800;
   color: var(--text-primary);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
   letter-spacing: -0.02em;
 }
 
@@ -1679,7 +1679,7 @@
   font-size: 2.2rem;
   font-weight: 800;
   color: #F8FAFC;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-display, 'Urbanist', sans-serif);
   letter-spacing: -0.02em;
   background: linear-gradient(135deg, #FFFFFF 0%, #94A3B8 100%);
   -webkit-background-clip: text;
@@ -1958,42 +1958,44 @@
 }
 
 /* ==========================================================================
-   10. NORMAL ORANGE & WHITE DASHBOARD SYSTEM ENHANCEMENTS
+   10. ATTENDIFY 3D / CAMPUSCOUNT - DYNAMIC THEMED COMPONENT SYSTEM
    ========================================================================== */
 
-/* Orange Button Overrides & Additions */
+/* Buttons Themed with Dynamic Variables */
 .btn-orange,
 .btn-primary {
   background: var(--primary) !important;
   color: #FFFFFF !important;
-  border: 1px solid var(--primary-dark, #C2410C) !important;
-  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.28) !important;
+  border: 1px solid var(--primary-dark) !important;
+  box-shadow: 0 4px 16px var(--primary-glow) !important;
+  font-family: var(--font-body);
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover, #EA580C) !important;
+  background: var(--primary-hover) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.35) !important;
+  box-shadow: 0 6px 22px var(--primary-glow) !important;
 }
 
 .btn-secondary {
-  background: #FFFFFF !important;
-  color: var(--primary, #F97316) !important;
-  border: 1.5px solid var(--primary, #F97316) !important;
+  background: var(--bg-surface) !important;
+  color: var(--primary) !important;
+  border: 1.5px solid var(--primary) !important;
+  font-family: var(--font-body);
 }
 
 .btn-secondary:hover {
-  background: #FFF7ED !important;
-  color: #EA580C !important;
-  border-color: #EA580C !important;
+  background: var(--primary-subtle) !important;
+  color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
   transform: translateY(-2px);
 }
 
-/* Nav Item Active in Orange */
+/* Nav Item Active in Dynamic Theme */
 .nav-item.active {
-  background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%) !important;
+  background: var(--primary-gradient) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.32) !important;
+  box-shadow: 0 4px 18px var(--primary-glow) !important;
 }
 
 .nav-item.active .nav-icon svg {
@@ -2001,32 +2003,32 @@
 }
 
 .nav-item:hover:not(.active) {
-  background: #FFF7ED !important;
-  color: #EA580C !important;
-  border-color: #FED7AA !important;
+  background: var(--primary-subtle) !important;
+  color: var(--primary) !important;
+  border-color: var(--border-crystal-hover) !important;
 }
 
 .nav-item:hover:not(.active) .nav-icon svg {
-  stroke: #EA580C !important;
+  stroke: var(--primary) !important;
 }
 
 /* Header Avatar Badge */
 .avatar-badge.admin,
 .avatar-badge.teacher,
 .avatar-badge.student {
-  background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%) !important;
+  background: var(--primary-gradient) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 3px 10px rgba(234, 88, 12, 0.3) !important;
+  box-shadow: 0 3px 12px var(--primary-glow) !important;
 }
 
-/* Brand Logo Icon in Orange */
+/* Brand Logo Icon with Luminescent Glow */
 .landing-logo-icon,
 .brand-icon-wrap {
-  background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%) !important;
-  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35) !important;
+  background: var(--primary-gradient) !important;
+  box-shadow: 0 4px 20px var(--primary-glow) !important;
 }
 
-/* Form Controls with Orange Focus */
+/* Form Controls with Theme Focus */
 .form-control:focus,
 input[type="text"]:focus,
 input[type="email"]:focus,
@@ -2034,16 +2036,16 @@ input[type="password"]:focus,
 input[type="number"]:focus,
 select:focus,
 textarea:focus {
-  border-color: #F97316 !important;
-  box-shadow: 0 0 0 3.5px rgba(249, 115, 22, 0.18) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3.5px var(--primary-glow) !important;
   outline: none;
 }
 
-/* Table header in crisp orange wash */
+/* Table header in crisp theme wash */
 .data-table thead th {
-  background: #FFF7ED !important;
-  color: #9A3412 !important;
-  border-bottom: 2px solid #FED7AA !important;
+  background: var(--primary-subtle) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 2px solid var(--border-crystal-hover) !important;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2051,20 +2053,20 @@ textarea:focus {
 }
 
 .data-table tbody tr:hover {
-  background: #FFFBF7 !important;
+  background: var(--primary-subtle) !important;
 }
 
 /* ==========================================================================
    11. SEMESTER TARGET CLASSES ("TOTAL NO. OF SHOULD HAVE FOR A SEM")
    ========================================================================== */
 .sem-target-hero-card {
-  background: #FFFFFF;
-  border: 1px solid #FED7AA;
-  border-top: 4px solid #EA580C;
+  background: var(--bg-card);
+  border: 1px solid var(--border-crystal-hover);
+  border-top: 4px solid var(--primary);
   border-radius: var(--radius-xl);
   padding: 26px 30px;
   margin-bottom: 28px;
-  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.09), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-crystal-lg);
   position: relative;
   overflow: hidden;
 }
@@ -2076,7 +2078,7 @@ textarea:focus {
   right: 0;
   width: 160px;
   height: 160px;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -2093,7 +2095,8 @@ textarea:focus {
 .sem-target-title-wrap h3 {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #0F172A;
+  color: var(--text-primary);
+  font-family: var(--font-display);
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
@@ -2102,7 +2105,7 @@ textarea:focus {
 
 .sem-target-title-wrap p {
   font-size: 0.84rem;
-  color: #64748B;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -2112,9 +2115,9 @@ textarea:focus {
   gap: 6px;
   padding: 6px 14px;
   border-radius: 9999px;
-  background: #FFF7ED;
-  border: 1px solid #FED7AA;
-  color: #C2410C;
+  background: var(--primary-subtle);
+  border: 1px solid var(--border-crystal-hover);
+  color: var(--primary);
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -2127,8 +2130,8 @@ textarea:focus {
 }
 
 .sem-metric-tile {
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-crystal);
   border-radius: var(--radius-lg);
   padding: 16px 18px;
   transition: all 0.22s ease;
@@ -2136,14 +2139,14 @@ textarea:focus {
 }
 
 .sem-metric-tile:hover {
-  border-color: #FDBA74;
-  background: #FFF7ED;
+  border-color: var(--border-crystal-hover);
+  background: var(--primary-subtle);
   transform: translateY(-2px);
 }
 
 .sem-metric-tile.highlight {
-  background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
-  border-color: #FDBA74;
+  background: var(--primary-subtle);
+  border-color: var(--border-crystal-hover);
 }
 
 .sem-metric-tile .tile-label {
@@ -2151,7 +2154,7 @@ textarea:focus {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #64748B;
+  color: var(--crystal-dim);
   margin-bottom: 6px;
   display: flex;
   align-items: center;
@@ -2161,27 +2164,27 @@ textarea:focus {
 .sem-metric-tile .tile-value {
   font-size: 1.85rem;
   font-weight: 900;
-  font-family: 'Outfit', sans-serif;
-  color: #0F172A;
+  font-family: var(--font-display);
+  color: var(--text-primary);
   line-height: 1;
 }
 
 .sem-metric-tile.highlight .tile-value {
-  color: #EA580C;
+  color: var(--primary);
 }
 
 .sem-metric-tile .tile-sub {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #64748B;
+  color: var(--crystal-muted);
   margin-top: 6px;
 }
 
 /* Dual Progress Track for Semester Classes */
 .sem-progress-wrap {
   margin-top: 18px;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-crystal);
   border-radius: var(--radius-lg);
   padding: 16px 20px;
 }
@@ -2197,7 +2200,7 @@ textarea:focus {
 
 .sem-progress-track {
   height: 14px;
-  background: #E2E8F0;
+  background: var(--border-crystal);
   border-radius: 9999px;
   position: relative;
   overflow: visible;
@@ -2205,7 +2208,7 @@ textarea:focus {
 
 .sem-progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #F97316 0%, #EA580C 100%);
+  background: var(--primary-gradient);
   border-radius: 9999px;
   transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -2231,10 +2234,10 @@ textarea:focus {
   font-weight: 800;
   color: #EF4444;
   white-space: nowrap;
-  background: #FEF2F2;
+  background: var(--status-alert-bg);
   padding: 1px 6px;
   border-radius: 4px;
-  border: 1px solid #FECACA;
+  border: 1px solid var(--status-alert-border);
 }
 
 .sem-calculator-row {
@@ -2245,9 +2248,9 @@ textarea:focus {
   gap: 12px;
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px dashed #E2E8F0;
+  border-top: 1px dashed var(--border-crystal);
   font-size: 0.82rem;
-  color: #334155;
+  color: var(--text-secondary);
 }
 
 .sem-goal-chips {
@@ -2259,31 +2262,31 @@ textarea:focus {
 .sem-goal-chip {
   padding: 4px 12px;
   border-radius: 9999px;
-  background: #FFFFFF;
-  border: 1px solid #CBD5E1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-crystal);
   font-size: 0.74rem;
   font-weight: 700;
-  color: #334155;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .sem-goal-chip:hover,
 .sem-goal-chip.active {
-  background: #FFF7ED;
-  border-color: #F97316;
-  color: #EA580C;
+  background: var(--primary-subtle);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* ==========================================================================
    12. QR SCANNER MODAL & LIVE VIEWFINDER
    ========================================================================== */
 .qr-scanner-box {
-  background: #FFFFFF;
+  background: var(--bg-surface);
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow: var(--shadow-crystal-lg);
-  border: 1px solid #FED7AA;
+  border: 1px solid var(--border-crystal-hover);
   max-width: 560px;
   width: 100%;
 }
@@ -2314,14 +2317,14 @@ textarea:focus {
   pointer-events: none;
 }
 
-/* Neon Orange Viewfinder Corners */
+/* Neon Viewfinder Corners */
 .qr-target-overlay::before,
 .qr-target-overlay::after {
   content: '';
   position: absolute;
   width: 24px;
   height: 24px;
-  border-color: #F97316;
+  border-color: var(--primary);
   border-style: solid;
   border-width: 0;
 }
@@ -2347,8 +2350,8 @@ textarea:focus {
   left: 10%;
   right: 10%;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #FF7A00, #F97316, transparent);
-  box-shadow: 0 0 14px 2px #F97316;
+  background: var(--primary-gradient);
+  box-shadow: 0 0 16px 2px var(--primary);
   animation: qrLaserScan 2.2s infinite ease-in-out;
 }
 
@@ -2363,18 +2366,18 @@ textarea:focus {
   gap: 10px;
   justify-content: center;
   padding: 16px 20px;
-  background: #FFF7ED;
-  border-top: 1px solid #FED7AA;
-  border-bottom: 1px solid #FED7AA;
+  background: var(--primary-subtle);
+  border-top: 1px solid var(--border-crystal-hover);
+  border-bottom: 1px solid var(--border-crystal-hover);
   flex-wrap: wrap;
 }
 
 .qr-quick-chip {
   padding: 6px 14px;
   border-radius: 9999px;
-  background: #FFFFFF;
-  border: 1px solid #FDBA74;
-  color: #C2410C;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-crystal-hover);
+  color: var(--primary);
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
@@ -2385,16 +2388,16 @@ textarea:focus {
 }
 
 .qr-quick-chip:hover {
-  background: #EA580C;
+  background: var(--primary);
   color: #FFFFFF;
-  border-color: #EA580C;
+  border-color: var(--primary);
   transform: translateY(-1px);
 }
 
 .qr-success-card {
   padding: 20px;
-  background: #ECFDF5;
-  border: 1.5px solid #A7F3D0;
+  background: var(--status-safe-bg);
+  border: 1.5px solid var(--status-safe-border);
   border-radius: var(--radius-lg);
   margin-top: 16px;
   display: flex;
@@ -2412,9 +2415,9 @@ textarea:focus {
    13. TEACHER LIVE QR ATTENDANCE GENERATOR
    ========================================================================== */
 .teacher-qr-card {
-  background: #FFFFFF;
+  background: var(--bg-card);
   border-radius: var(--radius-xl);
-  border: 1px solid #FED7AA;
+  border: 1px solid var(--border-crystal-hover);
   padding: 28px;
   text-align: center;
   box-shadow: var(--shadow-crystal-lg);
@@ -2428,9 +2431,9 @@ textarea:focus {
   margin: 20px auto;
   padding: 16px;
   background: #FFFFFF;
-  border: 3px solid #F97316;
+  border: 3px solid var(--primary);
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.2);
+  box-shadow: 0 10px 30px var(--primary-glow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2443,9 +2446,9 @@ textarea:focus {
   gap: 8px;
   padding: 6px 16px;
   border-radius: 9999px;
-  background: #FFF7ED;
-  border: 1px solid #FED7AA;
-  color: #C2410C;
+  background: var(--primary-subtle);
+  border: 1px solid var(--border-crystal-hover);
+  color: var(--primary);
   font-weight: 700;
   font-size: 0.84rem;
   margin-top: 8px;
@@ -2455,9 +2458,9 @@ textarea:focus {
    14. STUDENT SELF REGISTRATION MODAL
    ========================================================================== */
 .register-modal-box {
-  background: #FFFFFF;
+  background: var(--bg-surface);
   border-radius: var(--radius-xl);
-  border: 1px solid #FED7AA;
+  border: 1px solid var(--border-crystal-hover);
   box-shadow: var(--shadow-crystal-lg);
   max-width: 680px;
   width: 100%;
@@ -2465,7 +2468,7 @@ textarea:focus {
 }
 
 .register-header-banner {
-  background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
+  background: var(--primary-gradient);
   color: #FFFFFF;
   padding: 24px 28px;
   position: relative;
@@ -2474,6 +2477,7 @@ textarea:focus {
 .register-header-banner h3 {
   font-size: 1.35rem;
   font-weight: 800;
+  font-family: var(--font-display);
   letter-spacing: -0.02em;
 }
 
@@ -2496,4 +2500,253 @@ textarea:focus {
   .register-form-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   15. THEME & FONT CUSTOMIZER MODAL STYLING
+   ========================================================================== */
+.customizer-modal-box {
+  max-width: 680px;
+  width: 95%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-crystal);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-crystal-lg);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  overflow: hidden;
+  animation: modalScaleIn 0.28s var(--transition-smooth);
+}
+
+.customizer-modal-body {
+  padding: 24px 28px;
+  max-height: 72vh;
+  overflow-y: auto;
+}
+
+.customizer-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px var(--primary-glow);
+  flex-shrink: 0;
+}
+
+.customizer-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.customizer-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--primary-subtle);
+  color: var(--primary);
+  border: 1px solid var(--border-crystal-hover);
+}
+
+/* Palette Card Tiles */
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 580px) {
+  .palette-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.palette-card {
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-deep);
+  border: 1.5px solid var(--border-crystal);
+  cursor: pointer;
+  transition: all 0.24s var(--transition-smooth);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.palette-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-crystal-hover);
+  box-shadow: var(--shadow-crystal);
+}
+
+.palette-card.active {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+  box-shadow: 0 0 0 2px var(--primary-glow), var(--shadow-crystal);
+}
+
+.palette-swatches {
+  display: flex;
+  gap: 6px;
+}
+
+.palette-swatches span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.palette-info .palette-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.palette-info .palette-desc {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.palette-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border-crystal);
+}
+
+.palette-card.active .palette-badge {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+}
+
+/* Font Grid Cards */
+.font-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 580px) {
+  .font-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.font-card {
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-deep);
+  border: 1.5px solid var(--border-crystal);
+  cursor: pointer;
+  transition: all 0.24s var(--transition-smooth);
+  position: relative;
+}
+
+.font-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-crystal-hover);
+  box-shadow: var(--shadow-crystal);
+}
+
+.font-card.active {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+  box-shadow: 0 0 0 2px var(--primary-glow), var(--shadow-crystal);
+}
+
+.font-preview-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.font-preview-sample {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin-bottom: 6px;
+  opacity: 0.88;
+}
+
+.font-meta {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Environment Mode Buttons */
+.mode-toggle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mode-select-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  background: var(--bg-deep);
+  border: 1.5px solid var(--border-crystal);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.22s var(--transition-smooth);
+}
+
+.mode-select-btn:hover {
+  border-color: var(--border-crystal-hover);
+}
+
+.mode-select-btn.active {
+  background: var(--primary-subtle);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-glow);
+}
+
+/* Customizer trigger pip */
+.customizer-btn {
+  position: relative;
+}
+
+.customizer-glow-pip {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  pointer-events: none;
 }

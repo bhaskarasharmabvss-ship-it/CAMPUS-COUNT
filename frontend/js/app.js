@@ -35,18 +35,116 @@ const App = {
   },
 
   /**
-   * Theme Manager (Normal Orange & White Light and Obsidian Dark)
+   * Theme & Appearance Manager (Multi-palette, Fonts, Dark/Light Mode)
    */
   initTheme() {
     this.theme = localStorage.getItem('campus_theme') || 'light';
+    this.palette = localStorage.getItem('campus_palette') || 'indigo';
+    this.font = localStorage.getItem('campus_font') || 'urbanist';
+    
     document.documentElement.setAttribute('data-theme', this.theme);
+    document.documentElement.setAttribute('data-palette', this.palette);
+    document.documentElement.setAttribute('data-font', this.font);
+    this.updateCustomizerUI();
   },
 
   toggleTheme() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
+    this.setThemeMode(this.theme);
+  },
+
+  setThemeMode(mode) {
+    this.theme = mode;
     document.documentElement.setAttribute('data-theme', this.theme);
     localStorage.setItem('campus_theme', this.theme);
-    this.showToast(`Switched to ${this.theme === 'light' ? 'Normal Orange & White' : 'Obsidian Dark'} theme`, 'info');
+    this.updateCustomizerUI();
+    this.showToast(`Switched to ${this.theme === 'light' ? 'Quartz Light' : 'Obsidian Neon Dark'} mode`, 'info');
+    if (typeof Charts !== 'undefined' && Charts.renderTrendChart) {
+      Charts.renderTrendChart('attendance-trend-chart');
+    }
+  },
+
+  setPalette(paletteName) {
+    this.palette = paletteName;
+    document.documentElement.setAttribute('data-palette', this.palette);
+    localStorage.setItem('campus_palette', this.palette);
+    this.updateCustomizerUI();
+    
+    const names = {
+      indigo: 'Royal Indigo & Radiant Violet',
+      emerald: 'Emerald Cyber Mint',
+      sunset: 'Sunset Aurora',
+      cyberpunk: 'Cyberpunk Neon'
+    };
+    this.showToast(`Active Palette: ${names[paletteName] || paletteName}`, 'success');
+    if (typeof Charts !== 'undefined' && Charts.renderTrendChart) {
+      Charts.renderTrendChart('attendance-trend-chart');
+    }
+  },
+
+  setFont(fontName) {
+    this.font = fontName;
+    document.documentElement.setAttribute('data-font', this.font);
+    localStorage.setItem('campus_font', this.font);
+    this.updateCustomizerUI();
+
+    const names = {
+      urbanist: 'Urbanist + Plus Jakarta Sans',
+      space: 'Space Grotesk + Outfit',
+      poppins: 'Poppins + Inter',
+      outfit: 'Outfit + Plus Jakarta Sans'
+    };
+    this.showToast(`Typography: ${names[fontName] || fontName}`, 'info');
+  },
+
+  openThemeCustomizer() {
+    this.updateCustomizerUI();
+    this.openModal('theme-customizer-modal');
+  },
+
+  resetThemeToDefault() {
+    this.setPalette('indigo');
+    this.setFont('urbanist');
+    this.setThemeMode('light');
+    this.showToast('Reset to Recommended Design (Royal Indigo & Urbanist)', 'success');
+  },
+
+  updateCustomizerUI() {
+    // Highlight active palette card
+    document.querySelectorAll('.palette-card').forEach(card => {
+      const p = card.getAttribute('data-palette');
+      const badge = card.querySelector('.palette-badge');
+      if (p === (this.palette || 'indigo')) {
+        card.classList.add('active');
+        if (badge) badge.textContent = 'Active';
+      } else {
+        card.classList.remove('active');
+        if (badge) badge.textContent = 'Select';
+      }
+    });
+
+    // Highlight active font card
+    document.querySelectorAll('.font-card').forEach(card => {
+      const f = card.getAttribute('data-font');
+      if (f === (this.font || 'urbanist')) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+
+    // Highlight active mode buttons
+    const lightBtn = document.getElementById('customizer-mode-light');
+    const darkBtn = document.getElementById('customizer-mode-dark');
+    if (lightBtn && darkBtn) {
+      if (this.theme === 'dark') {
+        lightBtn.classList.remove('active');
+        darkBtn.classList.add('active');
+      } else {
+        lightBtn.classList.add('active');
+        darkBtn.classList.remove('active');
+      }
+    }
   },
 
   /**
@@ -129,7 +227,7 @@ const App = {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 130) {
             const alpha = (1 - dist / 130) * 0.14;
-            ctx.strokeStyle = isLight ? `rgba(249, 115, 22, ${alpha * 0.95})` : `rgba(255, 255, 255, ${alpha})`;
+            ctx.strokeStyle = isLight ? `rgba(99, 102, 241, ${alpha * 1.2})` : `rgba(168, 85, 247, ${alpha * 1.5})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -158,8 +256,8 @@ const App = {
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle);
-        ctx.fillStyle = isLight ? 'rgba(249, 115, 22, 0.22)' : 'rgba(255, 255, 255, 0.4)';
-        ctx.strokeStyle = isLight ? 'rgba(234, 88, 12, 0.55)' : 'rgba(255, 255, 255, 0.7)';
+        ctx.fillStyle = isLight ? 'rgba(99, 102, 241, 0.22)' : 'rgba(168, 85, 247, 0.35)';
+        ctx.strokeStyle = isLight ? 'rgba(79, 70, 229, 0.65)' : 'rgba(216, 180, 254, 0.75)';
         ctx.lineWidth = 0.8;
 
         ctx.beginPath();
@@ -666,7 +764,7 @@ const App = {
         adviceEl.style.color = '#059669';
       } else if (needed <= remainingInSem) {
         adviceEl.textContent = `Attend ${needed} more classes out of ${remainingInSem} remaining to secure ${targetPct}%. (Safe buffer: ${buffer} leaves)`;
-        adviceEl.style.color = '#EA580C';
+        adviceEl.style.color = 'var(--primary)';
       } else {
         adviceEl.textContent = `⚠️ Target ${targetPct}% mathematically out of reach (${needed} needed with ${remainingInSem} left). Aim for next highest threshold.`;
         adviceEl.style.color = '#EF4444';
@@ -1795,8 +1893,8 @@ const App = {
     const centerSize = 28;
     const centerPos = (svgDim - centerSize) / 2;
     const centerBadge = `
-      <rect x="${centerPos}" y="${centerPos}" width="${centerSize}" height="${centerSize}" fill="#FFFFFF" rx="6" stroke="#F97316" stroke-width="2"/>
-      <circle cx="${svgDim / 2}" cy="${svgDim / 2}" r="5" fill="#F97316"/>
+      <rect x="${centerPos}" y="${centerPos}" width="${centerSize}" height="${centerSize}" fill="#FFFFFF" rx="6" stroke="var(--primary)" stroke-width="2"/>
+      <circle cx="${svgDim / 2}" cy="${svgDim / 2}" r="5" fill="var(--primary)"/>
     `;
 
     wrap.innerHTML = `
